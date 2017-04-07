@@ -1,0 +1,21 @@
+{
+  "name": "streetwise-sophisticated-hackers",
+  "homepage": "https://github.com/nfqakademija/streetwise-sophisticated-hackers",
+  "authors": [
+    "eleggua999 <eleggua999@gmail.com>"
+  ],
+  "description": "NFQ Akademijos svetaine",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "web/assets/vendor/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}
