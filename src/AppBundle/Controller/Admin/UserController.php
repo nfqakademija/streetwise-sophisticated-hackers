@@ -7,14 +7,16 @@
  */
 
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\Admin;
 
 use AppBundle\Form\UserType;
 use JavierEguiluz\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
 use JavierEguiluz\Bundle\EasyAdminBundle\Event\EasyAdminEvents;
 
-class AdminController extends BaseAdminController
+
+class UserController extends BaseAdminController
 {
+
     public function createNewUserEntity()
     {
         return $this->get('fos_user.user_manager')->createUser();
@@ -32,13 +34,17 @@ class AdminController extends BaseAdminController
 
     public function editUserAction()
     {
-        //TODO: call voter
+        $easyadmin = $this->request->attributes->get('easyadmin');
+        $entity = $easyadmin['item'];
+        $this->denyAccessUnlessGranted('delete', $entity);
 
         $this->dispatch(EasyAdminEvents::PRE_EDIT);
 
         $id = $this->request->query->get('id');
         $easyadmin = $this->request->attributes->get('easyadmin');
         $entity = $easyadmin['item'];
+
+        $this->denyAccessUnlessGranted('edit', $entity);
 
         //TODO: updateEntityProperty is private
         /*if ($this->request->isXmlHttpRequest() && $property = $this->request->query->get('property')) {
@@ -56,7 +62,7 @@ class AdminController extends BaseAdminController
 
         $fields = $this->entity['edit']['fields'];
 
-        if(!$this->getUser()->hasRole('ROLE_ADMIN') && $this->getUser()->getId() == $this->request->query->get('id')) {
+        if (!$this->getUser()->hasRole('ROLE_ADMIN') && $this->getUser()->getId() == $this->request->query->get('id')) {
             $editForm = $this->createForm(UserType::class, $entity);
         } else {
             $editForm = $this->createEditForm($entity, $fields);
@@ -91,5 +97,26 @@ class AdminController extends BaseAdminController
         ));
     }
 
+    public function deleteUserAction()
+    {
+        $easyadmin = $this->request->attributes->get('easyadmin');
+        $entity = $easyadmin['item'];
+        $this->denyAccessUnlessGranted('delete', $entity);
 
+        return parent::deleteAction();
+    }
+
+    /**
+     * The method that is executed when the user performs a 'new' action on an entity.
+     *
+     * @return Response|RedirectResponse
+     */
+    protected function newAction()
+    {
+        $easyadmin = $this->request->attributes->get('easyadmin');
+        $entity = $easyadmin['item'];
+        $this->denyAccessUnlessGranted('new', $entity);
+
+        return parent::newAction();
+    }
 }

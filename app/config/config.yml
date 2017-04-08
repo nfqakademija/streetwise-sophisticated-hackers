@@ -90,6 +90,7 @@ easy_admin:
             - User
     entities:
         User:
+            controller: AppBundle\Controller\Admin\UserController
             class: AppBundle\Entity\User
             edit:
                 form_options: { validation_groups: ['Default'] }
