@@ -113,14 +113,13 @@ easy_admin:
                     - { property: 'plainPassword', label: 'Password', type: 'password', type_options: { required: true } }
                     - { property: 'roles', type: 'choice', type_options: { multiple: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_LECTOR': 'ROLE_LECTOR', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
             list:
-                actions: ['show']
+                actions: [{name: 'show', role: 'ROLE_USER'}, { name: 'edit', role: 'ROLE_ADMIN' }, { name: 'delete', role: 'ROLE_ADMIN' }, { name: 'new', role: 'ROLE_ADMIN' }]
                 fields:
-                - username
                 - name
                 - email
-                - enabled
                 - roles
             show:
+                actions: [ { name: 'edit', role: 'ROLE_ADMIN' }, { name: 'delete', role: 'ROLE_ADMIN' }, { name: 'list', role: 'ROLE_USER' } ]
                 fields:
                     - username
                     - name
