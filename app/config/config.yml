@@ -90,9 +90,7 @@ vich_uploader:
         lecture_slides:
             uri_prefix: %app.path.lecture_slides%
             upload_destination: %kernel.root_dir%/../web/uploads/files/lecture/slides
-            delete_on_remove:   false  # determines whether to delete file upon removal of entity
-            delete_on_update:   false  # determines wheter to delete the file upon update of entity
-            inject_on_load:     true # determines whether to inject a File instance upon load
+            namer:              vich_uploader.namer_origname
 
 easy_admin:
     design:
