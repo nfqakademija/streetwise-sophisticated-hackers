@@ -88,6 +88,7 @@ easy_admin:
         menu:
             - { label: 'My Profile', url: '/profile' }
             - User
+            - Lecture
     entities:
         User:
             controller: AppBundle\Controller\Admin\UserController
@@ -127,3 +128,33 @@ easy_admin:
                     - email
                     - enabled
                     - roles
+        Lecture:
+            class: AppBundle\Entity\Lecture
+            edit:
+                form_options: { validation_groups: ['Default'] }
+                fields:
+                    - title
+                    - description
+                    - date
+                    - lecturer
+            new:
+                form_options: { validation_groups: ['registration'] }
+                fields:
+                    - title
+                    - description
+                    - date
+                    - lecturer
+            list:
+                sort: [ 'date', 'ASC' ]
+                actions: [{name: 'show', role: 'ROLE_USER'}, { name: 'edit', role: 'ROLE_LECTOR' }, { name: 'delete', role: 'ROLE_ADMIN' }, { name: 'new', role: 'ROLE_ADMIN' }]
+                fields:
+                    - title
+                    - date
+                    - lecturer
+            show:
+                actions: [ { name: 'edit', role: 'ROLE_LECTOR' }, { name: 'delete', role: 'ROLE_LECTOR' }, { name: 'list', role: 'ROLE_USER' } ]
+                fields:
+                    - title
+                    - description
+                    - date
+                    - lecturer
