@@ -7,6 +7,7 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
+    app.path.lecture_slides: /uploads/files/lecture/slides
 
 framework:
     #esi: ~
@@ -83,6 +84,16 @@ fos_user:
         address: "%mailer_user%"
         sender_name: "%mailer_user%"
 
+vich_uploader:
+    db_driver: orm
+    mappings:
+        lecture_slides:
+            uri_prefix: %app.path.lecture_slides%
+            upload_destination: %kernel.root_dir%/../web/uploads/files/lecture/slides
+            delete_on_remove:   false  # determines whether to delete file upon removal of entity
+            delete_on_update:   false  # determines wheter to delete the file upon update of entity
+            inject_on_load:     true # determines whether to inject a File instance upon load
+
 easy_admin:
     design:
         menu:
@@ -137,6 +148,7 @@ easy_admin:
                     - description
                     - date
                     - lecturer
+                    - { property: 'slidesFile', type: 'vich_file' }
             new:
                 form_options: { validation_groups: ['registration'] }
                 fields:
@@ -158,3 +170,4 @@ easy_admin:
                     - description
                     - date
                     - lecturer
+                    - { property: 'slides', template: 'slides.html.twig', base_path: %app.path.lecture_slides% }
