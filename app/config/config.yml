@@ -84,5 +84,46 @@ fos_user:
         sender_name: "%mailer_user%"
 
 easy_admin:
+    design:
+        menu:
+            - { label: 'My Profile', url: '/profile' }
+            - User
     entities:
-        - AppBundle\Entity\User
+        User:
+            controller: AppBundle\Controller\Admin\UserController
+            class: AppBundle\Entity\User
+            edit:
+                form_options: { validation_groups: ['Default'] }
+                fields:
+                    - username
+                    - name
+                    - email
+                    - enabled
+                    # if administrators are allowed to edit users' passwords and roles, add this:
+                    - { property: 'plainPassword', label: 'New password', type: 'password', type_options: { required: false } }
+                    - { property: 'confirmPassword', label: 'Confirm password', type: 'password', type_options: { required: false } }
+                    - { property: 'roles', type: 'choice', type_options: { multiple: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_LECTOR': 'ROLE_LECTOR', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
+            new:
+                form_options: { validation_groups: ['registration'] }
+                fields:
+                    - username
+                    - name
+                    - { property: 'email', type: 'email', label: 'Email' }
+                    - enabled
+                    # if administrators are allowed to edit users' passwords and roles, add this:
+                    - { property: 'plainPassword', label: 'Password', type: 'password', type_options: { required: true } }
+                    - { property: 'roles', type: 'choice', type_options: { multiple: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_LECTOR': 'ROLE_LECTOR', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
+            list:
+                actions: [{name: 'show', role: 'ROLE_USER'}, { name: 'edit', role: 'ROLE_ADMIN' }, { name: 'delete', role: 'ROLE_ADMIN' }, { name: 'new', role: 'ROLE_ADMIN' }]
+                fields:
+                - name
+                - email
+                - roles
+            show:
+                actions: [ { name: 'edit', role: 'ROLE_ADMIN' }, { name: 'delete', role: 'ROLE_ADMIN' }, { name: 'list', role: 'ROLE_USER' } ]
+                fields:
+                    - username
+                    - name
+                    - email
+                    - enabled
+                    - roles

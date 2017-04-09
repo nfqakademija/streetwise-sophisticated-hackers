@@ -4,6 +4,8 @@ namespace AppBundle\Entity;
 
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
 
 /**
  * @ORM\Entity
@@ -12,15 +14,84 @@ use Doctrine\ORM\Mapping as ORM;
 class User extends BaseUser
 {
     /**
+     * @var string $id
+     *
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
-    public function __construct()
+    /**
+     * @var string $name
+     *
+     * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min=3, max=100)
+     * @Assert\NotBlank()
+     */
+    protected $name;
+
+    /**
+     * @var string $email
+     *
+     * @Assert\Email()
+     * @Assert\Length(max=255)
+     * @Assert\NotBlank()
+     */
+    protected $email;
+
+    /**
+     * @var string $plainPassword
+     *
+     * @Assert\Length(min=6,max=255)
+     * @Assert\NotBlank(groups="registration")
+     */
+    protected $plainPassword;
+
+    /**
+     * @var string $confirmPassword
+     */
+    protected $confirmPassword;
+
+    /**
+     * @return string
+     */
+    public function getConfirmPassword()
     {
-        parent::__construct();
-        // your own logic
+        return $this->confirmPassword;
+    }
+
+    /**
+     * @param string $confirmPassword
+     */
+    public function setConfirmPassword(string $confirmPassword)
+    {
+        $this->confirmPassword = $confirmPassword;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName(string $name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @Assert\IsTrue(message = "Passwords are not the same")
+     *
+     * @return boolean
+     */
+    public function isPasswordLegal()
+    {
+        return ($this->plainPassword == $this->confirmPassword);
     }
 }
