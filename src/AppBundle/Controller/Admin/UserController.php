@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: eleggua
- * Date: 17.4.7
- * Time: 20.52
- */
-
 
 namespace AppBundle\Controller\Admin;
 
@@ -13,25 +6,47 @@ use AppBundle\Form\UserType;
 use JavierEguiluz\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
 use JavierEguiluz\Bundle\EasyAdminBundle\Event\EasyAdminEvents;
 
-
+/**
+ * Class UserController
+ * @package AppBundle\Controller\Admin
+ */
 class UserController extends BaseAdminController
 {
-
+    /**
+     * {@inheritdoc}
+     *
+     * @return mixed
+     */
     public function createNewUserEntity()
     {
         return $this->get('fos_user.user_manager')->createUser();
     }
 
-    public function prePersistUserEntity($user)
+    /**
+     * {@inheritdoc}
+     *
+     * @param User $user
+     */
+    public function prePersistUserEntity(User $user)
     {
         $this->get('fos_user.user_manager')->updateUser($user, false);
     }
 
-    public function preUpdateUserEntity($user)
+    /**
+     * {@inheritdoc}
+     *
+     * @param User $user
+     */
+    public function preUpdateUserEntity(User $user)
     {
         $this->get('fos_user.user_manager')->updateUser($user, false);
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @return Response
+     */
     public function editUserAction()
     {
         $easyadmin = $this->request->attributes->get('easyadmin');
@@ -89,14 +104,22 @@ class UserController extends BaseAdminController
         $this->dispatch(EasyAdminEvents::POST_EDIT);
 
 
-        return $this->render($this->entity['templates']['edit'], array(
-            'form' => $editForm->createView(),
-            'entity_fields' => $fields,
-            'entity' => $entity,
-            'delete_form' => $deleteForm->createView(),
-        ));
+        return $this->render(
+            $this->entity['templates']['edit'],
+            [
+                'form' => $editForm->createView(),
+                'entity_fields' => $fields,
+                'entity' => $entity,
+                'delete_form' => $deleteForm->createView(),
+            ]
+        );
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @return RedirectResponse
+     */
     public function deleteUserAction()
     {
         $easyadmin = $this->request->attributes->get('easyadmin');
@@ -107,7 +130,7 @@ class UserController extends BaseAdminController
     }
 
     /**
-     * The method that is executed when the user performs a 'new' action on an entity.
+     * {@inheritdoc}
      *
      * @return Response|RedirectResponse
      */

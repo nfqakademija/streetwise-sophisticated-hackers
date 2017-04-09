@@ -1,30 +1,21 @@
 <?php
 
-/*
- * This file is part of the FOSUserBundle package.
- *
- * (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace AppBundle\Controller;
-
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use FOS\UserBundle\Controller\ProfileController as BaseController;
 
 /**
- * Controller managing the user profile.
- *
- * @author Christophe Coevoet <stof@notk.org>
+ * Class ProfileController
+ * @package AppBundle\Controller
  */
 class ProfileController extends BaseController
 {
     /**
-     * Show the user.
+     * {@inheritdoc}
+     *
+     * @return RedirectResponse
      */
     public function showAction()
     {
@@ -32,7 +23,7 @@ class ProfileController extends BaseController
     }
 
     /**
-     * Edit the user.
+     * {@inheritdoc}
      *
      * @param Request $request
      *

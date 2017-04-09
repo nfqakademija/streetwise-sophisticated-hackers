@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: eleggua
- * Date: 17.4.8
- * Time: 09.24
- */
 
 namespace AppBundle\Form;
 
@@ -14,19 +8,43 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
+/**
+ * Class UserType
+ * @package AppBundle\Form
+ */
 class UserType extends AbstractType
 {
+    /**
+     * {@inheritdoc}
+     *
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', EmailType::class)
-            ->add('plainPassword', PasswordType::class, array(
-                'required'    => false,
-            ))
-            ->add('confirmPassword', PasswordType::class, array(
-                'required'    => false,
-            ))
-            ->add('save', SubmitType::class)
+            ->add(
+                'email',
+                EmailType::class
+            )
+            ->add(
+                'plainPassword',
+                PasswordType::class,
+                [
+                    'required'    => false,
+                ]
+            )
+            ->add(
+                'confirmPassword',
+                PasswordType::class,
+                [
+                    'required'    => false,
+                ]
+            )
+            ->add(
+                'save',
+                SubmitType::class
+            )
         ;
     }
 }

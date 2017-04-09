@@ -14,6 +14,8 @@ use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
 class User extends BaseUser
 {
     /**
+     * @var string $id
+     *
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -21,6 +23,7 @@ class User extends BaseUser
     protected $id;
 
     /**
+     * @var string $name
      *
      * @ORM\Column(type="string", length=255)
      * @Assert\Length(min=3, max=100)
@@ -29,6 +32,8 @@ class User extends BaseUser
     protected $name;
 
     /**
+     * @var string $email
+     *
      * @Assert\Email()
      * @Assert\Length(max=255)
      * @Assert\NotBlank()
@@ -36,15 +41,20 @@ class User extends BaseUser
     protected $email;
 
     /**
+     * @var string $plainPassword
+     *
      * @Assert\Length(min=6,max=255)
      * @Assert\NotBlank(groups="registration")
      */
     protected $plainPassword;
 
+    /**
+     * @var string $confirmPassword
+     */
     protected $confirmPassword;
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getConfirmPassword()
     {
@@ -52,16 +62,15 @@ class User extends BaseUser
     }
 
     /**
-     * @param mixed $confirmPassword
+     * @param string $confirmPassword
      */
-    public function setConfirmPassword($confirmPassword)
+    public function setConfirmPassword(string $confirmPassword)
     {
         $this->confirmPassword = $confirmPassword;
     }
 
-
     /**
-     * @return mixed
+     * @return string
      */
     public function getName()
     {
@@ -69,21 +78,17 @@ class User extends BaseUser
     }
 
     /**
-     * @param mixed $name
+     * @param string $name
      */
-    public function setName($name)
+    public function setName(string $name)
     {
         $this->name = $name;
     }
 
-    public function __construct()
-    {
-        parent::__construct();
-        // your own logic
-    }
-
     /**
      * @Assert\IsTrue(message = "Passwords are not the same")
+     *
+     * @return boolean
      */
     public function isPasswordLegal()
     {

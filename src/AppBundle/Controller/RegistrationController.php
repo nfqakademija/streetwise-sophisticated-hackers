@@ -1,18 +1,15 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: eleggua
- * Date: 17.4.9
- * Time: 14.36
- */
 
 namespace AppBundle\Controller;
-
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use FOS\UserBundle\Controller\RegistrationController as BaseController;
 
+/**
+ * Class RegistrationController
+ * @package AppBundle\Controller
+ */
 class RegistrationController extends BaseController
 {
     /**
