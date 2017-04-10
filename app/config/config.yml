@@ -138,6 +138,7 @@ easy_admin:
                     - enabled
                     - roles
         Lecture:
+            controller: AppBundle\Controller\Admin\LectureController
             class: AppBundle\Entity\Lecture
             edit:
                 form_options: { validation_groups: ['Default'] }
@@ -162,7 +163,7 @@ easy_admin:
                     - date
                     - lecturer
             show:
-                actions: [ { name: 'edit', role: 'ROLE_LECTOR' }, { name: 'delete', role: 'ROLE_LECTOR' }, { name: 'list', role: 'ROLE_USER' } ]
+                actions: [ { name: 'edit', role: 'ROLE_LECTOR' }, { name: 'delete', role: 'ROLE_ADMIN' }, { name: 'list', role: 'ROLE_USER' } ]
                 fields:
                     - title
                     - description

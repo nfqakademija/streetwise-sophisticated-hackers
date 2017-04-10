@@ -13,4 +13,10 @@ services:
                 - { name: security.voter }
             # small performance boost
             public: false
+    app.lecture_voter:
+                class: AppBundle\Security\LectureVoter
+                tags:
+                    - { name: security.voter }
+                # small performance boost
+                public: false
 

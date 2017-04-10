@@ -5,6 +5,8 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
 
 /**
  * Lecture
@@ -28,6 +30,7 @@ class Lecture
      * @var string $title
      *
      * @ORM\Column(name="title", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $title;
 
@@ -42,6 +45,7 @@ class Lecture
      * @var \DateTime $date
      *
      * @ORM\Column(name="date", type="date")
+     * @Assert\NotBlank()
      */
     private $date;
 
@@ -50,6 +54,7 @@ class Lecture
      *
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="lecturer_id", referencedColumnName="id")
+     * @Assert\NotBlank()
      */
     private $lecturer;
 
