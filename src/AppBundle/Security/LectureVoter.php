@@ -114,12 +114,7 @@ class LectureVoter extends Voter
      */
     private function canEdit(Lecture $subject, User $user)
     {
-        if($subject !== null) {
-            return ($user->getId() == $subject->getLecturer()->getId() || $user->hasRole('ROLE_LECTOR'));
-        } else {
-            return ($user->hasRole('ROLE_LECTOR'));
-        }
-
+        return ($user->getId() == $subject->getLecturer()->getId() || $user->hasRole('ROLE_LECTOR'));
     }
 
     /**
@@ -131,10 +126,5 @@ class LectureVoter extends Voter
     private function canCreate(User $user)
     {
         return $user->hasRole('ROLE_ADMIN');
-    }
-
-    protected function getSupportedClasses()
-    {
-        return array('AppBundle\Entity\Lecture');
     }
 }

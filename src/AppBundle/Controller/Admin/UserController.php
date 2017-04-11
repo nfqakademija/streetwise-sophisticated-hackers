@@ -5,6 +5,9 @@ namespace AppBundle\Controller\Admin;
 use AppBundle\Form\UserType;
 use JavierEguiluz\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
 use JavierEguiluz\Bundle\EasyAdminBundle\Event\EasyAdminEvents;
+use AppBundle\Entity\User;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class UserController
@@ -15,7 +18,7 @@ class UserController extends BaseAdminController
     /**
      * {@inheritdoc}
      *
-     * @return mixed
+     * @return User
      */
     public function createNewUserEntity()
     {
@@ -45,7 +48,7 @@ class UserController extends BaseAdminController
     /**
      * {@inheritdoc}
      *
-     * @return Response
+     * @return Response|RedirectResponse
      */
     public function editUserAction()
     {
@@ -136,9 +139,8 @@ class UserController extends BaseAdminController
      */
     protected function newAction()
     {
-        $easyadmin = $this->request->attributes->get('easyadmin');
-        $entity = $easyadmin['item'];
-        $this->denyAccessUnlessGranted('new', $entity);
+        $user = new User();
+        $this->denyAccessUnlessGranted('new', $user);
 
         return parent::newAction();
     }

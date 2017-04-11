@@ -59,23 +59,23 @@ class Lecture
     private $lecturer;
 
     /**
-     * @var string
+     * @var string $slides
      *
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $slides;
 
     /**
-     * @var File
+     * @var File $slidesFile
      *
      * @Vich\UploadableField(mapping="lecture_slides", fileNameProperty="slides")
      */
     private $slidesFile;
 
     /**
-     * @var \DateTime
+     * @var \DateTime $updatedAt
      *
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      *
      */
     private $updatedAt;
@@ -83,7 +83,7 @@ class Lecture
     /**
      * @return \DateTime
      */
-    public function getUpdatedAt(): \DateTime
+    public function getUpdatedAt()
     {
         return $this->updatedAt;
     }
@@ -110,14 +110,10 @@ class Lecture
      * Set title
      *
      * @param string $title
-     *
-     * @return Lecture
      */
     public function setTitle(string $title)
     {
         $this->title = $title;
-
-        return $this;
     }
 
     /**
@@ -134,14 +130,10 @@ class Lecture
      * Set description
      *
      * @param string $description
-     *
-     * @return Lecture
      */
     public function setDescription(string $description)
     {
         $this->description = $description;
-
-        return $this;
     }
 
     /**
@@ -158,14 +150,10 @@ class Lecture
      * Set date
      *
      * @param \DateTime $date
-     *
-     * @return Lecture
      */
     public function setDate($date)
     {
         $this->date = $date;
-
-        return $this;
     }
 
     /**
@@ -182,14 +170,10 @@ class Lecture
      * Set lecturer
      *
      * @param User $lecturer
-     *
-     * @return Lecture
      */
     public function setLecturer(User $lecturer)
     {
         $this->lecturer = $lecturer;
-
-        return $this;
     }
 
     /**
@@ -205,7 +189,7 @@ class Lecture
     /**
      * @return string
      */
-    public function getSlides(): string
+    public function getSlides()
     {
         return $this->slides;
     }

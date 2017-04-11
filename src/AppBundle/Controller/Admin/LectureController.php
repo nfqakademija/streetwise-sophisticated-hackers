@@ -3,7 +3,9 @@
 namespace AppBundle\Controller\Admin;
 
 use JavierEguiluz\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
-use JavierEguiluz\Bundle\EasyAdminBundle\Event\EasyAdminEvents;
+use AppBundle\Entity\Lecture;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class LectureController
@@ -14,7 +16,7 @@ class LectureController extends BaseAdminController
     /**
      * {@inheritdoc}
      *
-     * @return Response
+     * @return Response|RedirectResponse
      */
     public function editLectureAction()
     {
@@ -46,9 +48,8 @@ class LectureController extends BaseAdminController
      */
     protected function newLectureAction()
     {
-        $easyadmin = $this->request->attributes->get('easyadmin');
-        $entity = $easyadmin['item'];
-        $this->denyAccessUnlessGranted('new', $entity);
+        $lecture = new Lecture();
+        $this->denyAccessUnlessGranted('new', $lecture);
 
         return parent::newAction();
     }
