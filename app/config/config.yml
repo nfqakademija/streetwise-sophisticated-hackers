@@ -172,6 +172,7 @@ easy_admin:
                     - lecturer
                     - { property: 'slides', template: 'slides.html.twig', base_path: %app.path.lecture_slides% }
         Homework:
+            controller: AppBundle\Controller\Admin\HomeworkController
             class: AppBundle\Entity\Homework
             edit:
                 form_options: { validation_groups: ['Default'] }
@@ -189,7 +190,7 @@ easy_admin:
                     - lecturer
             list:
                 sort: [ 'dueDate', 'ASC' ]
-                actions: [{name: 'show', role: 'ROLE_USER'}, { name: 'edit', role: 'ROLE_LECTOR' }, { name: 'delete', role: 'ROLE_ADMIN' }, { name: 'new', role: 'ROLE_LECTOR' }]
+                actions: [{name: 'show', role: 'ROLE_USER'}, { name: 'edit', role: 'ROLE_LECTOR' }, { name: 'delete', role: 'ROLE_LECTOR' }, { name: 'new', role: 'ROLE_LECTOR' }]
                 fields:
                     - title
                     - dueDate

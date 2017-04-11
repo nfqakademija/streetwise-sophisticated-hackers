@@ -19,4 +19,10 @@ services:
                     - { name: security.voter }
                 # small performance boost
                 public: false
+    app.homework_voter:
+                    class: AppBundle\Security\HomeworkVoter
+                    tags:
+                        - { name: security.voter }
+                    # small performance boost
+                    public: false
 
