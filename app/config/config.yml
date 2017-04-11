@@ -98,6 +98,7 @@ easy_admin:
             - { label: 'My Profile', url: '/profile' }
             - User
             - Lecture
+            - Homework
     entities:
         User:
             controller: AppBundle\Controller\Admin\UserController
@@ -170,3 +171,33 @@ easy_admin:
                     - date
                     - lecturer
                     - { property: 'slides', template: 'slides.html.twig', base_path: %app.path.lecture_slides% }
+        Homework:
+            class: AppBundle\Entity\Homework
+            edit:
+                form_options: { validation_groups: ['Default'] }
+                fields:
+                    - title
+                    - description
+                    - dueDate
+                    - lecturer
+            new:
+                form_options: { validation_groups: ['registration'] }
+                fields:
+                    - title
+                    - description
+                    - dueDate
+                    - lecturer
+            list:
+                sort: [ 'dueDate', 'ASC' ]
+                actions: [{name: 'show', role: 'ROLE_USER'}, { name: 'edit', role: 'ROLE_LECTOR' }, { name: 'delete', role: 'ROLE_ADMIN' }, { name: 'new', role: 'ROLE_LECTOR' }]
+                fields:
+                    - title
+                    - dueDate
+                    - lecturer
+            show:
+                actions: [ { name: 'edit', role: 'ROLE_LECTOR' }, { name: 'delete', role: 'ROLE_LECTOR' }, { name: 'list', role: 'ROLE_USER' } ]
+                fields:
+                    - title
+                    - description
+                    - dueDate
+                    - lecturer
