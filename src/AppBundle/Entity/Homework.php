@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Homework
@@ -53,6 +54,36 @@ class Homework
      */
     private $lecturer;
 
+    /**
+     * @var
+     *
+     * @ORM\OneToMany(targetEntity="Assignment", mappedBy="homework")
+     */
+    private $assignments;
+
+    /**
+     * @return mixed
+     */
+    public function getAssignments()
+    {
+        return $this->assignments;
+    }
+
+    /**
+     * @param mixed $assignments
+     */
+    public function setAssignments($assignments)
+    {
+        $this->assignments = $assignments;
+    }
+
+    /**
+     * Homework constructor.
+     */
+    public function __construct()
+    {
+        $this->assignments = new ArrayCollection();
+    }
 
     /**
      * Get id

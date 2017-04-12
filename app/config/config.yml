@@ -91,6 +91,9 @@ vich_uploader:
             uri_prefix: %app.path.lecture_slides%
             upload_destination: %kernel.root_dir%/../web/uploads/files/lecture/slides
             namer:              vich_uploader.namer_origname
+        work_file:
+            upload_destination: %kernel.root_dir%/../web/uploads/files/homework/assignments
+            namer:              vich_uploader.namer_origname
 
 easy_admin:
     design:

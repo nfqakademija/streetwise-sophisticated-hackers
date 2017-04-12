@@ -18,3 +18,5 @@
 *.php~
 /web/uploads/files/lecture/slides/*
 !/web/uploads/files/lecture/slides/.gitkeep
+/web/uploads/files/homework/assignments/*
+!/web/uploads/files/homework/assignments/.gitkeep
