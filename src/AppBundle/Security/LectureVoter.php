@@ -3,14 +3,15 @@
 namespace AppBundle\Security;
 
 use AppBundle\Entity\User;
+use AppBundle\Entity\Lecture;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 /**
- * Class UserVoter
+ * Class LectureVoter
  * @package AppBundle\Security
  */
-class UserVoter extends Voter
+class LectureVoter extends Voter
 {
     /**
      * @var string EDIT
@@ -41,7 +42,7 @@ class UserVoter extends Voter
      * {@inheritdoc}
      *
      * @param string $attribute
-     * @param mixed $subject
+     * @param Lecture $subject
      *
      * @return bool
      */
@@ -61,8 +62,8 @@ class UserVoter extends Voter
             return false;
         }
 
-        // only vote on User objects inside this voter
-        if (!$subject instanceof User) {
+        // only vote on Lecture objects inside this voter
+        if (!$subject instanceof Lecture) {
             return false;
         }
 
@@ -73,7 +74,7 @@ class UserVoter extends Voter
      * {@inheritdoc}
      *
      * @param string $attribute
-     * @param mixed $subject
+     * @param Lecture $subject
      * @param TokenInterface $token
      *
      * @return bool
@@ -106,14 +107,14 @@ class UserVoter extends Voter
     /**
      * Grants access to administrators or profile owners
      *
-     * @param User $subject
+     * @param Lecture $subject
      * @param User $user
      *
      * @return bool
      */
-    private function canEdit(User $subject, User $user)
+    private function canEdit(Lecture $subject, User $user)
     {
-        return ($user->getId() == $subject->getId() || $user->hasRole('ROLE_ADMIN'));
+        return ($user->getId() == $subject->getLecturer()->getId() || $user->hasRole('ROLE_LECTOR'));
     }
 
     /**

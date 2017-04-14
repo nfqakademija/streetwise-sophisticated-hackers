@@ -16,3 +16,5 @@
 /web/bundles/
 /.idea/
 *.php~
+/web/uploads/files/lecture/slides/*
+!/web/uploads/files/lecture/slides/.gitkeep

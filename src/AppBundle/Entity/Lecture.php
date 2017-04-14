@@ -1,0 +1,229 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
+
+/**
+ * Lecture
+ *
+ * @ORM\Table(name="lecture")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\LectureRepository")
+ * @Vich\Uploadable
+ */
+class Lecture
+{
+    /**
+     * @var int $id
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string $title
+     *
+     * @ORM\Column(name="title", type="string", length=255)
+     * @Assert\NotBlank()
+     */
+    private $title;
+
+    /**
+     * @var string $description
+     *
+     * @ORM\Column(name="description", type="text", nullable=true)
+     */
+    private $description;
+
+    /**
+     * @var \DateTime $date
+     *
+     * @ORM\Column(name="date", type="date")
+     * @Assert\NotBlank()
+     */
+    private $date;
+
+    /**
+     * @var User $lecturer
+     *
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="lecturer_id", referencedColumnName="id")
+     * @Assert\NotBlank()
+     */
+    private $lecturer;
+
+    /**
+     * @var string $slides
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $slides;
+
+    /**
+     * @var File $slidesFile
+     *
+     * @Vich\UploadableField(mapping="lecture_slides", fileNameProperty="slides")
+     */
+    private $slidesFile;
+
+    /**
+     * @var \DateTime $updatedAt
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     *
+     */
+    private $updatedAt;
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param \DateTime $updatedAt
+     */
+    public function setUpdatedAt(\DateTime $updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     */
+    public function setTitle(string $title)
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     */
+    public function setDescription(string $description)
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * Set lecturer
+     *
+     * @param User $lecturer
+     */
+    public function setLecturer(User $lecturer)
+    {
+        $this->lecturer = $lecturer;
+    }
+
+    /**
+     * Get lecturer
+     *
+     * @return User
+     */
+    public function getLecturer()
+    {
+        return $this->lecturer;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlides()
+    {
+        return $this->slides;
+    }
+
+    /**
+     * @param string $slides
+     */
+    public function setSlides(string $slides = null)
+    {
+        $this->slides = $slides;
+    }
+
+    /**
+     * @return File
+     */
+    public function getSlidesFile()
+    {
+        return $this->slidesFile;
+    }
+
+    /**
+     * @param File $slidesFile
+     */
+    public function setSlidesFile(File $slidesFile = null)
+    {
+        $this->slidesFile = $slidesFile;
+
+        // VERY IMPORTANT:
+        // It is required that at least one field changes if you are using Doctrine,
+        // otherwise the event listeners won't be called and the file is lost
+        if ($slidesFile) {
+            // if 'updatedAt' is not defined in your entity, use another property
+            $this->updatedAt = new \DateTime('now');
+        }
+    }
+}
+

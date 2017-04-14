@@ -7,6 +7,7 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
+    app.path.lecture_slides: /uploads/files/lecture/slides
 
 framework:
     #esi: ~
@@ -83,11 +84,20 @@ fos_user:
         address: "%mailer_user%"
         sender_name: "%mailer_user%"
 
+vich_uploader:
+    db_driver: orm
+    mappings:
+        lecture_slides:
+            uri_prefix: %app.path.lecture_slides%
+            upload_destination: %kernel.root_dir%/../web/uploads/files/lecture/slides
+            namer:              vich_uploader.namer_origname
+
 easy_admin:
     design:
         menu:
             - { label: 'My Profile', url: '/profile' }
             - User
+            - Lecture
     entities:
         User:
             controller: AppBundle\Controller\Admin\UserController
@@ -127,3 +137,36 @@ easy_admin:
                     - email
                     - enabled
                     - roles
+        Lecture:
+            controller: AppBundle\Controller\Admin\LectureController
+            class: AppBundle\Entity\Lecture
+            edit:
+                form_options: { validation_groups: ['Default'] }
+                fields:
+                    - title
+                    - description
+                    - date
+                    - lecturer
+                    - { property: 'slidesFile', type: 'vich_file' }
+            new:
+                form_options: { validation_groups: ['registration'] }
+                fields:
+                    - title
+                    - description
+                    - date
+                    - lecturer
+            list:
+                sort: [ 'date', 'ASC' ]
+                actions: [{name: 'show', role: 'ROLE_USER'}, { name: 'edit', role: 'ROLE_LECTOR' }, { name: 'delete', role: 'ROLE_ADMIN' }, { name: 'new', role: 'ROLE_ADMIN' }]
+                fields:
+                    - title
+                    - date
+                    - lecturer
+            show:
+                actions: [ { name: 'edit', role: 'ROLE_LECTOR' }, { name: 'delete', role: 'ROLE_ADMIN' }, { name: 'list', role: 'ROLE_USER' } ]
+                fields:
+                    - title
+                    - description
+                    - date
+                    - lecturer
+                    - { property: 'slides', template: 'slides.html.twig', base_path: %app.path.lecture_slides% }
