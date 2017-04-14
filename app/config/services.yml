@@ -19,4 +19,9 @@ services:
                     - { name: security.voter }
                 # small performance boost
                 public: false
-
+    app.news_voter:
+        class: AppBundle\Security\NewsVoter
+        tags:
+            - { name: security.voter }
+        # small performance boost
+        public: false
