@@ -64,6 +64,7 @@ class HomeworkController extends BaseAdminController
         $id = $this->request->query->get('id');
         $easyadmin = $this->request->attributes->get('easyadmin');
         $entity = $easyadmin['item'];
+
         $assignments = $entity->getAssignments();
 
         $em = $this->getDoctrine()->getManager();

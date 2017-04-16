@@ -19,7 +19,34 @@
                 <source>show.action</source>
                 <target>Show</target>
             </trans-unit>
-
+            <trans-unit id="student">
+                <source>student</source>
+                <target>Student</target>
+            </trans-unit>
+            <trans-unit id="submitted">
+                <source>submitted</source>
+                <target>Submitted</target>
+            </trans-unit>
+            <trans-unit id="homework">
+                <source>homework</source>
+                <target>Homework</target>
+            </trans-unit>
+            <trans-unit id="actions">
+                <source>actions</source>
+                <target>Actions</target>
+            </trans-unit>
+            <trans-unit id="file">
+                <source>file</source>
+                <target>File</target>
+            </trans-unit>
+            <trans-unit id="grade">
+                <source>grade</source>
+                <target>Grade</target>
+            </trans-unit>
+            <trans-unit id="view.homework">
+                <source>view.homework</source>
+                <target>View Homework File</target>
+            </trans-unit>
             <trans-unit id="new.page_title">
                 <source>new.page_title</source>
                 <target>Create %entity_name%</target>
