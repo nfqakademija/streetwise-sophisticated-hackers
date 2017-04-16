@@ -14,9 +14,9 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 class AssignmentVoter extends Voter
 {
     /**
-     * @var string EDIT
+     * @var string GRADE
      */
-    const EDIT = 'edit';
+    const GRADE = 'grade';
 
     /**
      * @var string LIST_ITEM
@@ -52,7 +52,7 @@ class AssignmentVoter extends Voter
         if (!in_array(
             $attribute,
             [
-                self::EDIT,
+                self::GRADE,
                 self::LIST_ITEM,
                 self::SHOW,
                 self::DELETE,
@@ -95,8 +95,8 @@ class AssignmentVoter extends Voter
                 return false;
             case self::SHOW:
                 return $this->canView($subject, $user);
-            case self::EDIT:
-                return false;
+            case self::GRADE:
+                return $this->canGrade($subject, $user);
             case self::DELETE:
                 return false;
             case self::NEW_ITEM:
@@ -139,5 +139,10 @@ class AssignmentVoter extends Voter
     private function canCreate(User $user)
     {
         return $user->isStudent();
+    }
+
+    public function canGrade(Assignment $subject, User $user)
+    {
+        return $user == $subject->getHomework()->getLecturer();
     }
 }

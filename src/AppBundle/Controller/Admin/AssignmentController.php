@@ -3,8 +3,10 @@
 namespace AppBundle\Controller\Admin;
 
 use JavierEguiluz\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
+use JavierEguiluz\Bundle\EasyAdminBundle\Event\EasyAdminEvents;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use AppBundle\Form\GradeType;
 
 /**
  * Class AssignmentController
@@ -17,10 +19,45 @@ class AssignmentController extends BaseAdminController
      */
     protected function showAssignmentAction()
     {
+        $this->dispatch(EasyAdminEvents::PRE_SHOW);
+
+        $id = $this->request->query->get('id');
         $easyadmin = $this->request->attributes->get('easyadmin');
         $entity = $easyadmin['item'];
+
         $this->denyAccessUnlessGranted('show', $entity);
 
-        return parent::showAction();
+        $em = $this->getDoctrine()->getManager();
+
+        $gradeForm = $this->createForm(GradeType::class, $entity);
+
+        $gradeForm->handleRequest($this->request);
+
+        if ($gradeForm->isSubmitted() && $gradeForm->isValid()) {
+            $this->denyAccessUnlessGranted('grade', $entity);
+            $assignment = $gradeForm->getData();
+
+            $em->persist($assignment);
+            $em->flush();
+
+            return $this->redirect("/admin/?action=show&entity=Assignment&id=".$entity->getId());
+        }
+
+        $fields = $this->entity['show']['fields'];
+        $deleteForm = $this->createDeleteForm($this->entity['name'], $id);
+
+        $this->dispatch(EasyAdminEvents::POST_SHOW, array(
+            'deleteForm' => $deleteForm,
+            'fields' => $fields,
+            'entity' => $entity,
+        ));
+
+
+        return $this->render($this->entity['templates']['show'], array(
+            'entity' => $entity,
+            'fields' => $fields,
+            'delete_form' => $deleteForm->createView(),
+            'grade_form' => $gradeForm->createView(),
+        ));
     }
 }

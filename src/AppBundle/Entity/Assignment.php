@@ -55,6 +55,12 @@ class Assignment
      * @var int
      *
      * @ORM\Column(name="grade", type="integer", nullable=true)
+     * @Assert\Range(
+     *      min = 1,
+     *      max = 10,
+     *      minMessage = "Grade must be at least {{ limit }}",
+     *      maxMessage = "Grade must be no more than {{ limit }}"
+     * )
      */
     private $grade;
 
