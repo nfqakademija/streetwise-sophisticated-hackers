@@ -88,8 +88,8 @@ vich_uploader:
     db_driver: orm
     mappings:
         lecture_slides:
-            uri_prefix: %app.path.lecture_slides%
-            upload_destination: %kernel.root_dir%/../web/uploads/files/lecture/slides
+            uri_prefix: '%app.path.lecture_slides%'
+            upload_destination: '%kernel.root_dir%/../web/uploads/files/lecture/slides'
             namer:              vich_uploader.namer_origname
 
 easy_admin:
@@ -99,6 +99,7 @@ easy_admin:
             - User
             - Lecture
             - News
+            - Comment
     entities:
         User:
             controller: AppBundle\Controller\Admin\UserController
@@ -170,7 +171,7 @@ easy_admin:
                     - description
                     - date
                     - lecturer
-                    - { property: 'slides', template: 'slides.html.twig', base_path: %app.path.lecture_slides% }
+                    - { property: 'slides', template: 'slides.html.twig', base_path: '%app.path.lecture_slides%' }
         News:
             controller: AppBundle\Controller\Admin\NewsController
             class: AppBundle\Entity\News
@@ -202,3 +203,33 @@ easy_admin:
                     - description
                     - date
                     - author
+        Comment:
+            controller: AppBundle\Controller\Admin\CommentController
+            class: AppBundle\Entity\Comment
+            edit:
+                form_options: { validation_groups: ['Default'] }
+                fields:
+                    - content
+                    - date
+                    - author
+            new:
+                form_options: { validation_groups: ['registration'] }
+                fields:
+                    - content
+                    - date
+                    - author
+            list:
+                sort: [ 'date', 'ASC' ]
+                actions: [{name: 'show', role: 'ROLE_USER'}, { name: 'edit', role: 'ROLE_ADMIN' }, { name: 'delete', role: 'ROLE_ADMIN' }, { name: 'new', role: 'ROLE_ADMIN' }]
+                fields:
+                    - newsId
+                    - content
+                    - author
+                    - date
+            show:
+                actions: [ { name: 'list', role: 'ROLE_USER' }, { name: 'edit', role: 'ROLE_ADMIN' }, { name: 'delete', role: 'ROLE_ADMIN' } ]
+                fields:
+                    - newsId
+                    - content
+                    - author
+                    - date
