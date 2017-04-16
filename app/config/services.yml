@@ -31,4 +31,10 @@ services:
                 - { name: security.voter }
             # small performance boost
             public: false
+    app.twig_extension:
+            class: AppBundle\Twig\AppExtension
+            public: false
+            tags:
+                - { name: twig.extension }
+
 

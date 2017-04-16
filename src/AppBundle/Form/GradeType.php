@@ -25,6 +25,10 @@ class GradeType extends AbstractType
                 IntegerType::class,
                 [
                     'required' => true,
+                    'attr' => [
+                        'min' => 1,
+                        'max' =>10
+                    ]
                 ]
             )
             ->add(
@@ -34,6 +38,11 @@ class GradeType extends AbstractType
         ;
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(

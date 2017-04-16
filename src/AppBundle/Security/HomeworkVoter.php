@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Security;
+
 use AppBundle\Entity\Homework;
 use AppBundle\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -61,7 +62,7 @@ class HomeworkVoter extends Voter
             return false;
         }
 
-        // only vote on Lecture objects inside this voter
+        // only vote on Homework objects inside this voter
         if (!$subject instanceof Homework) {
             return false;
         }
@@ -113,7 +114,7 @@ class HomeworkVoter extends Voter
      */
     private function canEdit(Homework $subject, User $user)
     {
-        return ($user->getId() == $subject->getLecturer()->getId() || $user->hasRole('ROLE_LECTOR'));
+        return ($user === $subject->getLecturer() || $user->hasRole('ROLE_LECTOR'));
     }
 
     /**

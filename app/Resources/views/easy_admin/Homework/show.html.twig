@@ -26,7 +26,7 @@
                     {% set _show_actions = easyadmin_get_actions_for_show_item(_entity_config.name) %}
                     {% set _request_parameters = { entity: _entity_config.name, referer: app.request.query.get('referer') } %}
 
-                    {% for action in _show_actions if action.role in app.user.roles %}
+                    {% for action in _show_actions if has_common(app.user.roles, action.roles) %}
                         {% if 'list' == action.name %}
                             {% set action_href = _request_parameters.referer|default('') ? _request_parameters.referer|easyadmin_urldecode : path('easyadmin', _request_parameters|merge({ action: 'list' })) %}
                         {% elseif 'method' == action.type %}

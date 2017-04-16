@@ -27,10 +27,9 @@ class AssignmentController extends BaseAdminController
 
         $this->denyAccessUnlessGranted('show', $entity);
 
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->get('doctrine.orm.default_entity_manager');
 
         $gradeForm = $this->createForm(GradeType::class, $entity);
-
         $gradeForm->handleRequest($this->request);
 
         if ($gradeForm->isSubmitted() && $gradeForm->isValid()) {

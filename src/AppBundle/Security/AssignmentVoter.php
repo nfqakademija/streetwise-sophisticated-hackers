@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Security;
+
 use AppBundle\Entity\Assignment;
 use AppBundle\Entity\Homework;
 use AppBundle\Entity\User;
@@ -42,7 +43,7 @@ class AssignmentVoter extends Voter
      * {@inheritdoc}
      *
      * @param string $attribute
-     * @param Homework $subject
+     * @param Assignment $subject
      *
      * @return bool
      */
@@ -62,7 +63,7 @@ class AssignmentVoter extends Voter
             return false;
         }
 
-        // only vote on Lecture objects inside this voter
+        // only vote on Assignment objects inside this voter
         if (!$subject instanceof Assignment) {
             return false;
         }
@@ -107,27 +108,13 @@ class AssignmentVoter extends Voter
     }
 
     /**
-     * Grants access to administrators or owners
-     *
-     * @param Assignment $subject
-     * @param User $user
-     *
-     * @return bool
-     */
-    private function canEdit(Assignment $subject, User $user)
-    {
-        //return ($user->getId() == $subject->getLecturer()->getId() || $user->hasRole('ROLE_LECTOR'));
-        return false;
-    }
-
-    /**
      * @param Assignment $subject
      * @param User $user
      * @return bool
      */
-    private function canView(Assignment $subject, User $user)
+    private function canView(Assignment $subject, User $user): bool
     {
-        return ($user->getId() == $subject->getStudent()->getId() || !$user->isStudent());
+        return ($user === $subject->getStudent() || !$user->isStudent());
     }
 
     /**
@@ -136,13 +123,18 @@ class AssignmentVoter extends Voter
      * @param User $user
      * @return bool
      */
-    private function canCreate(User $user)
+    private function canCreate(User $user): bool
     {
         return $user->isStudent();
     }
 
-    public function canGrade(Assignment $subject, User $user)
+    /**
+     * @param Assignment $subject
+     * @param User $user
+     * @return bool
+     */
+    public function canGrade(Assignment $subject, User $user): bool
     {
-        return $user == $subject->getHomework()->getLecturer();
+        return $user === $subject->getHomework()->getLecturer();
     }
 }
