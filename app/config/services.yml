@@ -8,21 +8,27 @@ services:
     #    class: AppBundle\Directory\ClassName
     #    arguments: ['@another_service_name', 'plain_value', '%parameter_name%']
     app.user_voter:
-            class: AppBundle\Security\UserVoter
+        class: AppBundle\Security\UserVoter
+        tags:
+            - { name: security.voter }
+        # small performance boost
+        public: false
+    app.lecture_voter:
+        class: AppBundle\Security\LectureVoter
+        tags:
+        - { name: security.voter }
+        # small performance boost
+        public: false
+    app.homework_voter:
+        class: AppBundle\Security\HomeworkVoter
+        tags:
+            - { name: security.voter }
+        # small performance boost
+        public: false
+    app.assignment_voter:
+            class: AppBundle\Security\AssignmentVoter
             tags:
                 - { name: security.voter }
             # small performance boost
             public: false
-    app.lecture_voter:
-                class: AppBundle\Security\LectureVoter
-                tags:
-                    - { name: security.voter }
-                # small performance boost
-                public: false
-    app.homework_voter:
-                    class: AppBundle\Security\HomeworkVoter
-                    tags:
-                        - { name: security.voter }
-                    # small performance boost
-                    public: false
 

@@ -58,18 +58,24 @@
         }, with_context = false) }}
     {% endblock delete_form %}
 
-    <h4>{{ 'new.assignment'|trans(_trans_parameters, 'EasyAdminBundle') }}</h4>
-    {{ form_start(assignment_form) }}
-    {{ form_widget(assignment_form) }}
-    {{ form_end(assignment_form) }}
+    {% if my_assignment is not null %}
+        {{ include('@AppBundle/views/easy_admin/Assignment/included_show.html.twig', {
+            my_assignment: my_assignment,
+            _trans_parameters: _trans_parameters
+        }, with_context = false) }}
+    {% elseif app.user.isStudent %}
 
-
-    <ul>
-    {% for assignment in assignments if 'ROLE_ADMIN' in app.user.roles%}
-        <li>{{ assignment.date|date('Y-m-d H:i:s') }} &nbsp; {{ assignment.work }}</li>
-    {% endfor %}
-    </ul>
-
+        <h4>{{ 'new.assignment'|trans(_trans_parameters, 'EasyAdminBundle') }}</h4>
+        <div class="form-horizontal">
+        {{ form_start(assignment_form) }}
+        {{ form_widget(assignment_form) }}
+        {{ form_end(assignment_form) }}
+        </div>
+    {% else %}
+        {{ include('@AppBundle/views/easy_admin/Assignment/included_list.html.twig', {
+            assignments: assignments,
+            _trans_parameters: _trans_parameters
+        }, with_context = false) }}
+    {% endif %}
 {% endblock %}
-
 

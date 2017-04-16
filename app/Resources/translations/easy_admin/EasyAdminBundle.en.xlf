@@ -5,7 +5,19 @@
             <!-- page titles -->
             <trans-unit id="new.assignment">
                 <source>new.assignment</source>
-                <target>Upload %entity_name%</target>
+                <target>Upload Assignment</target>
+            </trans-unit>
+            <trans-unit id="my.assignment">
+                <source>my.assignment</source>
+                <target>My Assignment</target>
+            </trans-unit>
+            <trans-unit id="submitted.assignments">
+                <source>submitted.assignments</source>
+                <target>Submitted Assignments</target>
+            </trans-unit>
+            <trans-unit id="show.action">
+                <source>show.action</source>
+                <target>Show</target>
             </trans-unit>
 
             <trans-unit id="new.page_title">

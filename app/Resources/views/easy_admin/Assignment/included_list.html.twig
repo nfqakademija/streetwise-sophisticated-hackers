@@ -1,0 +1,43 @@
+<h4>{{ 'submitted.assignments'|trans(_trans_parameters, 'EasyAdminBundle') }}</h4>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+        <tr>
+            <th class="string">
+                Title
+            </th>
+            <th class="datetime">
+                Submitted
+            </th>
+            <th class="association">
+                Homework
+            </th>
+            <th>
+                <span>Actions</span>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for assignment in assignments %}
+            <tr>
+                <td class="string">
+                    <a href="/admin/?action=show&entity=User&id={{ assignment.student.id }}">
+                        {{ assignment.student }}
+                    </a>
+                </td>
+                <td data-label="Due date" class="sorted datetime ">
+                    {{ assignment.date|date('Y-m-d H:i:s') }}
+                </td>
+
+                <td data-label="Lecturer" class=" association ">
+                    <a href="{{ vich_uploader_asset(assignment, 'workFile') }}">{{ assignment.work }}</a>
+                </td>
+
+                <td data-label="Actions" class="actions">
+                    <a class=" action-show" href="/admin/?action=show&entity=Assignment&id={{ assignment.id }}">Show</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

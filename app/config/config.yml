@@ -8,6 +8,7 @@ imports:
 parameters:
     locale: en
     app.path.lecture_slides: /uploads/files/lecture/slides
+    app.path.homework_assignments: /uploads/files/homework/assignments
 
 framework:
     #esi: ~
@@ -39,6 +40,8 @@ framework:
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+    paths:
+      '%kernel.root_dir%/Resources': AppBundle
 
 # Doctrine Configuration
 doctrine:
@@ -92,6 +95,7 @@ vich_uploader:
             upload_destination: %kernel.root_dir%/../web/uploads/files/lecture/slides
             namer:              vich_uploader.namer_origname
         work_file:
+            uri_prefix: %app.path.homework_assignments%
             upload_destination: %kernel.root_dir%/../web/uploads/files/homework/assignments
             namer:              vich_uploader.namer_origname
 
@@ -205,3 +209,14 @@ easy_admin:
                     - description
                     - dueDate
                     - lecturer
+        Assignment:
+            controller: AppBundle\Controller\Admin\AssignmentController
+            class: AppBundle\Entity\Assignment
+            disabled_actions: ['new', 'list', 'edit', 'delete']
+            show:
+                fields:
+                    - homework
+                    - student
+                    - date
+                    - { property: 'work', template: 'work.html.twig', base_path: %app.path.homework_assignments% }
+                    - grade
