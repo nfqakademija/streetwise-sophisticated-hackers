@@ -92,11 +92,11 @@ vich_uploader:
     mappings:
         lecture_slides:
             uri_prefix: %app.path.lecture_slides%
-            upload_destination: %kernel.root_dir%/../web/uploads/files/lecture/slides
+            upload_destination: %kernel.root_dir%/Resources/uploads/files/lecture/slides
             namer:              vich_uploader.namer_origname
         work_file:
             uri_prefix: %app.path.homework_assignments%
-            upload_destination: %kernel.root_dir%/../web/uploads/files/homework/assignments
+            upload_destination: %kernel.root_dir%/Resources/uploads/files/homework/assignments
             namer:              vich_uploader.namer_origname
 
 easy_admin:
@@ -178,7 +178,7 @@ easy_admin:
                     - description
                     - date
                     - lecturer
-                    - { property: 'slides', template: 'slides.html.twig', base_path: %app.path.lecture_slides% }
+                    - { property: 'slides', template: 'slides.html.twig', base_path: "/admin/download/lecture" }
         Homework:
             controller: AppBundle\Controller\Admin\HomeworkController
             class: AppBundle\Entity\Homework
@@ -219,5 +219,5 @@ easy_admin:
                     - homework
                     - student
                     - date
-                    - { property: 'work', template: 'work.html.twig', base_path: %app.path.homework_assignments% }
+                    - { property: 'work', template: 'work.html.twig', base_path: "/admin/download/homework" }
                     - grade

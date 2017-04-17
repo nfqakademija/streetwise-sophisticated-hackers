@@ -4,6 +4,7 @@ namespace AppBundle\Controller\Admin;
 
 use JavierEguiluz\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
 use AppBundle\Entity\Lecture;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -52,5 +53,25 @@ class LectureController extends BaseAdminController
         $this->denyAccessUnlessGranted('new', $lecture);
 
         return parent::newAction();
+    }
+
+    /**
+     * @Route("/admin/download/lecture/{file}", name="lecture_download")
+     *
+     * @param string $file
+     * @return Response
+     */
+    public function downloadSlidesAction(string $file)
+    {
+        $em = $this->get('doctrine.orm.default_entity_manager');
+
+        $slides = $em->getRepository('AppBundle:Lecture')
+            ->findOneBySlides($file);
+
+        $this->denyAccessUnlessGranted('show', $slides);
+
+        $downloadHandler = $this->get('vich_uploader.download_handler');
+
+        return $downloadHandler->downloadObject($slides, $fileField = 'slidesFile');
     }
 }

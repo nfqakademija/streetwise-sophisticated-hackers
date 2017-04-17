@@ -2,8 +2,11 @@
 
 namespace AppBundle\Controller\Admin;
 
+use AppBundle\Entity\Assignment;
 use JavierEguiluz\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
 use JavierEguiluz\Bundle\EasyAdminBundle\Event\EasyAdminEvents;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Form\GradeType;
@@ -58,5 +61,25 @@ class AssignmentController extends BaseAdminController
             'delete_form' => $deleteForm->createView(),
             'grade_form' => $gradeForm->createView(),
         ));
+    }
+
+    /**
+     * @Route("/admin/download/homework/{file}", name="homework_download")
+     *
+     * @param string $file
+     * @return Response
+     */
+    public function downloadAssignmentAction(string $file)
+    {
+        $em = $this->get('doctrine.orm.default_entity_manager');
+
+        $assignment = $em->getRepository('AppBundle:Assignment')
+            ->findOneByWork($file);
+
+        $this->denyAccessUnlessGranted('show', $assignment);
+
+        $downloadHandler = $this->get('vich_uploader.download_handler');
+
+        return $downloadHandler->downloadObject($assignment, $fileField = 'workFile');
     }
 }
