@@ -88,8 +88,8 @@ vich_uploader:
     db_driver: orm
     mappings:
         lecture_slides:
-            uri_prefix: %app.path.lecture_slides%
-            upload_destination: %kernel.root_dir%/../web/uploads/files/lecture/slides
+            uri_prefix: "%app.path.lecture_slides%"
+            upload_destination: "%kernel.root_dir%/../web/uploads/files/lecture/slides"
             namer:              vich_uploader.namer_origname
 
 easy_admin:
@@ -117,10 +117,11 @@ easy_admin:
                     - { property: 'plainPassword', label: 'New password', type: 'password', type_options: { required: false } }
                     - { property: 'confirmPassword', label: 'Confirm password', type: 'password', type_options: { required: false } }
             new:
-                form_options: { validation_groups: ['registration'] }
+                form_options: { validation_groups: ['Default', 'registration'] }
                 fields:
                     # if administrators are allowed to edit users' passwords and roles, add this:
                     - { property: 'plainPassword', label: 'Password', type: 'password', type_options: { required: true } }
+                    - { property: 'confirmPassword', label: 'Confirm password', type: 'password', type_options: { required: false } }
             list:
                 actions: [{name: 'show', role: 'ROLE_USER'}, { name: 'edit', role: 'ROLE_ADMIN' }, { name: 'delete', role: 'ROLE_ADMIN' }, { name: 'new', role: 'ROLE_ADMIN' }]
                 fields:
@@ -164,4 +165,4 @@ easy_admin:
                     - description
                     - date
                     - lecturer
-                    - { property: 'slides', template: 'slides.html.twig', base_path: %app.path.lecture_slides% }
+                    - { property: 'slides', template: 'slides.html.twig', base_path: "%app.path.lecture_slides%" }
