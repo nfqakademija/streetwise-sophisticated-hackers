@@ -6,9 +6,12 @@
     {% if app.user|default(false) == false %}
         <i class="hidden-xs fa fa-user-times"></i>
         {{ 'user.anonymous'|trans(domain = 'EasyAdminBundle') }}
+    {#
+    TODO: Fix "500 Internal Server Error - Variable "_is_logout_supported" does not exist."
     {% elseif not _is_logout_supported %}
         <i class="hidden-xs fa fa-user"></i>
         {{ app.user.username|default('user.unnamed'|trans(domain = 'EasyAdminBundle')) }}
+    #}
     {% else %}
         <div class="btn-group">
             <button type="button" class="btn" data-toggle="dropdown">
