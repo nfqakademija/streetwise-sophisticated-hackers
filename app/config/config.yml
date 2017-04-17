@@ -91,8 +91,8 @@ vich_uploader:
     db_driver: orm
     mappings:
         lecture_slides:
-            uri_prefix: %app.path.lecture_slides%
-            upload_destination: %kernel.root_dir%/Resources/uploads/files/lecture/slides
+            uri_prefix: '%app.path.lecture_slides%'
+            upload_destination: '%kernel.root_dir%/Resources/uploads/files/lecture/slides'
             namer:              vich_uploader.namer_origname
         work_file:
             uri_prefix: %app.path.homework_assignments%
@@ -111,33 +111,31 @@ easy_admin:
         User:
             controller: AppBundle\Controller\Admin\UserController
             class: AppBundle\Entity\User
-            edit:
-                form_options: { validation_groups: ['Default'] }
-                fields:
-                    - username
-                    - name
-                    - email
-                    - enabled
-                    # if administrators are allowed to edit users' passwords and roles, add this:
-                    - { property: 'plainPassword', label: 'New password', type: 'password', type_options: { required: false } }
-                    - { property: 'confirmPassword', label: 'Confirm password', type: 'password', type_options: { required: false } }
-                    - { property: 'roles', type: 'choice', type_options: { multiple: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_LECTOR': 'ROLE_LECTOR', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
-            new:
-                form_options: { validation_groups: ['registration'] }
+            form:
                 fields:
                     - username
                     - name
                     - { property: 'email', type: 'email', label: 'Email' }
                     - enabled
+                    - { property: 'roles', type: 'choice', type_options: { multiple: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_LECTOR': 'ROLE_LECTOR', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
+            edit:
+                form_options: { validation_groups: ['Default'] }
+                fields:
+                    # if administrators are allowed to edit users' passwords and roles, add this:
+                    - { property: 'plainPassword', label: 'New password', type: 'password', type_options: { required: false } }
+                    - { property: 'confirmPassword', label: 'Confirm password', type: 'password', type_options: { required: false } }
+            new:
+                form_options: { validation_groups: ['Default', 'registration'] }
+                fields:
                     # if administrators are allowed to edit users' passwords and roles, add this:
                     - { property: 'plainPassword', label: 'Password', type: 'password', type_options: { required: true } }
-                    - { property: 'roles', type: 'choice', type_options: { multiple: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_LECTOR': 'ROLE_LECTOR', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
+                    - { property: 'confirmPassword', label: 'Confirm password', type: 'password', type_options: { required: false } }
             list:
                 actions: [{name: 'show', roles: ['ROLE_USER'] }, { name: 'edit', roles: ['ROLE_ADMIN'] }, { name: 'delete', roles: ['ROLE_ADMIN'] }, { name: 'new', roles: ['ROLE_ADMIN'] }]
                 fields:
-                - name
-                - email
-                - roles
+                    - name
+                    - email
+                    - roles
             show:
                 actions: [ { name: 'edit', roles: ['ROLE_ADMIN'] }, { name: 'delete', roles: ['ROLE_ADMIN'] }, { name: 'list', roles: ['ROLE_USER'] } ]
                 fields:
@@ -149,21 +147,18 @@ easy_admin:
         Lecture:
             controller: AppBundle\Controller\Admin\LectureController
             class: AppBundle\Entity\Lecture
+            form:
+                fields:
+                    - title
+                    - description
+                    - date
+                    - lecturer
             edit:
                 form_options: { validation_groups: ['Default'] }
                 fields:
-                    - title
-                    - description
-                    - date
-                    - lecturer
                     - { property: 'slidesFile', type: 'vich_file' }
             new:
                 form_options: { validation_groups: ['registration'] }
-                fields:
-                    - title
-                    - description
-                    - date
-                    - lecturer
             list:
                 sort: [ 'date', 'ASC' ]
                 actions: [ {name: 'show', roles: ['ROLE_USER'] }, { name: 'edit', roles: ['ROLE_LECTOR'] }, { name: 'delete', roles: ['ROLE_ADMIN'] }, { name: 'new', roles: ['ROLE_ADMIN'] } ]
@@ -182,20 +177,16 @@ easy_admin:
         Homework:
             controller: AppBundle\Controller\Admin\HomeworkController
             class: AppBundle\Entity\Homework
+            form:
+                fields:
+                    - title
+                    - description
+                    - dueDate
+                    - lecturer
             edit:
                 form_options: { validation_groups: ['Default'] }
-                fields:
-                    - title
-                    - description
-                    - dueDate
-                    - lecturer
             new:
                 form_options: { validation_groups: ['registration'] }
-                fields:
-                    - title
-                    - description
-                    - dueDate
-                    - lecturer
             list:
                 sort: [ 'dueDate', 'ASC' ]
                 actions: [ {name: 'show', roles: ['ROLE_USER'] }, { name: 'edit', roles: ['ROLE_LECTOR'] }, { name: 'delete', roles: ['ROLE_LECTOR'] }, { name: 'new', roles: ['ROLE_LECTOR'] }]
