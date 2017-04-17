@@ -38,7 +38,7 @@ class Assignment
     /**
      * @var Homework $homework
      *
-     * @ORM\ManyToOne(targetEntity="Homework")
+     * @ORM\ManyToOne(targetEntity="Homework", inversedBy="assignments")
      * @ORM\JoinColumn(name="homework_id", referencedColumnName="id")
      * @Assert\NotBlank()
      */
