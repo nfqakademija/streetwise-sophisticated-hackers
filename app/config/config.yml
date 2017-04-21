@@ -139,7 +139,7 @@ easy_admin:
                     - {property: 'gravatar', type: 'image'}
                     - name
                     - email
-                    - roles
+                    - role
             show:
                 fields:
                     - {property: 'gravatar', type: 'image'}
@@ -149,7 +149,7 @@ easy_admin:
                     - occupation
                     - { property: 'interests', label: 'Programming interests' }
                     - enabled
-                    - roles
+                    - role
         Lecture:
             controller: AppBundle\Controller\Admin\LectureController
             class: AppBundle\Entity\Lecture

@@ -144,7 +144,7 @@ class User extends BaseUser implements HasOwnerInterface
     /**
      * @return bool
      */
-    public function isStudent()
+    public function isStudent():bool
     {
         return (!in_array('ROLE_ADMIN', $this->roles) && !in_array('ROLE_LECTOR', $this->roles));
     }
@@ -152,9 +152,20 @@ class User extends BaseUser implements HasOwnerInterface
     /**
      * @return bool
      */
-    public function isLector()
+    public function isLector():bool
     {
         return (in_array('ROLE_LECTOR', $this->roles));
+    }
+
+    public function getRole()
+    {
+        if(in_array('ROLE_ADMIN', $this->roles))
+            return "Administrator";
+
+        if(in_array('ROLE_LECTOR', $this->roles))
+            return "Lecturer";
+
+        return "Student";
     }
 
     /**
