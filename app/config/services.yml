@@ -31,10 +31,10 @@ services:
                 - { name: security.voter }
             # small performance boost
             public: false
-    app.twig_extension:
+    easyadmin.twig.extension:
             class: AppBundle\Twig\AppExtension
             public: false
+            arguments: ['@easyadmin.config.manager', '@property_accessor', '%kernel.debug%', '@security.token_storage', '@security.access.decision_manager']
             tags:
                 - { name: twig.extension }
-
 
