@@ -2,6 +2,7 @@
 
 namespace AppBundle\Twig;
 
+use AppBundle\Entity\HasOwnerInterface;
 use JavierEguiluz\Bundle\EasyAdminBundle\Configuration\ConfigManager;
 use JavierEguiluz\Bundle\EasyAdminBundle\Twig\EasyAdminTwigExtension;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
@@ -50,7 +51,7 @@ class AppExtension extends EasyAdminTwigExtension
 
         $actions = parent::getActionsForItem($view, $entityName);
 
-        if((method_exists($entity, 'getUser') && $entity->getUser()->getId() == $user->getId()) || $this->decisionManager->decide($token, ['ROLE_ADMIN'])) {
+        if($entity instanceof HasOwnerInterface && $entity->getOwner()->getId() == $user->getId() || $this->decisionManager->decide($token, ['ROLE_ADMIN'])) {
             return $actions;
         }
 
