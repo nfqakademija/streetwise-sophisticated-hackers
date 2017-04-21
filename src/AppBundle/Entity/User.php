@@ -150,6 +150,14 @@ class User extends BaseUser implements HasOwnerInterface
     }
 
     /**
+     * @return bool
+     */
+    public function isLector()
+    {
+        return (in_array('ROLE_LECTOR', $this->roles));
+    }
+
+    /**
      * @return User
      */
     public function getOwner(): User

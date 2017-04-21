@@ -51,6 +51,14 @@
                 <source>user.profile</source>
                 <target>My Profile</target>
             </trans-unit>
+            <trans-unit id="lectures">
+                <source>lectures</source>
+                <target>Lectures</target>
+            </trans-unit>
+            <trans-unit id="title">
+                <source>title</source>
+                <target>Title</target>
+            </trans-unit>
             <trans-unit id="new.page_title">
                 <source>new.page_title</source>
                 <target>Create %entity_name%</target>

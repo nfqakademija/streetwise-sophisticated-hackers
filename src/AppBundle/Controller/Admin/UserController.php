@@ -140,4 +140,42 @@ class UserController extends BaseAdminController
 
         return parent::newAction();
     }
+
+    protected function showUserAction()
+    {
+        $this->dispatch(EasyAdminEvents::PRE_SHOW);
+
+        $id = $this->request->query->get('id');
+        $easyadmin = $this->request->attributes->get('easyadmin');
+        $entity = $easyadmin['item'];
+
+        $fields = $this->entity['show']['fields'];
+        $deleteForm = $this->createDeleteForm($this->entity['name'], $id);
+
+        $lectures = null;
+
+        if($entity->hasRole('ROLE_LECTOR')) {
+            $em = $this->getDoctrine()->getManager();
+
+            $lectures = $em->getRepository('AppBundle:Lecture')
+                ->findBy(
+                    [
+                        'lecturer' => $entity->getId()
+                    ]
+                );
+        }
+
+        $this->dispatch(EasyAdminEvents::POST_SHOW, array(
+            'deleteForm' => $deleteForm,
+            'fields' => $fields,
+            'entity' => $entity,
+        ));
+
+        return $this->render($this->entity['templates']['show'], array(
+            'entity' => $entity,
+            'fields' => $fields,
+            'delete_form' => $deleteForm->createView(),
+            'lectures' => $lectures
+        ));
+    }
 }
