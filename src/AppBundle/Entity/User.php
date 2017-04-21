@@ -94,4 +94,12 @@ class User extends BaseUser
     {
         return ($this->plainPassword == $this->confirmPassword);
     }
+
+    /**
+     * @return bool
+     */
+    public function isStudent()
+    {
+        return (!in_array('ROLE_ADMIN', $this->roles) && !in_array('ROLE_LECTOR', $this->roles));
+    }
 }

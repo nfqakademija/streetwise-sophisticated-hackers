@@ -31,7 +31,7 @@
 
     {% if easyadmin_action_is_enabled_for_list_view('new', _entity_config.name) %}
         {% set _action = easyadmin_get_action_for_list_view('new', _entity_config.name) %}
-        {% if _action.role in app.user.roles %}
+        {% if has_common(app.user.roles, _action.roles) %}
         {% block new_action %}
             <div class="button-action">
                 <a class="{{ _action.css_class|default('') }}" href="{{ path('easyadmin', _request_parameters|merge({ action: _action.name })) }}" target="{{ _action.target }}">
@@ -45,7 +45,7 @@
 {% endblock global_actions %}
 
 {% block item_actions %}
-    {% for action in _list_item_actions if action.role in app.user.roles %}
+    {% for action in _list_item_actions if has_common(app.user.roles, action.roles) %}
         {% if 'list' == action.name %}
             {% set action_href = _request_parameters.referer|default('') ? _request_parameters.referer|easyadmin_urldecode : path('easyadmin', _request_parameters|merge({ action: 'list' })) %}
         {% elseif 'method' == action.type %}

@@ -1,0 +1,72 @@
+{% extends '@EasyAdmin/default/show.html.twig' %}
+{% form_theme grade_form with easyadmin_config('design.form_theme') %}
+
+{% block main %}
+    <div class="form-horizontal">
+        {% for field, metadata in fields %}
+            <div class="form-group field-{{ metadata.type|default('default')|lower }} {{ metadata.css_class|default('') }}">
+                <label class="col-sm-2 control-label">
+                    {{ (metadata.label ?: field|humanize)|trans(_trans_parameters)|raw }}
+                </label>
+                <div class="col-sm-10">
+                    <div class="form-control">
+                        {{ easyadmin_render_field_for_show_view(_entity_config.name, entity, metadata) }}
+                    </div>
+
+                    {% if metadata.help|default('') != '' %}
+                        <span class="help-block"><i class="fa fa-info-circle"></i> {{ metadata.help|trans|raw }}</span>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+
+        <div class="form-group form-actions">
+            <div class="col-sm-10 col-sm-offset-2">
+                {% block item_actions %}
+                    {% set _show_actions = easyadmin_get_actions_for_show_item(_entity_config.name) %}
+                    {% set _request_parameters = { entity: _entity_config.name, referer: app.request.query.get('referer') } %}
+
+                    {% for action in _show_actions if has_common(app.user.roles, action.roles) %}
+                        {% if 'list' == action.name %}
+                            {% set action_href = _request_parameters.referer|default('') ? _request_parameters.referer|easyadmin_urldecode : path('easyadmin', _request_parameters|merge({ action: 'list' })) %}
+                        {% elseif 'method' == action.type %}
+                            {% set action_href = path('easyadmin', _request_parameters|merge({ action: action.name, id: _entity_id })) %}
+                        {% elseif 'route' == action.type %}
+                            {% set action_href = path(action.name, _request_parameters|merge({ action: action.name, id: _entity_id })) %}
+                        {% endif %}
+
+                        <a class="{{ action.css_class|default('') }}" href="{{ action_href }}" target="{{ action.target }}">
+                            {%- if action.icon %}<i class="fa fa-{{ action.icon }}"></i> {% endif -%}
+                            {%- if action.label is defined and not action.label is empty -%}
+                                {{ action.label|trans(arguments = _trans_parameters|merge({ '%entity_id%': _entity_id }), domain = _entity_config.translation_domain) }}
+                            {%- endif -%}
+                        </a>
+                    {% endfor %}
+                {% endblock item_actions %}
+            </div>
+        </div>
+    </div>
+
+    {% block delete_form %}
+        {{ include('@EasyAdmin/default/includes/_delete_form.html.twig', {
+            view: 'show',
+            referer: app.request.query.get('referer', ''),
+            delete_form: delete_form,
+            _translation_domain: _entity_config.translation_domain,
+            _trans_parameters: _trans_parameters,
+            _entity_config: _entity_config,
+        }, with_context = false) }}
+    {% endblock delete_form %}
+
+    {% if entity.homework.lecturer == app.user %}
+
+        <h4>{{ 'grade'|trans(_trans_parameters, 'EasyAdminBundle') }}</h4>
+        <div class="form-horizontal">
+            {{ form_start(grade_form) }}
+            {{ form_widget(grade_form) }}
+            {{ form_end(grade_form) }}
+        </div>
+
+    {% endif %}
+{% endblock %}
+
