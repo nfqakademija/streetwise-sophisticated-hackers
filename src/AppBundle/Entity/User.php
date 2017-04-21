@@ -29,7 +29,7 @@ class User extends BaseUser implements HasOwnerInterface
      * @Assert\Length(min=3, max=100)
      * @Assert\NotBlank()
      */
-    protected $name;
+    private $name;
 
     /**
      * @var string $email
@@ -51,7 +51,53 @@ class User extends BaseUser implements HasOwnerInterface
     /**
      * @var string $confirmPassword
      */
-    protected $confirmPassword;
+    private $confirmPassword;
+
+    /**
+     * @var string $occupation
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $occupation;
+
+    /**
+     * @var string $interests
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $interests;
+
+    /**
+     * @return string
+     */
+    public function getInterests()
+    {
+        return $this->interests;
+    }
+
+    /**
+     * @param string $interests
+     */
+    public function setInterests(string $interests)
+    {
+        $this->interests = $interests;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOccupation()
+    {
+        return $this->occupation;
+    }
+
+    /**
+     * @param string $occupation
+     */
+    public function setOccupation(string $occupation)
+    {
+        $this->occupation = $occupation;
+    }
 
     /**
      * @return string
@@ -109,5 +155,10 @@ class User extends BaseUser implements HasOwnerInterface
     public function getOwner(): User
     {
         return $this;
+    }
+
+    public function getGravatar()
+    {
+        return md5($this->getEmail());
     }
 }

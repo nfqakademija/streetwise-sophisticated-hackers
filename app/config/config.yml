@@ -111,11 +111,14 @@ easy_admin:
         User:
             controller: AppBundle\Controller\Admin\UserController
             class: AppBundle\Entity\User
+            image_base_path: 'https://www.gravatar.com/avatar/'
             form:
                 fields:
                     - username
                     - name
                     - { property: 'email', type: 'email', label: 'Email' }
+                    - occupation
+                    - { property: 'interests', label: 'Programming interests' }
                     - enabled
                     - { property: 'roles', type: 'choice', type_options: { multiple: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_LECTOR': 'ROLE_LECTOR', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
             edit:
@@ -133,14 +136,18 @@ easy_admin:
             list:
                 actions: ['show']
                 fields:
+                    - {property: 'gravatar', type: 'image'}
                     - name
                     - email
                     - roles
             show:
                 fields:
+                    - {property: 'gravatar', type: 'image'}
                     - username
                     - name
                     - email
+                    - occupation
+                    - { property: 'interests', label: 'Programming interests' }
                     - enabled
                     - roles
         Lecture:
