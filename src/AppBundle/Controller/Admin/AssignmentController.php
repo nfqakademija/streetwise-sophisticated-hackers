@@ -42,7 +42,13 @@ class AssignmentController extends BaseAdminController
             $em->persist($assignment);
             $em->flush();
 
-            return $this->redirect("/admin/?action=show&entity=Assignment&id=".$entity->getId());
+            $queryParameters = [
+                'action' => 'show',
+                'entity' => 'Assignment',
+                'id' => $entity->getId()
+            ];
+
+            return $this->redirect($this->get('router')->generate('easyadmin', $queryParameters));
         }
 
         $fields = $this->entity['show']['fields'];

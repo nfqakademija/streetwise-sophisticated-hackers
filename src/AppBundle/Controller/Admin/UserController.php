@@ -119,8 +119,6 @@ class UserController extends BaseAdminController
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return RedirectResponse
      */
     public function deleteUserAction()
@@ -133,11 +131,9 @@ class UserController extends BaseAdminController
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return Response|RedirectResponse
      */
-    protected function newAction()
+    protected function newUserAction()
     {
         $user = new User();
         $this->denyAccessUnlessGranted('new', $user);

@@ -17,8 +17,6 @@ use Symfony\Component\HttpFoundation\Response;
 class HomeworkController extends BaseAdminController
 {
     /**
-     * {@inheritdoc}
-     *
      * @return Response|RedirectResponse
      */
     public function editHomeworkAction()
@@ -31,8 +29,6 @@ class HomeworkController extends BaseAdminController
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return RedirectResponse
      */
     public function deleteHomeworkAction()
@@ -45,8 +41,6 @@ class HomeworkController extends BaseAdminController
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return Response|RedirectResponse
      */
     protected function newHomeworkAction()
@@ -57,6 +51,9 @@ class HomeworkController extends BaseAdminController
         return parent::newAction();
     }
 
+    /**
+     * @return RedirectResponse|Response
+     */
     protected function showHomeworkAction()
     {
         $this->dispatch(EasyAdminEvents::PRE_SHOW);
@@ -94,7 +91,13 @@ class HomeworkController extends BaseAdminController
             $em->persist($assignment);
             $em->flush();
 
-            return $this->redirect("/admin/?action=show&entity=Homework&id=".$entity->getId());
+            $queryParameters = [
+                'action' => 'show',
+                'entity' => 'Homework',
+                'id' => $entity->getId()
+            ];
+
+            return $this->redirect($this->get('router')->generate('easyadmin', $queryParameters));
         }
 
         $fields = $this->entity['show']['fields'];

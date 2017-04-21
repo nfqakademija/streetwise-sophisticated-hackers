@@ -11,12 +11,30 @@ use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface
 
 class AppExtension extends EasyAdminTwigExtension
 {
+    /**
+     * @var array ADMIN_ACTIONS
+     */
     const ADMIN_ACTIONS = ['new', 'edit', 'delete'];
 
+    /**
+     * @var TokenStorageInterface $tokenStorage
+     */
     private $tokenStorage;
 
+    /**
+     * @var AccessDecisionManagerInterface $decisionManager
+     */
     private $decisionManager;
 
+    /**
+     * AppExtension constructor.
+     *
+     * @param ConfigManager $configManager
+     * @param PropertyAccessor $propertyAccessor
+     * @param bool $debug
+     * @param TokenStorageInterface $tokenStorage
+     * @param AccessDecisionManagerInterface $decisionManager
+     */
     public function __construct(
         ConfigManager $configManager,
         PropertyAccessor $propertyAccessor,
@@ -40,6 +58,13 @@ class AppExtension extends EasyAdminTwigExtension
         return $functions;
     }
 
+    /**
+     * @param $view
+     * @param string $entityName
+     * @param $entity
+     *
+     * @return array
+     */
     public function getActionsForCertainItem($view, $entityName, $entity)
     {
         if (null === $token = $this->tokenStorage->getToken()) {
@@ -62,6 +87,13 @@ class AppExtension extends EasyAdminTwigExtension
         return $actions;
     }
 
+    /**
+     * @param string $view
+     * @param string $action
+     * @param string $entityName
+     *
+     * @return bool
+     */
     public function isActionEnabled($view, $action, $entityName)
     {
         $parent = parent::isActionEnabled($view, $action, $entityName);
@@ -77,7 +109,12 @@ class AppExtension extends EasyAdminTwigExtension
         return ($parent && $this->decisionManager->decide($token, [$accessRole]));
     }
 
-    private function getAccessRole($entityName)
+    /**
+     * @param string $entityName
+     *
+     * @return string
+     */
+    private function getAccessRole(string $entityName)
     {
         if(isset($this->getEntityConfiguration($entityName)['access_role']))
             return $this->getEntityConfiguration($entityName)['access_role'];

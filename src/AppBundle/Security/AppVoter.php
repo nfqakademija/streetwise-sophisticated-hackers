@@ -41,8 +41,14 @@ class AppVoter extends Voter
      */
     const NEW_ITEM = 'new';
 
+    /**
+     * @var AccessDecisionManagerInterface $decisionManager
+     */
     private $decisionManager;
 
+    /**
+     * @var ConfigManager $configManager
+     */
     private $configManager;
 
     public function __construct(ConfigManager $configManager, AccessDecisionManagerInterface $decisionManager)
@@ -151,6 +157,10 @@ class AppVoter extends Voter
         return $this->decisionManager->decide($token, [$accessRole]);
     }
 
+    /**
+     * @param $entityName
+     * @return string
+     */
     private function getAccessRole($entityName)
     {
         if(isset($this->configManager->getEntityConfig($entityName)['access_role']))

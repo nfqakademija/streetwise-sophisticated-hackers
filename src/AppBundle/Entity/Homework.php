@@ -175,6 +175,9 @@ class Homework implements HasOwnerInterface
         return $this->lecturer;
     }
 
+    /**
+     * @return User
+     */
     public function getOwner(): User
     {
         return $this->lecturer;
