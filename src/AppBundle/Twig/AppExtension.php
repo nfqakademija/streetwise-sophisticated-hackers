@@ -63,9 +63,24 @@ class AppExtension extends EasyAdminTwigExtension
 
     public function isActionEnabled($view, $action, $entityName)
     {
+        $parent = parent::isActionEnabled($view, $action, $entityName);
+
+        if($action == 'search')
+            return $parent;
+
         if (null === $token = $this->tokenStorage->getToken()) {
             return false;
         }
-        return (parent::isActionEnabled($view, $action, $entityName) && $this->decisionManager->decide($token, ['ROLE_ADMIN']));
+        $accessRole = $this->getAccessRole($entityName);
+
+        return ($parent && $this->decisionManager->decide($token, [$accessRole]));
+    }
+
+    private function getAccessRole($entityName)
+    {
+        if(isset($this->getEntityConfiguration($entityName)['access_role']))
+            return $this->getEntityConfiguration($entityName)['access_role'];
+
+        return 'ROLE_ADMIN';
     }
 }

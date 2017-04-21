@@ -54,7 +54,7 @@ class UserController extends BaseAdminController
     {
         $easyadmin = $this->request->attributes->get('easyadmin');
         $entity = $easyadmin['item'];
-        $this->denyAccessUnlessGranted('delete', $entity);
+        $this->denyAccessUnlessGranted('edit', $entity);
 
         $this->dispatch(EasyAdminEvents::PRE_EDIT);
 

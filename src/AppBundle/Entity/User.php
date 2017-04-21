@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
  * @ORM\Entity
  * @ORM\Table(name="fos_user")
  */
-class User extends BaseUser
+class User extends BaseUser implements HasOwnerInterface
 {
     /**
      * @var string $id
@@ -101,5 +101,10 @@ class User extends BaseUser
     public function isStudent()
     {
         return (!in_array('ROLE_ADMIN', $this->roles) && !in_array('ROLE_LECTOR', $this->roles));
+    }
+
+    public function getOwner(): User
+    {
+        return $this;
     }
 }

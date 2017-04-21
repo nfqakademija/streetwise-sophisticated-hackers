@@ -13,7 +13,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Table(name="homework")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\HomeworkRepository")
  */
-class Homework
+class Homework implements HasOwnerInterface
 {
     /**
      * @var int
@@ -171,6 +171,11 @@ class Homework
      * @return User
      */
     public function getLecturer()
+    {
+        return $this->lecturer;
+    }
+
+    public function getOwner(): User
     {
         return $this->lecturer;
     }

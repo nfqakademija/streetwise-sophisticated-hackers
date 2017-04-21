@@ -2,15 +2,19 @@
 
 namespace AppBundle\Security;
 
+use AppBundle\Entity\HasOwnerInterface;
 use AppBundle\Entity\User;
+use AppBundle\Entity\Lecture;
+use JavierEguiluz\Bundle\EasyAdminBundle\Configuration\ConfigManager;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 /**
- * Class UserVoter
+ * Class AppVoter
  * @package AppBundle\Security
  */
-class UserVoter extends Voter
+class AppVoter extends Voter
 {
     /**
      * @var string EDIT
@@ -37,11 +41,21 @@ class UserVoter extends Voter
      */
     const NEW_ITEM = 'new';
 
+    private $decisionManager;
+
+    private $configManager;
+
+    public function __construct(ConfigManager $configManager, AccessDecisionManagerInterface $decisionManager)
+    {
+        $this->configManager = $configManager;
+        $this->decisionManager = $decisionManager;
+    }
+
     /**
      * {@inheritdoc}
      *
      * @param string $attribute
-     * @param mixed $subject
+     * @param Lecture $subject
      *
      * @return bool
      */
@@ -49,22 +63,23 @@ class UserVoter extends Voter
     {
         // if the attribute isn't one we support, return false
         if (!in_array(
-                $attribute,
-                [
-                    self::EDIT,
-                    self::LIST_ITEM,
-                    self::SHOW,
-                    self::DELETE,
-                    self::NEW_ITEM,
-                ]
+            $attribute,
+            [
+                self::EDIT,
+                self::LIST_ITEM,
+                self::SHOW,
+                self::DELETE,
+                self::NEW_ITEM,
+            ]
         )) {
             return false;
         }
 
-        // only vote on User objects inside this voter
-        if (!$subject instanceof User) {
+        // only vote on Lecture objects inside this voter
+        if (!$subject instanceof HasOwnerInterface) {
             return false;
         }
+
 
         return true;
     }
@@ -73,7 +88,7 @@ class UserVoter extends Voter
      * {@inheritdoc}
      *
      * @param string $attribute
-     * @param mixed $subject
+     * @param Lecture $subject
      * @param TokenInterface $token
      *
      * @return bool
@@ -87,17 +102,21 @@ class UserVoter extends Voter
             return false;
         }
 
+
         // you know $subject is a User object, thanks to supports
         /** @var User $subject */
         switch ($attribute) {
             case self::LIST_ITEM:
             case self::SHOW:
                 return true;
+                break;
             case self::EDIT:
+                return $this->canEdit($subject, $user, $token);
+                break;
             case self::DELETE:
-                return $this->canEdit($subject, $user);
             case self::NEW_ITEM:
-                return $this->canCreate($user);
+                return $this->canCreateOrDelete($subject, $user, $token);
+                break;
             default:
                 return false;
         }
@@ -106,14 +125,15 @@ class UserVoter extends Voter
     /**
      * Grants access to administrators or profile owners
      *
-     * @param User $subject
+     * @param Lecture $subject
      * @param User $user
      *
      * @return bool
      */
-    private function canEdit(User $subject, User $user)
+    private function canEdit(HasOwnerInterface $subject, User $user, TokenInterface $token)
     {
-        return ($user->getId() == $subject->getId() || $user->hasRole('ROLE_ADMIN'));
+        return ($user->getId() == $subject->getOwner()->getId() ||
+            $this->decisionManager->decide($token, ['ROLE_ADMIN']));
     }
 
     /**
@@ -122,8 +142,20 @@ class UserVoter extends Voter
      * @param User $user
      * @return bool
      */
-    private function canCreate(User $user)
+    private function canCreateOrDelete(HasOwnerInterface $subject, User $user, TokenInterface $token)
     {
-        return $user->hasRole('ROLE_ADMIN');
+        $reflect = new \ReflectionClass($subject);
+        $entityName = $reflect->getShortName();
+        $accessRole = $this->getAccessRole($entityName);
+
+        return $this->decisionManager->decide($token, [$accessRole]);
+    }
+
+    private function getAccessRole($entityName)
+    {
+        if(isset($this->configManager->getEntityConfig($entityName)['access_role']))
+            return $this->configManager->getEntityConfig($entityName)['access_role'];
+
+        return 'ROLE_ADMIN';
     }
 }

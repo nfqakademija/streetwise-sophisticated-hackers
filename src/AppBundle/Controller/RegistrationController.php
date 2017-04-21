@@ -19,6 +19,11 @@ class RegistrationController extends BaseController
      */
     public function registerAction(Request $request)
     {
-        return $this->redirect("/admin/?action=new&entity=User");
+        $queryParameters = [
+            'action' => 'new',
+            'entity' => 'User'
+        ];
+
+        return $this->redirect($this->get('router')->generate('easyadmin', $queryParameters));
     }
 }
