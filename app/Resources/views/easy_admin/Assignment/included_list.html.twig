@@ -1,0 +1,52 @@
+<h4>{{ 'submitted.assignments'|trans(_trans_parameters, 'EasyAdminBundle') }}</h4>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+        <tr>
+            <th class="string">
+                {{ 'student'|trans(_trans_parameters, 'EasyAdminBundle') }}
+            </th>
+            <th class="datetime">
+                {{ 'submitted'|trans(_trans_parameters, 'EasyAdminBundle') }}
+            </th>
+            <th class="association">
+                {{ 'homework'|trans(_trans_parameters, 'EasyAdminBundle') }}
+            </th>
+            <th class="association">
+                {{ 'grade'|trans(_trans_parameters, 'EasyAdminBundle') }}
+            </th>
+            <th>
+                <span>{{ 'actions'|trans(_trans_parameters, 'EasyAdminBundle') }}</span>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for assignment in assignments %}
+            <tr>
+                <td class="string">
+                    <a href="/admin/?action=show&entity=User&id={{ assignment.student.id }}">
+                        {{ assignment.student }}
+                    </a>
+                </td>
+                <td data-label="Due date" class="sorted datetime ">
+                    {{ assignment.date|date('Y-m-d H:i:s') }}
+                </td>
+
+                <td data-label="Lecturer" class=" association ">
+                    <a href="/admin/download/homework/{{ assignment.work }}">{{ assignment.work }}</a>
+                </td>
+
+                <td data-label="Lecturer" class="string">
+                    {{ assignment.grade }}
+                </td>
+
+                <td data-label="Actions" class="actions">
+                    <a class=" action-show" href="/admin/?action=show&entity=Assignment&id={{ assignment.id }}">
+                        {{ 'show.action'|trans(_trans_parameters, 'EasyAdminBundle') }}
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

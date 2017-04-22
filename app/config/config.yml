@@ -8,6 +8,7 @@ imports:
 parameters:
     locale: en
     app.path.lecture_slides: /uploads/files/lecture/slides
+    app.path.homework_assignments: /uploads/files/homework/assignments
 
 framework:
     #esi: ~
@@ -39,6 +40,8 @@ framework:
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+    paths:
+      '%kernel.root_dir%/Resources': AppBundle
 
 # Doctrine Configuration
 doctrine:
@@ -89,50 +92,54 @@ vich_uploader:
     mappings:
         lecture_slides:
             uri_prefix: '%app.path.lecture_slides%'
-            upload_destination: '%kernel.root_dir%/../web/uploads/files/lecture/slides'
+            upload_destination: '%kernel.root_dir%/Resources/uploads/files/lecture/slides'
+            namer:              vich_uploader.namer_origname
+        work_file:
+            uri_prefix: '%app.path.homework_assignments%'
+            upload_destination: %kernel.root_dir%/Resources/uploads/files/homework/assignments
             namer:              vich_uploader.namer_origname
 
 easy_admin:
+    site_name: '<img src="/assets/img/nfq.png" />'
     design:
         menu:
-            - { label: 'My Profile', url: '/profile' }
             - User
             - Lecture
+            - Homework
             - News
             - Comment
+        brand_color: '#000000'
     entities:
         User:
             controller: AppBundle\Controller\Admin\UserController
             class: AppBundle\Entity\User
-            edit:
-                form_options: { validation_groups: ['Default'] }
-                fields:
-                    - username
-                    - name
-                    - email
-                    - enabled
-                    # if administrators are allowed to edit users' passwords and roles, add this:
-                    - { property: 'plainPassword', label: 'New password', type: 'password', type_options: { required: false } }
-                    - { property: 'confirmPassword', label: 'Confirm password', type: 'password', type_options: { required: false } }
-                    - { property: 'roles', type: 'choice', type_options: { multiple: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_LECTOR': 'ROLE_LECTOR', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
-            new:
-                form_options: { validation_groups: ['registration'] }
+            form:
                 fields:
                     - username
                     - name
                     - { property: 'email', type: 'email', label: 'Email' }
                     - enabled
+                    - { property: 'roles', type: 'choice', type_options: { multiple: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_LECTOR': 'ROLE_LECTOR', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
+            edit:
+                form_options: { validation_groups: ['Default'] }
+                fields:
+                    # if administrators are allowed to edit users' passwords and roles, add this:
+                    - { property: 'plainPassword', label: 'New password', type: 'password', type_options: { required: false } }
+                    - { property: 'confirmPassword', label: 'Confirm password', type: 'password', type_options: { required: false } }
+            new:
+                form_options: { validation_groups: ['Default', 'registration'] }
+                fields:
                     # if administrators are allowed to edit users' passwords and roles, add this:
                     - { property: 'plainPassword', label: 'Password', type: 'password', type_options: { required: true } }
-                    - { property: 'roles', type: 'choice', type_options: { multiple: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_LECTOR': 'ROLE_LECTOR', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
+                    - { property: 'confirmPassword', label: 'Confirm password', type: 'password', type_options: { required: false } }
             list:
-                actions: [{name: 'show', role: 'ROLE_USER'}, { name: 'edit', role: 'ROLE_ADMIN' }, { name: 'delete', role: 'ROLE_ADMIN' }, { name: 'new', role: 'ROLE_ADMIN' }]
+                actions: [{name: 'show', roles: ['ROLE_USER'] }, { name: 'edit', roles: ['ROLE_ADMIN'] }, { name: 'delete', roles: ['ROLE_ADMIN'] }, { name: 'new', roles: ['ROLE_ADMIN'] }]
                 fields:
-                - name
-                - email
-                - roles
+                    - name
+                    - email
+                    - roles
             show:
-                actions: [ { name: 'edit', role: 'ROLE_ADMIN' }, { name: 'delete', role: 'ROLE_ADMIN' }, { name: 'list', role: 'ROLE_USER' } ]
+                actions: [ { name: 'edit', roles: ['ROLE_ADMIN'] }, { name: 'delete', roles: ['ROLE_ADMIN'] }, { name: 'list', roles: ['ROLE_USER'] } ]
                 fields:
                     - username
                     - name
@@ -142,35 +149,72 @@ easy_admin:
         Lecture:
             controller: AppBundle\Controller\Admin\LectureController
             class: AppBundle\Entity\Lecture
+            form:
+                fields:
+                    - title
+                    - description
+                    - date
+                    - lecturer
             edit:
                 form_options: { validation_groups: ['Default'] }
                 fields:
-                    - title
-                    - description
-                    - date
-                    - lecturer
                     - { property: 'slidesFile', type: 'vich_file' }
             new:
                 form_options: { validation_groups: ['registration'] }
-                fields:
-                    - title
-                    - description
-                    - date
-                    - lecturer
             list:
                 sort: [ 'date', 'ASC' ]
-                actions: [{name: 'show', role: 'ROLE_USER'}, { name: 'edit', role: 'ROLE_LECTOR' }, { name: 'delete', role: 'ROLE_ADMIN' }, { name: 'new', role: 'ROLE_ADMIN' }]
+                actions: [ {name: 'show', roles: ['ROLE_USER'] }, { name: 'edit', roles: ['ROLE_LECTOR'] }, { name: 'delete', roles: ['ROLE_ADMIN'] }, { name: 'new', roles: ['ROLE_ADMIN'] } ]
                 fields:
                     - title
                     - date
                     - lecturer
             show:
-                actions: [ { name: 'edit', role: 'ROLE_LECTOR' }, { name: 'delete', role: 'ROLE_ADMIN' }, { name: 'list', role: 'ROLE_USER' } ]
+                actions: [ { name: 'edit', roles: ['ROLE_LECTOR'] }, { name: 'delete', roles: ['ROLE_ADMIN'] }, { name: 'list', roles: ['ROLE_USER'] } ]
                 fields:
                     - title
                     - description
                     - date
                     - lecturer
+                    - { property: 'slides', template: 'slides.html.twig', base_path: "/admin/download/lecture" }
+        Homework:
+            controller: AppBundle\Controller\Admin\HomeworkController
+            class: AppBundle\Entity\Homework
+            form:
+                fields:
+                    - title
+                    - description
+                    - dueDate
+                    - lecturer
+            edit:
+                form_options: { validation_groups: ['Default'] }
+            new:
+                form_options: { validation_groups: ['registration'] }
+            list:
+                sort: [ 'dueDate', 'ASC' ]
+                actions: [ {name: 'show', roles: ['ROLE_USER'] }, { name: 'edit', roles: ['ROLE_LECTOR'] }, { name: 'delete', roles: ['ROLE_LECTOR'] }, { name: 'new', roles: ['ROLE_LECTOR'] }]
+                fields:
+                    - title
+                    - dueDate
+                    - lecturer
+            show:
+                actions: [ { name: 'edit', roles: ['ROLE_LECTOR'] }, { name: 'delete', roles: ['ROLE_LECTOR', 'ROLE_ADMIN'] }, { name: 'list', roles: ['ROLE_USER'] } ]
+                fields:
+                    - title
+                    - description
+                    - dueDate
+                    - lecturer
+
+        Assignment:
+            controller: AppBundle\Controller\Admin\AssignmentController
+            class: AppBundle\Entity\Assignment
+            disabled_actions: ['new', 'list', 'edit', 'delete']
+            show:
+                fields:
+                    - homework
+                    - student
+                    - date
+                    - { property: 'work', template: 'work.html.twig', base_path: "/admin/download/homework" }
+                    - grade
                     - { property: 'slides', template: 'slides.html.twig', base_path: '%app.path.lecture_slides%' }
         News:
             controller: AppBundle\Controller\Admin\NewsController
@@ -191,13 +235,13 @@ easy_admin:
                     - author
             list:
                 sort: [ 'date', 'ASC' ]
-                actions: [{name: 'show', role: 'ROLE_USER'}, { name: 'edit', role: 'ROLE_LECTOR' }, { name: 'delete', role: 'ROLE_ADMIN' }, { name: 'new', role: 'ROLE_ADMIN' }]
+                actions: [{name: 'show', roles: ['ROLE_USER']}, { name: 'edit', roles: ['ROLE_LECTOR'] }, { name: 'delete', roles: ['ROLE_ADMIN'] }, { name: 'new', roles: ['ROLE_ADMIN'] }]
                 fields:
                     - title
                     - date
                     - author
             show:
-                actions: [ { name: 'edit', role: 'ROLE_LECTOR' }, { name: 'delete', role: 'ROLE_ADMIN' }, { name: 'list', role: 'ROLE_USER' } ]
+                actions: [ { name: 'edit', roles: ['ROLE_LECTOR', 'ROLE_ADMIN'] }, { name: 'delete', roles: ['ROLE_ADMIN'] }, { name: 'list', roles: ['ROLE_USER'] } ]
                 fields:
                     - title
                     - description
@@ -220,14 +264,14 @@ easy_admin:
                     - author
             list:
                 sort: [ 'date', 'ASC' ]
-                actions: [{name: 'show', role: 'ROLE_USER'}, { name: 'edit', role: 'ROLE_ADMIN' }, { name: 'delete', role: 'ROLE_ADMIN' }, { name: 'new', role: 'ROLE_ADMIN' }]
+                actions: [{name: 'show', roles: ['ROLE_USER']}, { name: 'edit', roles: ['ROLE_ADMIN'] }, { name: 'delete', roles: ['ROLE_ADMIN'] }, { name: 'new', roles: ['ROLE_ADMIN'] }]
                 fields:
                     - newsId
                     - content
                     - author
                     - date
             show:
-                actions: [ { name: 'list', role: 'ROLE_USER' }, { name: 'edit', role: 'ROLE_ADMIN' }, { name: 'delete', role: 'ROLE_ADMIN' } ]
+                actions: [ { name: 'list', roles: ['ROLE_USER'] }, { name: 'edit', roles: ['ROLE_ADMIN'] }, { name: 'delete', roles: ['ROLE_ADMIN'] } ]
                 fields:
                     - newsId
                     - content

@@ -2,16 +2,16 @@
 
 namespace AppBundle\Security;
 
+use AppBundle\Entity\Homework;
 use AppBundle\Entity\User;
-use AppBundle\Entity\Lecture;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 /**
- * Class LectureVoter
+ * Class HomeworkVoter
  * @package AppBundle\Security
  */
-class LectureVoter extends Voter
+class HomeworkVoter extends Voter
 {
     /**
      * @var string EDIT
@@ -42,7 +42,7 @@ class LectureVoter extends Voter
      * {@inheritdoc}
      *
      * @param string $attribute
-     * @param Lecture $subject
+     * @param Homework $subject
      *
      * @return bool
      */
@@ -50,20 +50,20 @@ class LectureVoter extends Voter
     {
         // if the attribute isn't one we support, return false
         if (!in_array(
-                $attribute,
-                [
-                    self::EDIT,
-                    self::LIST_ITEM,
-                    self::SHOW,
-                    self::DELETE,
-                    self::NEW_ITEM,
-                ]
+            $attribute,
+            [
+                self::EDIT,
+                self::LIST_ITEM,
+                self::SHOW,
+                self::DELETE,
+                self::NEW_ITEM,
+            ]
         )) {
             return false;
         }
 
-        // only vote on Lecture objects inside this voter
-        if (!$subject instanceof Lecture) {
+        // only vote on Homework objects inside this voter
+        if (!$subject instanceof Homework) {
             return false;
         }
 
@@ -74,7 +74,7 @@ class LectureVoter extends Voter
      * {@inheritdoc}
      *
      * @param string $attribute
-     * @param Lecture $subject
+     * @param Homework $subject
      * @param TokenInterface $token
      *
      * @return bool
@@ -89,16 +89,16 @@ class LectureVoter extends Voter
         }
 
         // you know $subject is a User object, thanks to supports
-        /** @var User $subject */
+        /** @var Homework $subject */
         switch ($attribute) {
             case self::LIST_ITEM:
             case self::SHOW:
                 return true;
             case self::EDIT:
-                return $this->canEdit($subject, $user);
             case self::DELETE:
+                return $this->canEdit($subject, $user);
             case self::NEW_ITEM:
-                return $this->canCreateOrDelete($user);
+                return $this->canCreate($user);
             default:
                 return false;
         }
@@ -107,14 +107,14 @@ class LectureVoter extends Voter
     /**
      * Grants access to administrators or profile owners
      *
-     * @param Lecture $subject
+     * @param Homework $subject
      * @param User $user
      *
      * @return bool
      */
-    private function canEdit(Lecture $subject, User $user)
+    private function canEdit(Homework $subject, User $user)
     {
-        return ($user->getId() == $subject->getLecturer()->getId() || $user->hasRole('ROLE_LECTOR'));
+        return ($user === $subject->getLecturer() || $user->hasRole('ROLE_LECTOR'));
     }
 
     /**
@@ -123,8 +123,8 @@ class LectureVoter extends Voter
      * @param User $user
      * @return bool
      */
-    private function canCreateOrDelete(User $user)
+    private function canCreate(User $user)
     {
-        return $user->hasRole('ROLE_ADMIN');
+        return $user->hasRole('ROLE_LECTOR');
     }
 }
