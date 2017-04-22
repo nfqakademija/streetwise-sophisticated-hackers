@@ -21,6 +21,17 @@ services:
         public: false
     app.homework_voter:
         class: AppBundle\Security\HomeworkVoter
+            - { name: security.voter }
+        # small performance boost
+        public: false
+    app.news_voter:
+        class: AppBundle\Security\NewsVoter
+        tags:
+            - { name: security.voter }
+        # small performance boost
+        public: false
+    app.comment_voter:
+        class: AppBundle\Security\CommentVoter
         tags:
             - { name: security.voter }
         # small performance boost
@@ -36,5 +47,3 @@ services:
             public: false
             tags:
                 - { name: twig.extension }
-
-
