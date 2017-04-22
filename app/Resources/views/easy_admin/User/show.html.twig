@@ -87,8 +87,7 @@
             </table>
     {% endif %}
 
-    {% if entity.isStudent %}
-            {% if not app.user.isStudent or app.user.id == entity.getOwner.id %}
+    {% if entity.isStudent and user_has_access(entity) %}
             <h4>{{ 'submitted.homework'|trans(_trans_parameters, 'EasyAdminBundle') }}</h4>
             <div class="table-responsive">
                 <table class="table">
@@ -113,7 +112,6 @@
                             </tr>
                         {% endfor %}
                 </table>
-                {% endif %}
     {% endif %}
 {% endblock %}
 
