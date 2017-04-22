@@ -8,22 +8,24 @@ services:
     #    class: AppBundle\Directory\ClassName
     #    arguments: ['@another_service_name', 'plain_value', '%parameter_name%']
     app.assignment_voter:
-            class: AppBundle\Security\AssignmentVoter
-            tags:
-                - { name: security.voter }
-            # small performance boost
-            public: false
-    easyadmin.twig.extension:
-            class: AppBundle\Twig\AppExtension
-            public: false
-            arguments: ['@easyadmin.config.manager', '@property_accessor', '%kernel.debug%', '@security.token_storage', '@security.access.decision_manager']
-            tags:
-                - { name: twig.extension }
-    app.voter:
-            class: AppBundle\Security\AppVoter
-            arguments: ['@easyadmin.config.manager', '@security.access.decision_manager']
-            tags:
+        class: AppBundle\Security\AssignmentVoter
+        tags:
             - { name: security.voter }
-            # small performance boost
-            public: false
+        # small performance boost
+        public: false
+
+    easyadmin.twig.extension:
+        class: AppBundle\Twig\AppExtension
+        public: false
+        arguments: ['@easyadmin.config.manager', '@property_accessor', '%kernel.debug%', '@security.token_storage', '@security.access.decision_manager']
+        tags:
+            - { name: twig.extension }
+
+    app.voter:
+        class: AppBundle\Security\AppVoter
+        arguments: ['@easyadmin.config.manager', '@security.access.decision_manager']
+        tags:
+            - { name: security.voter }
+        # small performance boost
+        public: false
 
