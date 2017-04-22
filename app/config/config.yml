@@ -235,13 +235,13 @@ easy_admin:
                     - author
             list:
                 sort: [ 'date', 'ASC' ]
-                actions: [{name: 'show', role: 'ROLE_USER'}, { name: 'edit', role: 'ROLE_LECTOR' }, { name: 'delete', role: 'ROLE_ADMIN' }, { name: 'new', role: 'ROLE_ADMIN' }]
+                actions: [{name: 'show', roles: ['ROLE_USER']}, { name: 'edit', roles: ['ROLE_LECTOR'] }, { name: 'delete', roles: ['ROLE_ADMIN'] }, { name: 'new', roles: ['ROLE_ADMIN'] }]
                 fields:
                     - title
                     - date
                     - author
             show:
-                actions: [ { name: 'edit', role: 'ROLE_LECTOR' }, { name: 'delete', role: 'ROLE_ADMIN' }, { name: 'list', role: 'ROLE_USER' } ]
+                actions: [ { name: 'edit', roles: ['ROLE_LECTOR', 'ROLE_ADMIN'] }, { name: 'delete', roles: ['ROLE_ADMIN'] }, { name: 'list', roles: ['ROLE_USER'] } ]
                 fields:
                     - title
                     - description
@@ -264,14 +264,14 @@ easy_admin:
                     - author
             list:
                 sort: [ 'date', 'ASC' ]
-                actions: [{name: 'show', role: 'ROLE_USER'}, { name: 'edit', role: 'ROLE_ADMIN' }, { name: 'delete', role: 'ROLE_ADMIN' }, { name: 'new', role: 'ROLE_ADMIN' }]
+                actions: [{name: 'show', roles: ['ROLE_USER']}, { name: 'edit', roles: ['ROLE_ADMIN'] }, { name: 'delete', roles: ['ROLE_ADMIN'] }, { name: 'new', roles: ['ROLE_ADMIN'] }]
                 fields:
                     - newsId
                     - content
                     - author
                     - date
             show:
-                actions: [ { name: 'list', role: 'ROLE_USER' }, { name: 'edit', role: 'ROLE_ADMIN' }, { name: 'delete', role: 'ROLE_ADMIN' } ]
+                actions: [ { name: 'list', roles: ['ROLE_USER'] }, { name: 'edit', roles: ['ROLE_ADMIN'] }, { name: 'delete', roles: ['ROLE_ADMIN'] } ]
                 fields:
                     - newsId
                     - content

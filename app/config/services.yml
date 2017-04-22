@@ -13,37 +13,44 @@ services:
             - { name: security.voter }
         # small performance boost
         public: false
+
     app.lecture_voter:
         class: AppBundle\Security\LectureVoter
         tags:
-        - { name: security.voter }
-        # small performance boost
-        public: false
-    app.homework_voter:
-        class: AppBundle\Security\HomeworkVoter
             - { name: security.voter }
         # small performance boost
         public: false
+
+    app.homework_voter:
+        class: AppBundle\Security\HomeworkVoter
+        tags:
+            - { name: security.voter }
+        # small performance boost
+        public: false
+
     app.news_voter:
         class: AppBundle\Security\NewsVoter
         tags:
-            - { name: security.voter }
+          - { name: security.voter }
         # small performance boost
         public: false
+
     app.comment_voter:
         class: AppBundle\Security\CommentVoter
         tags:
-            - { name: security.voter }
+          - { name: security.voter }
         # small performance boost
         public: false
+
     app.assignment_voter:
-            class: AppBundle\Security\AssignmentVoter
-            tags:
-                - { name: security.voter }
-            # small performance boost
-            public: false
+        class: AppBundle\Security\AssignmentVoter
+        tags:
+          - { name: security.voter }
+        # small performance boost
+        public: false
+
     app.twig_extension:
-            class: AppBundle\Twig\AppExtension
-            public: false
-            tags:
-                - { name: twig.extension }
+        class: AppBundle\Twig\AppExtension
+        public: false
+        tags:
+          - { name: twig.extension }
