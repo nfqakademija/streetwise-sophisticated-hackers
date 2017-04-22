@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AssignmentRepository")
  * @Vich\Uploadable
  */
-class Assignment
+class Assignment implements HasOwnerInterface
 {
     /**
      * @var int
@@ -198,6 +198,14 @@ class Assignment
     public function getGrade()
     {
         return $this->grade;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getOwner(): User
+    {
+        return $this->student;
     }
 }
 

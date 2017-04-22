@@ -152,15 +152,28 @@ class UserController extends BaseAdminController
         $fields = $this->entity['show']['fields'];
         $deleteForm = $this->createDeleteForm($this->entity['name'], $id);
 
-        $lectures = null;
+        $lectures = [];
 
-        if($entity->hasRole('ROLE_LECTOR')) {
+        if($entity->isLector()) {
             $em = $this->getDoctrine()->getManager();
 
             $lectures = $em->getRepository('AppBundle:Lecture')
                 ->findBy(
                     [
                         'lecturer' => $entity->getId()
+                    ]
+                );
+        }
+
+        $assignments = [];
+
+        if($entity->isStudent()) {
+            $em = $this->getDoctrine()->getManager();
+
+            $assignments = $em->getRepository('AppBundle:Assignment')
+                ->findBy(
+                    [
+                        'student' => $entity->getId()
                     ]
                 );
         }
@@ -175,7 +188,8 @@ class UserController extends BaseAdminController
             'entity' => $entity,
             'fields' => $fields,
             'delete_form' => $deleteForm->createView(),
-            'lectures' => $lectures
+            'lectures' => $lectures,
+            'assignments' => $assignments
         ));
     }
 }

@@ -59,6 +59,10 @@
                 <source>title</source>
                 <target>Title</target>
             </trans-unit>
+            <trans-unit id="submitted.homework">
+                <source>submitted.homework</source>
+                <target>Submitted homework</target>
+            </trans-unit>
             <trans-unit id="new.page_title">
                 <source>new.page_title</source>
                 <target>Create %entity_name%</target>

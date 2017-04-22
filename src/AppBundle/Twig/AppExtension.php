@@ -55,6 +55,8 @@ class AppExtension extends EasyAdminTwigExtension
     {
         $functions = parent::getFunctions();
         $functions[] = new \Twig_SimpleFunction('custom_get_actions_for_*_item', array($this, 'getActionsForCertainItem'));
+        $functions[] = new \Twig_SimpleFunction('user_has_access', array($this, 'userHasAccess'));
+
         return $functions;
     }
 
@@ -120,5 +122,19 @@ class AppExtension extends EasyAdminTwigExtension
             return $this->getEntityConfiguration($entityName)['access_role'];
 
         return 'ROLE_ADMIN';
+    }
+
+    public function userHasAccess($entity)
+    {
+        if (null === $token = $this->tokenStorage->getToken()) {
+            return false;
+        }
+
+        $user = $token->getUser();
+
+        $accessRole = $this->getAccessRole($entity);
+
+        return ($entity instanceof HasOwnerInterface && $entity->getOwner()->getId() == $user->getId() ||
+            $this->decisionManager->decide($token, [$accessRole]));
     }
 }

@@ -88,7 +88,32 @@
     {% endif %}
 
     {% if entity.isStudent %}
-
+            {% if not app.user.isStudent or app.user.id == entity.getOwner.id %}
+            <h4>{{ 'submitted.homework'|trans(_trans_parameters, 'EasyAdminBundle') }}</h4>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th class="string">
+                            {{ 'homework'|trans(_trans_parameters, 'EasyAdminBundle') }}
+                        </th>
+                        <th class="string">
+                            {{ 'grade'|trans(_trans_parameters, 'EasyAdminBundle') }}
+                        </th>
+                    </tr>
+                    </thead>
+                        {% for assignment in assignments %}
+                            <tr>
+                                <td class="string">
+                                    <a class="" href="{{ path('easyadmin', {'action': 'show', 'entity': 'Assignment', 'id': assignment.id}) }}">{{ assignment.homework.title }}</a>
+                                </td>
+                                <td class="string">
+                                    {{ assignment.grade }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                </table>
+                {% endif %}
     {% endif %}
 {% endblock %}
 
