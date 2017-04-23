@@ -180,4 +180,9 @@ class User extends BaseUser implements HasOwnerInterface
     {
         return md5($this->getEmail());
     }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
 }

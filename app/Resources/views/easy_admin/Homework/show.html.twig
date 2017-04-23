@@ -1,6 +1,12 @@
 {% extends '@EasyAdmin/default/show.html.twig' %}
 {% form_theme assignment_form with easyadmin_config('design.form_theme') %}
 
+{% block content_title %}
+    {% spaceless %}
+        {{ entity }}
+    {% endspaceless %}
+{% endblock %}
+
 {% block main %}
     <div class="form-horizontal">
         {% for field, metadata in fields %}

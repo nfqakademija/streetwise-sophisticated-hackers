@@ -102,12 +102,14 @@ vich_uploader:
 easy_admin:
     site_name: '<img src="/assets/img/nfq.png" />'
     design:
+        assets:
+            css:
+                - '/bundles/custom/css/style.css'
         menu:
-            - User
-            - Lecture
-            - Homework
-            - News
-            - Comment
+            - { entity: 'Lecture', label: 'Lectures', icon: 'book', default: true }
+            - { entity: 'Homework', label: 'Homework', icon: 'laptop' }
+            - { entity: 'News', label: 'News', icon: 'bullhorn' }
+            - { entity: 'User', label: 'Users', icon: 'users' }
         brand_color: '#000000'
     entities:
         User:
@@ -136,6 +138,7 @@ easy_admin:
                     - { property: 'plainPassword', label: 'Password', type: 'password', type_options: { required: true } }
                     - { property: 'confirmPassword', label: 'Confirm password', type: 'password', type_options: { required: false } }
             list:
+                title: 'Users'
                 actions: ['show']
                 fields:
                     - {property: 'gravatar', type: 'image'}
@@ -144,9 +147,6 @@ easy_admin:
                     - role
             show:
                 fields:
-                    - {property: 'gravatar', type: 'image'}
-                    - username
-                    - name
                     - email
                     - occupation
                     - { property: 'interests', label: 'Programming interests' }
@@ -168,6 +168,7 @@ easy_admin:
             new:
                 form_options: { validation_groups: ['registration'] }
             list:
+                title: 'Lectures'
                 sort: [ 'date', 'ASC' ]
                 actions: ['show']
                 fields:
@@ -176,7 +177,6 @@ easy_admin:
                     - lecturer
             show:
                 fields:
-                    - title
                     - description
                     - date
                     - lecturer
@@ -204,7 +204,6 @@ easy_admin:
                     - lecturer
             show:
                 fields:
-                    - title
                     - description
                     - dueDate
                     - lecturer
@@ -221,7 +220,6 @@ easy_admin:
                     - date
                     - { property: 'work', template: 'work.html.twig', base_path: "/admin/download/homework" }
                     - grade
-                    - { property: 'slides', template: 'slides.html.twig', base_path: '%app.path.lecture_slides%' }
         News:
             controller: AppBundle\Controller\Admin\NewsController
             class: AppBundle\Entity\News
@@ -249,7 +247,6 @@ easy_admin:
                     - author
             show:
                 fields:
-                    - title
                     - description
                     - date
                     - author

@@ -184,4 +184,9 @@ class News implements HasOwnerInterface
     {
         return $this->author;
     }
+
+    public function __toString()
+    {
+        return $this->title;
+    }
 }

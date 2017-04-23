@@ -182,5 +182,10 @@ class Homework implements HasOwnerInterface
     {
         return $this->lecturer;
     }
+
+    public function __toString()
+    {
+        return $this->title;
+    }
 }
 
