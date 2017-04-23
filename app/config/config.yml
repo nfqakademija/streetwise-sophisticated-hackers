@@ -99,14 +99,20 @@ vich_uploader:
             upload_destination: %kernel.root_dir%/Resources/uploads/files/homework/assignments
             namer:              vich_uploader.namer_origname
 
+fos_message:
+    db_driver: orm
+    thread_class: AppBundle\Entity\Thread
+    message_class: AppBundle\Entity\Message
+
 easy_admin:
     site_name: '<img src="/assets/img/nfq.png" />'
     design:
         menu:
-            - User
+            - { label: 'Messenger', url: '/messages' }
+            - News
             - Lecture
             - Homework
-            - News
+            - User
             - Comment
         brand_color: '#000000'
     entities:
@@ -219,20 +225,16 @@ easy_admin:
         News:
             controller: AppBundle\Controller\Admin\NewsController
             class: AppBundle\Entity\News
+            form:
+                fields:
+                    - title
+                    - description
+                    - date
+                    - author
             edit:
                 form_options: { validation_groups: ['Default'] }
-                fields:
-                    - title
-                    - description
-                    - date
-                    - author
             new:
                 form_options: { validation_groups: ['registration'] }
-                fields:
-                    - title
-                    - description
-                    - date
-                    - author
             list:
                 sort: [ 'date', 'ASC' ]
                 actions: [{name: 'show', roles: ['ROLE_USER']}, { name: 'edit', roles: ['ROLE_LECTOR'] }, { name: 'delete', roles: ['ROLE_ADMIN'] }, { name: 'new', roles: ['ROLE_ADMIN'] }]
@@ -250,18 +252,15 @@ easy_admin:
         Comment:
             controller: AppBundle\Controller\Admin\CommentController
             class: AppBundle\Entity\Comment
+            form:
+                fields:
+                    - content
+                    - date
+                    - author
             edit:
                 form_options: { validation_groups: ['Default'] }
-                fields:
-                    - content
-                    - date
-                    - author
             new:
                 form_options: { validation_groups: ['registration'] }
-                fields:
-                    - content
-                    - date
-                    - author
             list:
                 sort: [ 'date', 'ASC' ]
                 actions: [{name: 'show', roles: ['ROLE_USER']}, { name: 'edit', roles: ['ROLE_ADMIN'] }, { name: 'delete', roles: ['ROLE_ADMIN'] }, { name: 'new', roles: ['ROLE_ADMIN'] }]
