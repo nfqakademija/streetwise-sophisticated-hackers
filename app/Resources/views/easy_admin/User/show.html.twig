@@ -12,7 +12,7 @@
 {% block content_title %}
     {% spaceless %}
         <div class="row user-header">
-            <div class="col-sm-2 gravatar"><img src="https://www.gravatar.com/avatar/{{ entity.getGravatar }}"/></div>
+            <div class="col-sm-2 gravatar"><img src="{{ gravatar_url }}{{ entity.email|gravatar }}"/></div>
             <div class="col-sm-10 username">{{ entity }}</div>
         </div>
     {% endspaceless %}

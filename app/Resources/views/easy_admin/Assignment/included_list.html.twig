@@ -28,19 +28,19 @@
                         {{ assignment.student }}
                     </a>
                 </td>
-                <td data-label="Due date" class="sorted datetime ">
+                <td class="sorted datetime ">
                     {{ assignment.date|date('Y-m-d H:i:s') }}
                 </td>
 
-                <td data-label="Lecturer" class=" association ">
+                <td class=" association ">
                     <a href="{{ path('homework_download', {'file': assignment.work}) }}">{{ assignment.work }}</a>
                 </td>
 
-                <td data-label="Lecturer" class="string">
+                <td class="string">
                     {{ assignment.grade }}
                 </td>
 
-                <td data-label="Actions" class="actions">
+                <td class="actions">
                     <a class=" action-show" href="{{ path('easyadmin', {'action': 'show', 'entity': 'Assignment', 'id': assignment.getId}) }}">
                         {{ 'show.action'|trans(_trans_parameters, 'EasyAdminBundle') }}
                     </a>

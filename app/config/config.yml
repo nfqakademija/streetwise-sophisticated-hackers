@@ -42,6 +42,8 @@ twig:
     strict_variables: '%kernel.debug%'
     paths:
       '%kernel.root_dir%/Resources': AppBundle
+    globals:
+        gravatar_url: 'https://www.gravatar.com/avatar/'
 
 # Doctrine Configuration
 doctrine:
@@ -111,6 +113,9 @@ easy_admin:
             - { entity: 'News', label: 'News', icon: 'bullhorn' }
             - { entity: 'User', label: 'Users', icon: 'users' }
         brand_color: '#000000'
+    list:
+        actions:
+            - { name: 'show', icon: 'user' }
     entities:
         User:
             controller: AppBundle\Controller\Admin\UserController

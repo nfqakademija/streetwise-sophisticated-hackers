@@ -60,6 +60,14 @@ class AppExtension extends EasyAdminTwigExtension
         return $functions;
     }
 
+    public function getFilters()
+    {
+        $filters = parent::getFilters();
+        $filters[] = new \Twig_SimpleFilter('gravatar', array($this, 'gravatarFilter'), array('is_safe' => array('html')));
+
+        return $filters;
+    }
+
     /**
      * @param $view
      * @param string $entityName
@@ -134,5 +142,10 @@ class AppExtension extends EasyAdminTwigExtension
 
         return ($entity instanceof HasOwnerInterface && $entity->getOwner()->getId() == $user->getId() ||
             $this->decisionManager->decide($token, ['ROLE_LECTOR']));
+    }
+
+    public function gravatarFilter($email)
+    {
+        return md5($email);
     }
 }
