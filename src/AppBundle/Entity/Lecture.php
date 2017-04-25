@@ -234,4 +234,3 @@ class Lecture implements HasOwnerInterface
         return $this->lecturer;
     }
 }
-

@@ -183,4 +183,3 @@ class Homework implements HasOwnerInterface
         return $this->lecturer;
     }
 }
-

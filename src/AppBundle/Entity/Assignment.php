@@ -200,4 +200,3 @@ class Assignment
         return $this->grade;
     }
 }
-
