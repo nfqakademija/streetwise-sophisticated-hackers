@@ -96,7 +96,7 @@ vich_uploader:
             namer:              vich_uploader.namer_origname
         work_file:
             uri_prefix: '%app.path.homework_assignments%'
-            upload_destination: %kernel.root_dir%/Resources/uploads/files/homework/assignments
+            upload_destination: '%kernel.root_dir%/Resources/uploads/files/homework/assignments'
             namer:              vich_uploader.namer_origname
 
 fos_message:
