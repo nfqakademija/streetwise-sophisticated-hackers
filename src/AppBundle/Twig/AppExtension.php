@@ -8,6 +8,7 @@ use JavierEguiluz\Bundle\EasyAdminBundle\Twig\EasyAdminTwigExtension;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
+use Symfony\Component\Security\Http\Logout\LogoutUrlGenerator;
 
 class AppExtension extends EasyAdminTwigExtension
 {
@@ -40,9 +41,10 @@ class AppExtension extends EasyAdminTwigExtension
         PropertyAccessor $propertyAccessor,
         TokenStorageInterface $tokenStorage,
         AccessDecisionManagerInterface $decisionManager,
+        LogoutUrlGenerator $logoutUrlGenerator,
         $debug = false
     ) {
-        parent::__construct($configManager, $propertyAccessor, $debug);
+        parent::__construct($configManager, $propertyAccessor, $debug, $logoutUrlGenerator);
         $this->tokenStorage = $tokenStorage;
         $this->decisionManager = $decisionManager;
     }

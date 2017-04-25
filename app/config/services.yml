@@ -17,7 +17,7 @@ services:
     easyadmin.twig.extension:
         class: AppBundle\Twig\AppExtension
         public: false
-        arguments: ['@easyadmin.config.manager', '@property_accessor', '@security.token_storage', '@security.access.decision_manager', '%kernel.debug%']
+        arguments: ['@easyadmin.config.manager', '@property_accessor', '@security.token_storage', '@security.access.decision_manager', '@security.logout_url_generator', '%kernel.debug%']
         tags:
             - { name: twig.extension }
 
