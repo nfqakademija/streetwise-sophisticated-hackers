@@ -3,8 +3,9 @@
     <thead>
         <tr>
             <th>{% trans from 'FOSMessageBundle' %}subject{% endtrans %}</th>
-            <th>{% trans from 'FOSMessageBundle' %}starter{% endtrans %}</th>
             <th>{% trans from 'FOSMessageBundle' %}startdate{% endtrans %}</th>
+            <th>{% trans from 'FOSMessageBundle' %}starter{% endtrans %}</th>
+			<th> Participants </th>
             <th>{% trans from 'FOSMessageBundle' %}messages{% endtrans %}</th>
             <th>{% trans from 'FOSMessageBundle' %}last_message{% endtrans %}</th>
             <th>{% trans from 'FOSMessageBundle' %}actions{% endtrans %}</th>
@@ -21,8 +22,15 @@
                         ({% trans from 'FOSMessageBundle' %}new{% endtrans %})
                     {% endif %}
                 </td>
-                <td> {{ thread.createdBy }} </td>
                 <td> {{ thread.createdAt|date }} </td>
+                <td> {{ thread.createdBy }} </td>
+				<td> 
+				{% for participant in thread.participants %}
+                    {% if participant != thread.createdBy %}
+					    {{ participant.username }}
+                    {% endif %}
+				{% endfor %}
+				</td>
                 <td> {{ thread.messages|length }} </td>
                 <td>
                     {% if thread.lastMessage %}
