@@ -1,0 +1,13 @@
+sudo: false
+language: php
+php:
+  - 7.0
+before_update:
+ - php /home/travis/.phpenv/versions/5.4.25/bin/composer.phar self update
+services:
+  - mysql
+before_script:
+  - composer install --no-interaction --prefer-dist
+script:
+  - bin/console doctrine:schema:validate
+  - vendor/bin/phpcs -p --standard=PSR2 --extensions=php ./src
