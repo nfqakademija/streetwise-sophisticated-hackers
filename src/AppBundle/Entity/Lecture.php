@@ -89,14 +89,6 @@ class Lecture implements HasOwnerInterface
     }
 
     /**
-     * @return User
-     */
-    public function getOwner(): User
-    {
-        return $this->lecturer;
-    }
-
-    /**
      * @param \DateTime $updatedAt
      */
     public function setUpdatedAt(\DateTime $updatedAt)
@@ -232,6 +224,14 @@ class Lecture implements HasOwnerInterface
             // if 'updatedAt' is not defined in your entity, use another property
             $this->updatedAt = new \DateTime('now');
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOwner(): User
+    {
+        return $this->lecturer;
     }
 }
 

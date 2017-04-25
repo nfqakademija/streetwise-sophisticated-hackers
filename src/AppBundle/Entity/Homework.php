@@ -57,7 +57,7 @@ class Homework implements HasOwnerInterface
     /**
      * @var
      *
-     * @ORM\OneToMany(targetEntity="Assignment", mappedBy="homework")
+     * @ORM\OneToMany(targetEntity="Assignment", mappedBy="homework", cascade={"remove"})
      */
     private $assignments;
 
@@ -176,7 +176,7 @@ class Homework implements HasOwnerInterface
     }
 
     /**
-     * @return User
+     * {@inheritdoc}
      */
     public function getOwner(): User
     {

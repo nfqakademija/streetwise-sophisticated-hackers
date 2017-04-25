@@ -91,13 +91,11 @@ class HomeworkController extends BaseAdminController
             $em->persist($assignment);
             $em->flush();
 
-            $queryParameters = [
+            return $this->redirectToRoute('easyadmin', [
                 'action' => 'show',
                 'entity' => 'Homework',
-                'id' => $entity->getId()
-            ];
-
-            return $this->redirect($this->get('router')->generate('easyadmin', $queryParameters));
+                'id' => $entity->getId(),
+            ]);
         }
 
         $fields = $this->entity['show']['fields'];

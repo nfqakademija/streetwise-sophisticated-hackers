@@ -104,7 +104,7 @@ class User extends BaseUser implements HasOwnerInterface
     }
 
     /**
-     * @return User
+     * {@inheritdoc}
      */
     public function getOwner(): User
     {

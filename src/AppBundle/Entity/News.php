@@ -178,7 +178,7 @@ class News implements HasOwnerInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getOwner(): User
     {
