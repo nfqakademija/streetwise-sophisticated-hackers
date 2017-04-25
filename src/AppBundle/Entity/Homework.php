@@ -13,7 +13,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Table(name="homework")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\HomeworkRepository")
  */
-class Homework
+class Homework implements HasOwnerInterface
 {
     /**
      * @var int
@@ -57,7 +57,7 @@ class Homework
     /**
      * @var
      *
-     * @ORM\OneToMany(targetEntity="Assignment", mappedBy="homework")
+     * @ORM\OneToMany(targetEntity="Assignment", mappedBy="homework", cascade={"remove"})
      */
     private $assignments;
 
@@ -174,5 +174,12 @@ class Homework
     {
         return $this->lecturer;
     }
-}
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getOwner(): User
+    {
+        return $this->lecturer;
+    }
+}

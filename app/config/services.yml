@@ -7,50 +7,25 @@ services:
     #service_name:
     #    class: AppBundle\Directory\ClassName
     #    arguments: ['@another_service_name', 'plain_value', '%parameter_name%']
-    app.user_voter:
-        class: AppBundle\Security\UserVoter
-        tags:
-            - { name: security.voter }
-        # small performance boost
-        public: false
-
-    app.lecture_voter:
-        class: AppBundle\Security\LectureVoter
-        tags:
-            - { name: security.voter }
-        # small performance boost
-        public: false
-
-    app.homework_voter:
-        class: AppBundle\Security\HomeworkVoter
-        tags:
-            - { name: security.voter }
-        # small performance boost
-        public: false
-
-    app.news_voter:
-        class: AppBundle\Security\NewsVoter
-        tags:
-          - { name: security.voter }
-        # small performance boost
-        public: false
-
-    app.comment_voter:
-        class: AppBundle\Security\CommentVoter
-        tags:
-          - { name: security.voter }
-        # small performance boost
-        public: false
-
     app.assignment_voter:
         class: AppBundle\Security\AssignmentVoter
         tags:
-          - { name: security.voter }
+            - { name: security.voter }
         # small performance boost
         public: false
 
-    app.twig_extension:
+    easyadmin.twig.extension:
         class: AppBundle\Twig\AppExtension
         public: false
+        arguments: ['@easyadmin.config.manager', '@property_accessor', '@security.token_storage', '@security.access.decision_manager', '@security.logout_url_generator', '%kernel.debug%']
         tags:
-          - { name: twig.extension }
+            - { name: twig.extension }
+
+    app.voter:
+        class: AppBundle\Security\AppVoter
+        arguments: ['@easyadmin.config.manager', '@security.access.decision_manager']
+        tags:
+            - { name: security.voter }
+        # small performance boost
+        public: false
+

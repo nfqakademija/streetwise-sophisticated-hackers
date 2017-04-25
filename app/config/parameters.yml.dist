@@ -7,12 +7,13 @@ parameters:
     database_name: symfony
     database_user: root
     database_password: ~
+    database_server_version: 5.7.15
     # You should uncomment this if you want to use pdo_sqlite
     #database_path: '%kernel.root_dir%/../var/data/data.sqlite'
 
     mailer_transport: smtp
     mailer_host: 127.0.0.1
-    mailer_user: ~
+    mailer_user: mail@streetwise.com
     mailer_password: ~
 
     # A secret key that's used to generate certain security-related tokens

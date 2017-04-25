@@ -15,8 +15,6 @@ use Symfony\Component\HttpFoundation\Response;
 class LectureController extends BaseAdminController
 {
     /**
-     * {@inheritdoc}
-     *
      * @return Response|RedirectResponse
      */
     public function editLectureAction()
@@ -29,8 +27,6 @@ class LectureController extends BaseAdminController
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return RedirectResponse
      */
     public function deleteLectureAction()
@@ -43,8 +39,6 @@ class LectureController extends BaseAdminController
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return Response|RedirectResponse
      */
     protected function newLectureAction()

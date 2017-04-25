@@ -53,6 +53,7 @@ doctrine:
         user: '%database_user%'
         password: '%database_password%'
         charset: UTF8
+        server_version: "%database_server_version%"
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
         #     e.g. database_path: "%kernel.root_dir%/../var/data/data.sqlite"
@@ -133,13 +134,12 @@ easy_admin:
                     - { property: 'plainPassword', label: 'Password', type: 'password', type_options: { required: true } }
                     - { property: 'confirmPassword', label: 'Confirm password', type: 'password', type_options: { required: false } }
             list:
-                actions: [{name: 'show', roles: ['ROLE_USER'] }, { name: 'edit', roles: ['ROLE_ADMIN'] }, { name: 'delete', roles: ['ROLE_ADMIN'] }, { name: 'new', roles: ['ROLE_ADMIN'] }]
+                actions: ['show']
                 fields:
                     - name
                     - email
                     - roles
             show:
-                actions: [ { name: 'edit', roles: ['ROLE_ADMIN'] }, { name: 'delete', roles: ['ROLE_ADMIN'] }, { name: 'list', roles: ['ROLE_USER'] } ]
                 fields:
                     - username
                     - name
@@ -163,13 +163,12 @@ easy_admin:
                 form_options: { validation_groups: ['registration'] }
             list:
                 sort: [ 'date', 'ASC' ]
-                actions: [ {name: 'show', roles: ['ROLE_USER'] }, { name: 'edit', roles: ['ROLE_LECTOR'] }, { name: 'delete', roles: ['ROLE_ADMIN'] }, { name: 'new', roles: ['ROLE_ADMIN'] } ]
+                actions: ['show']
                 fields:
                     - title
                     - date
                     - lecturer
             show:
-                actions: [ { name: 'edit', roles: ['ROLE_LECTOR'] }, { name: 'delete', roles: ['ROLE_ADMIN'] }, { name: 'list', roles: ['ROLE_USER'] } ]
                 fields:
                     - title
                     - description
@@ -179,6 +178,7 @@ easy_admin:
         Homework:
             controller: AppBundle\Controller\Admin\HomeworkController
             class: AppBundle\Entity\Homework
+            access_role: ROLE_LECTOR
             form:
                 fields:
                     - title
@@ -191,13 +191,12 @@ easy_admin:
                 form_options: { validation_groups: ['registration'] }
             list:
                 sort: [ 'dueDate', 'ASC' ]
-                actions: [ {name: 'show', roles: ['ROLE_USER'] }, { name: 'edit', roles: ['ROLE_LECTOR'] }, { name: 'delete', roles: ['ROLE_LECTOR'] }, { name: 'new', roles: ['ROLE_LECTOR'] }]
+                actions: ['show']
                 fields:
                     - title
                     - dueDate
                     - lecturer
             show:
-                actions: [ { name: 'edit', roles: ['ROLE_LECTOR'] }, { name: 'delete', roles: ['ROLE_LECTOR', 'ROLE_ADMIN'] }, { name: 'list', roles: ['ROLE_USER'] } ]
                 fields:
                     - title
                     - description
@@ -207,6 +206,7 @@ easy_admin:
         Assignment:
             controller: AppBundle\Controller\Admin\AssignmentController
             class: AppBundle\Entity\Assignment
+            access_role: ROLE_USER
             disabled_actions: ['new', 'list', 'edit', 'delete']
             show:
                 fields:
@@ -219,6 +219,7 @@ easy_admin:
         News:
             controller: AppBundle\Controller\Admin\NewsController
             class: AppBundle\Entity\News
+            access_role: ROLE_LECTOR
             edit:
                 form_options: { validation_groups: ['Default'] }
                 fields:
@@ -234,14 +235,13 @@ easy_admin:
                     - date
                     - author
             list:
+                actions: ['show']
                 sort: [ 'date', 'ASC' ]
-                actions: [{name: 'show', roles: ['ROLE_USER']}, { name: 'edit', roles: ['ROLE_LECTOR'] }, { name: 'delete', roles: ['ROLE_ADMIN'] }, { name: 'new', roles: ['ROLE_ADMIN'] }]
                 fields:
                     - title
                     - date
                     - author
             show:
-                actions: [ { name: 'edit', roles: ['ROLE_LECTOR', 'ROLE_ADMIN'] }, { name: 'delete', roles: ['ROLE_ADMIN'] }, { name: 'list', roles: ['ROLE_USER'] } ]
                 fields:
                     - title
                     - description
@@ -250,6 +250,7 @@ easy_admin:
         Comment:
             controller: AppBundle\Controller\Admin\CommentController
             class: AppBundle\Entity\Comment
+            access_role: ROLE_USER
             edit:
                 form_options: { validation_groups: ['Default'] }
                 fields:
@@ -264,14 +265,13 @@ easy_admin:
                     - author
             list:
                 sort: [ 'date', 'ASC' ]
-                actions: [{name: 'show', roles: ['ROLE_USER']}, { name: 'edit', roles: ['ROLE_ADMIN'] }, { name: 'delete', roles: ['ROLE_ADMIN'] }, { name: 'new', roles: ['ROLE_ADMIN'] }]
+                actions: ['show']
                 fields:
                     - newsId
                     - content
                     - author
                     - date
             show:
-                actions: [ { name: 'list', roles: ['ROLE_USER'] }, { name: 'edit', roles: ['ROLE_ADMIN'] }, { name: 'delete', roles: ['ROLE_ADMIN'] } ]
                 fields:
                     - newsId
                     - content

@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\LectureRepository")
  * @Vich\Uploadable
  */
-class Lecture
+class Lecture implements HasOwnerInterface
 {
     /**
      * @var int $id
@@ -225,5 +225,12 @@ class Lecture
             $this->updatedAt = new \DateTime('now');
         }
     }
-}
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getOwner(): User
+    {
+        return $this->lecturer;
+    }
+}

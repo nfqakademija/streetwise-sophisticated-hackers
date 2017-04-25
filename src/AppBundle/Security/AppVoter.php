@@ -2,16 +2,19 @@
 
 namespace AppBundle\Security;
 
-use AppBundle\Entity\Homework;
+use AppBundle\Entity\HasOwnerInterface;
 use AppBundle\Entity\User;
+use AppBundle\Entity\Lecture;
+use JavierEguiluz\Bundle\EasyAdminBundle\Configuration\ConfigManager;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 /**
- * Class HomeworkVoter
+ * Class AppVoter
  * @package AppBundle\Security
  */
-class HomeworkVoter extends Voter
+class AppVoter extends Voter
 {
     /**
      * @var string EDIT
@@ -39,10 +42,26 @@ class HomeworkVoter extends Voter
     const NEW_ITEM = 'new';
 
     /**
+     * @var AccessDecisionManagerInterface $decisionManager
+     */
+    private $decisionManager;
+
+    /**
+     * @var ConfigManager $configManager
+     */
+    private $configManager;
+
+    public function __construct(ConfigManager $configManager, AccessDecisionManagerInterface $decisionManager)
+    {
+        $this->configManager = $configManager;
+        $this->decisionManager = $decisionManager;
+    }
+
+    /**
      * {@inheritdoc}
      *
      * @param string $attribute
-     * @param Homework $subject
+     * @param Lecture $subject
      *
      * @return bool
      */
@@ -62,10 +81,11 @@ class HomeworkVoter extends Voter
             return false;
         }
 
-        // only vote on Homework objects inside this voter
-        if (!$subject instanceof Homework) {
+        // only vote on HasOwnerInterface objects inside this voter
+        if (!$subject instanceof HasOwnerInterface) {
             return false;
         }
+
 
         return true;
     }
@@ -74,7 +94,7 @@ class HomeworkVoter extends Voter
      * {@inheritdoc}
      *
      * @param string $attribute
-     * @param Homework $subject
+     * @param Lecture $subject
      * @param TokenInterface $token
      *
      * @return bool
@@ -88,17 +108,21 @@ class HomeworkVoter extends Voter
             return false;
         }
 
+
         // you know $subject is a User object, thanks to supports
-        /** @var Homework $subject */
+        /** @var User $subject */
         switch ($attribute) {
             case self::LIST_ITEM:
             case self::SHOW:
                 return true;
+                break;
             case self::EDIT:
             case self::DELETE:
-                return $this->canEdit($subject, $user);
+                return $this->canEditOrDelete($subject, $user, $token);
+                break;
             case self::NEW_ITEM:
-                return $this->canCreate($user);
+                return $this->canCreate($subject, $token);
+                break;
             default:
                 return false;
         }
@@ -107,24 +131,46 @@ class HomeworkVoter extends Voter
     /**
      * Grants access to administrators or profile owners
      *
-     * @param Homework $subject
+     * @param HasOwnerInterface $subject
      * @param User $user
+     * @param TokenInterface $token
      *
      * @return bool
      */
-    private function canEdit(Homework $subject, User $user)
+    private function canEditOrDelete(HasOwnerInterface $subject, User $user, TokenInterface $token)
     {
-        return ($user === $subject->getLecturer() || $user->hasRole('ROLE_LECTOR'));
+        return ($user == $subject->getOwner() ||
+            $this->decisionManager->decide($token, ['ROLE_ADMIN']));
     }
 
     /**
      * Grants access to administrators
      *
-     * @param User $user
+     * @param HasOwnerInterface $subject
+     * @param TokenInterface $token
+     *
      * @return bool
      */
-    private function canCreate(User $user)
+    private function canCreate(HasOwnerInterface $subject, TokenInterface $token)
     {
-        return $user->hasRole('ROLE_LECTOR');
+        $reflect = new \ReflectionClass($subject);
+        $entityName = $reflect->getShortName();
+        $accessRole = $this->getAccessRole($entityName);
+
+        return $this->decisionManager->decide($token, [$accessRole]);
+    }
+
+    /**
+     * @param string $entityName
+     *
+     * @return string
+     */
+    private function getAccessRole(string $entityName)
+    {
+        if (isset($this->configManager->getEntityConfig($entityName)['access_role'])) {
+            return $this->configManager->getEntityConfig($entityName)['access_role'];
+        }
+
+        return 'ROLE_ADMIN';
     }
 }

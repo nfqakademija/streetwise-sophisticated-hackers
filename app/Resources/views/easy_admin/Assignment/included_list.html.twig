@@ -24,7 +24,7 @@
         {% for assignment in assignments %}
             <tr>
                 <td class="string">
-                    <a href="/admin/?action=show&entity=User&id={{ assignment.student.id }}">
+                    <a class=" action-show" href="{{ path('easyadmin', {'action': 'show', 'entity': 'User', 'id': assignment.student.id}) }}">
                         {{ assignment.student }}
                     </a>
                 </td>
@@ -33,7 +33,7 @@
                 </td>
 
                 <td data-label="Lecturer" class=" association ">
-                    <a href="/admin/download/homework/{{ assignment.work }}">{{ assignment.work }}</a>
+                    <a href="{{ path('homework_download', {'file': assignment.work}) }}">{{ assignment.work }}</a>
                 </td>
 
                 <td data-label="Lecturer" class="string">
@@ -41,7 +41,7 @@
                 </td>
 
                 <td data-label="Actions" class="actions">
-                    <a class=" action-show" href="/admin/?action=show&entity=Assignment&id={{ assignment.id }}">
+                    <a class=" action-show" href="{{ path('easyadmin', {'action': 'show', 'entity': 'Assignment', 'id': assignment.getId}) }}">
                         {{ 'show.action'|trans(_trans_parameters, 'EasyAdminBundle') }}
                     </a>
                 </td>

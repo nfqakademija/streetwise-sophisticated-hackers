@@ -15,23 +15,25 @@ class ProfileController extends BaseController
 {
     /**
      * {@inheritdoc}
-     *
-     * @return RedirectResponse
      */
     public function showAction()
     {
-        return $this->redirect("/admin/?action=show&entity=User&id=".$this->getUser()->getId());
+        return $this->redirectToRoute('easyadmin', [
+            'action' => 'show',
+            'entity' => 'User',
+            'id' => $this->getUser()->getId(),
+        ]);
     }
 
     /**
      * {@inheritdoc}
-     *
-     * @param Request $request
-     *
-     * @return Response
      */
     public function editAction(Request $request)
     {
-        return $this->redirect("/admin/?action=edit&entity=User&id=".$this->getUser()->getId());
+        return $this->redirectToRoute('easyadmin', [
+            'action' => 'edit',
+            'entity' => 'User',
+            'id' => $this->getUser()->getId(),
+        ]);
     }
 }
