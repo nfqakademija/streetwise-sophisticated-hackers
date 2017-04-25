@@ -117,11 +117,11 @@ class AppVoter extends Voter
                 return true;
                 break;
             case self::EDIT:
-                return $this->canEdit($subject, $user, $token);
-                break;
             case self::DELETE:
+                return $this->canEditOrDelete($subject, $user, $token);
+                break;
             case self::NEW_ITEM:
-                return $this->canCreateOrDelete($subject, $token);
+                return $this->canCreate($subject, $token);
                 break;
             default:
                 return false;
@@ -137,7 +137,7 @@ class AppVoter extends Voter
      *
      * @return bool
      */
-    private function canEdit(HasOwnerInterface $subject, User $user, TokenInterface $token)
+    private function canEditOrDelete(HasOwnerInterface $subject, User $user, TokenInterface $token)
     {
         return ($user == $subject->getOwner() ||
             $this->decisionManager->decide($token, ['ROLE_ADMIN']));
@@ -151,7 +151,7 @@ class AppVoter extends Voter
      *
      * @return bool
      */
-    private function canCreateOrDelete(HasOwnerInterface $subject, TokenInterface $token)
+    private function canCreate(HasOwnerInterface $subject, TokenInterface $token)
     {
         $reflect = new \ReflectionClass($subject);
         $entityName = $reflect->getShortName();
