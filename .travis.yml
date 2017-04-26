@@ -2,6 +2,12 @@ sudo: false
 language: php
 php:
   - 7.0
+notifications:
+  slack:
+    rooms:
+      - nfqakademija:HAxn1NDdxK8LvYDX5l645CEC
+    on_success: change
+    on_failure: change
 before_update:
  - php /home/travis/.phpenv/versions/5.4.25/bin/composer.phar self update
 services:
@@ -9,8 +15,5 @@ services:
 before_script:
   - cp app/config/parameters.yml.dist app/config/parameters.yml
   - composer install
-  - php bin/console doctrine:database:create
-  - php bin/console doctrine:schema:create
-  - php bin/console doctrine:schema:validate
 script:
   - vendor/bin/phpcs -p --standard=PSR2 --extensions=php ./src
