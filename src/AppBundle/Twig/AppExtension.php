@@ -8,6 +8,7 @@ use JavierEguiluz\Bundle\EasyAdminBundle\Twig\EasyAdminTwigExtension;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
+use Symfony\Component\Security\Http\Logout\LogoutUrlGenerator;
 
 class AppExtension extends EasyAdminTwigExtension
 {
@@ -31,19 +32,20 @@ class AppExtension extends EasyAdminTwigExtension
      *
      * @param ConfigManager $configManager
      * @param PropertyAccessor $propertyAccessor
-     * @param bool $debug
      * @param TokenStorageInterface $tokenStorage
      * @param AccessDecisionManagerInterface $decisionManager
+     * @param LogoutUrlGenerator $logoutUrlGenerator
+     * @param bool $debug
      */
     public function __construct(
         ConfigManager $configManager,
         PropertyAccessor $propertyAccessor,
-        $debug = false,
         TokenStorageInterface $tokenStorage,
-        AccessDecisionManagerInterface $decisionManager
-    )
-    {
-        parent::__construct($configManager, $propertyAccessor, $debug);
+        AccessDecisionManagerInterface $decisionManager,
+        LogoutUrlGenerator $logoutUrlGenerator,
+        $debug = false
+    ) {
+        parent::__construct($configManager, $propertyAccessor, $debug, $logoutUrlGenerator);
         $this->tokenStorage = $tokenStorage;
         $this->decisionManager = $decisionManager;
     }
@@ -54,8 +56,15 @@ class AppExtension extends EasyAdminTwigExtension
     public function getFunctions()
     {
         $functions = parent::getFunctions();
-        $functions[] = new \Twig_SimpleFunction('custom_get_actions_for_*_item', array($this, 'getActionsForCertainItem'));
-        $functions[] = new \Twig_SimpleFunction('user_has_access', array($this, 'userHasLectorAccess'));
+
+        $functions[] = new \Twig_SimpleFunction('custom_get_actions_for_*_item', [
+            $this,
+            'getActionsForCertainItem',
+        ]);
+        $functions[] = new \Twig_SimpleFunction('user_has_access', [
+            $this,
+            'userHasLectorAccess'
+        ]);
 
         return $functions;
     }
@@ -63,7 +72,7 @@ class AppExtension extends EasyAdminTwigExtension
     public function getFilters()
     {
         $filters = parent::getFilters();
-        $filters[] = new \Twig_SimpleFilter('gravatar', array($this, 'gravatarFilter'), array('is_safe' => array('html')));
+        $filters[] = new \Twig_SimpleFilter('gravatar', [$this, 'gravatarFilter'], ['is_safe' => array('html')]);
 
         return $filters;
     }
@@ -77,20 +86,22 @@ class AppExtension extends EasyAdminTwigExtension
      */
     public function getActionsForCertainItem($view, $entityName, $entity)
     {
-        if (null === $token = $this->tokenStorage->getToken()) {
+        $token = $this->tokenStorage->getToken();
+
+        if (null === $token) {
             return array();
         }
 
         $user = $token->getUser();
 
-
         $actions = parent::getActionsForItem($view, $entityName);
 
-        if($entity instanceof HasOwnerInterface && $entity->getOwner()->getId() == $user->getId() || $this->decisionManager->decide($token, ['ROLE_ADMIN'])) {
+        if (($entity instanceof HasOwnerInterface && $entity->getOwner() == $user) ||
+            $this->decisionManager->decide($token, ['ROLE_ADMIN'])) {
             return $actions;
         }
 
-        foreach($this::ADMIN_ACTIONS as $action) {
+        foreach ($this::ADMIN_ACTIONS as $action) {
             unset($actions[$action]);
         }
 
@@ -108,12 +119,16 @@ class AppExtension extends EasyAdminTwigExtension
     {
         $parent = parent::isActionEnabled($view, $action, $entityName);
 
-        if($action == 'search')
+        if ($action == 'search') {
             return $parent;
+        }
 
-        if (null === $token = $this->tokenStorage->getToken()) {
+        $token = $this->tokenStorage->getToken();
+
+        if (null === $token) {
             return false;
         }
+
         $accessRole = $this->getEntityAccessRole($entityName);
 
         return ($parent && $this->decisionManager->decide($token, [$accessRole]));
@@ -126,12 +141,18 @@ class AppExtension extends EasyAdminTwigExtension
      */
     private function getEntityAccessRole(string $entityName)
     {
-        if(isset($this->getEntityConfiguration($entityName)['access_role']))
+        if (isset($this->getEntityConfiguration($entityName)['access_role'])) {
             return $this->getEntityConfiguration($entityName)['access_role'];
+        }
 
         return 'ROLE_ADMIN';
     }
 
+    /**
+     * @param string $entity
+     *
+     * @return bool
+     */
     public function userHasLectorAccess($entity)
     {
         if (null === $token = $this->tokenStorage->getToken()) {
@@ -144,6 +165,11 @@ class AppExtension extends EasyAdminTwigExtension
             $this->decisionManager->decide($token, ['ROLE_LECTOR']));
     }
 
+    /**
+     * @param string $email
+     *
+     * @return string
+     */
     public function gravatarFilter($email)
     {
         return md5($email);

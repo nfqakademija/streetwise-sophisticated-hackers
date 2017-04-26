@@ -157,30 +157,41 @@ class User extends BaseUser implements HasOwnerInterface
         return (in_array('ROLE_LECTOR', $this->roles));
     }
 
+    /**
+     * @return string
+     */
     public function getRole()
     {
-        if(in_array('ROLE_ADMIN', $this->roles))
+        if (in_array('ROLE_ADMIN', $this->roles)) {
             return "Administrator";
+        }
 
-        if(in_array('ROLE_LECTOR', $this->roles))
+        if (in_array('ROLE_LECTOR', $this->roles)) {
             return "Lecturer";
+        }
 
         return "Student";
     }
 
     /**
-     * @return User
+     * {@inheritdoc}
      */
     public function getOwner(): User
     {
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getGravatar()
     {
         return md5($this->getEmail());
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->name;

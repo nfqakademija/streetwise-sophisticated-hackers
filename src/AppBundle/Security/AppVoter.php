@@ -81,7 +81,7 @@ class AppVoter extends Voter
             return false;
         }
 
-        // only vote on Lecture objects inside this voter
+        // only vote on HasOwnerInterface objects inside this voter
         if (!$subject instanceof HasOwnerInterface) {
             return false;
         }
@@ -117,11 +117,11 @@ class AppVoter extends Voter
                 return true;
                 break;
             case self::EDIT:
-                return $this->canEdit($subject, $user, $token);
-                break;
             case self::DELETE:
+                return $this->canEditOrDelete($subject, $user, $token);
+                break;
             case self::NEW_ITEM:
-                return $this->canCreateOrDelete($subject, $user, $token);
+                return $this->canCreate($subject, $token);
                 break;
             default:
                 return false;
@@ -131,24 +131,27 @@ class AppVoter extends Voter
     /**
      * Grants access to administrators or profile owners
      *
-     * @param Lecture $subject
+     * @param HasOwnerInterface $subject
      * @param User $user
+     * @param TokenInterface $token
      *
      * @return bool
      */
-    private function canEdit(HasOwnerInterface $subject, User $user, TokenInterface $token)
+    private function canEditOrDelete(HasOwnerInterface $subject, User $user, TokenInterface $token)
     {
-        return ($user->getId() == $subject->getOwner()->getId() ||
+        return ($user == $subject->getOwner() ||
             $this->decisionManager->decide($token, ['ROLE_ADMIN']));
     }
 
     /**
      * Grants access to administrators
      *
-     * @param User $user
+     * @param HasOwnerInterface $subject
+     * @param TokenInterface $token
+     *
      * @return bool
      */
-    private function canCreateOrDelete(HasOwnerInterface $subject, User $user, TokenInterface $token)
+    private function canCreate(HasOwnerInterface $subject, TokenInterface $token)
     {
         $reflect = new \ReflectionClass($subject);
         $entityName = $reflect->getShortName();
@@ -158,13 +161,15 @@ class AppVoter extends Voter
     }
 
     /**
-     * @param $entityName
+     * @param string $entityName
+     *
      * @return string
      */
-    private function getAccessRole($entityName)
+    private function getAccessRole(string $entityName)
     {
-        if(isset($this->configManager->getEntityConfig($entityName)['access_role']))
+        if (isset($this->configManager->getEntityConfig($entityName)['access_role'])) {
             return $this->configManager->getEntityConfig($entityName)['access_role'];
+        }
 
         return 'ROLE_ADMIN';
     }

@@ -42,13 +42,11 @@ class AssignmentController extends BaseAdminController
             $em->persist($assignment);
             $em->flush();
 
-            $queryParameters = [
+            return $this->redirectToRoute('easyadmin', [
                 'action' => 'show',
                 'entity' => 'Assignment',
-                'id' => $entity->getId()
-            ];
-
-            return $this->redirect($this->get('router')->generate('easyadmin', $queryParameters));
+                'id' => $entity->getId(),
+            ]);
         }
 
         $fields = $this->entity['show']['fields'];
@@ -59,7 +57,6 @@ class AssignmentController extends BaseAdminController
             'fields' => $fields,
             'entity' => $entity,
         ));
-
 
         return $this->render($this->entity['templates']['show'], array(
             'entity' => $entity,

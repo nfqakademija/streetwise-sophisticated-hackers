@@ -89,14 +89,6 @@ class Lecture implements HasOwnerInterface
     }
 
     /**
-     * @return User
-     */
-    public function getOwner(): User
-    {
-        return $this->lecturer;
-    }
-
-    /**
      * @param \DateTime $updatedAt
      */
     public function setUpdatedAt(\DateTime $updatedAt)
@@ -234,9 +226,19 @@ class Lecture implements HasOwnerInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->title;
     }
-}
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getOwner(): User
+    {
+        return $this->lecturer;
+    }
+}

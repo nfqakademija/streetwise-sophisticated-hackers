@@ -121,7 +121,7 @@ class Assignment implements HasOwnerInterface
     /**
      * @param string $work
      */
-    public function setWork(string $work)
+    public function setWork($work)
     {
         $this->work = $work;
     }
@@ -208,4 +208,3 @@ class Assignment implements HasOwnerInterface
         return $this->student;
     }
 }
-

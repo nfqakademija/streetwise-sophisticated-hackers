@@ -6,6 +6,7 @@ use JavierEguiluz\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdmin
 use AppBundle\Entity\News;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use AppBundle\Form\NewsType;
 
 /**
  * Class NewsController
@@ -51,6 +52,32 @@ class NewsController extends BaseAdminController
         $news = new News();
         $this->denyAccessUnlessGranted('new', $news);
 
-        return parent::newAction();
+        $news->setDate(new \DateTime());
+        $news->setAuthor($this->getUser());
+
+        $newsForm = $this->createForm(NewsType::class, $news);
+
+        $newsForm->handleRequest($this->request);
+        if ($newsForm->isSubmitted() && $newsForm->isValid()) {
+            $this->denyAccessUnlessGranted('new', $news);
+
+            $news = $newsForm->getData();
+            $news->setDate(new \DateTime());
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($news);
+            $em->flush();
+
+            $queryParameters = [
+                'action' => 'list',
+                'entity' => 'News'
+            ];
+
+            return $this->redirect($this->get('router')->generate('easyadmin', $queryParameters));
+        }
+
+        return $this->render($this->entity['templates']['new'], array(
+                'form' => $newsForm->createView()
+            ));
     }
 }
