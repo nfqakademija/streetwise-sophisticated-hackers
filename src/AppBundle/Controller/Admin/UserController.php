@@ -149,7 +149,7 @@ class UserController extends BaseAdminController
 
         $lectures = [];
 
-        if($entity->isLector()) {
+        if ($entity->isLector()) {
             $em = $this->getDoctrine()->getManager();
 
             $lectures = $em->getRepository('AppBundle:Lecture')
@@ -162,7 +162,7 @@ class UserController extends BaseAdminController
 
         $assignments = [];
 
-        if($entity->isStudent()) {
+        if ($entity->isStudent()) {
             $em = $this->getDoctrine()->getManager();
 
             $assignments = $em->getRepository('AppBundle:Assignment')
