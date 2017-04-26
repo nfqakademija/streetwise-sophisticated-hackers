@@ -97,7 +97,7 @@ vich_uploader:
             namer:              vich_uploader.namer_origname
         work_file:
             uri_prefix: '%app.path.homework_assignments%'
-            upload_destination: %kernel.root_dir%/Resources/uploads/files/homework/assignments
+            upload_destination: '%kernel.root_dir%/Resources/uploads/files/homework/assignments'
             namer:              vich_uploader.namer_origname
 
 easy_admin:
@@ -220,20 +220,16 @@ easy_admin:
             controller: AppBundle\Controller\Admin\NewsController
             class: AppBundle\Entity\News
             access_role: ROLE_LECTOR
+            form:
+                fields:
+                    - title
+                    - description
+                    - date
+                    - author
             edit:
                 form_options: { validation_groups: ['Default'] }
-                fields:
-                    - title
-                    - description
-                    - date
-                    - author
             new:
                 form_options: { validation_groups: ['registration'] }
-                fields:
-                    - title
-                    - description
-                    - date
-                    - author
             list:
                 actions: ['show']
                 sort: [ 'date', 'ASC' ]
@@ -251,18 +247,15 @@ easy_admin:
             controller: AppBundle\Controller\Admin\CommentController
             class: AppBundle\Entity\Comment
             access_role: ROLE_USER
+            disabled_actions: ['new']
+            form:
+                fields:
+                    - content
+                    - date
             edit:
                 form_options: { validation_groups: ['Default'] }
-                fields:
-                    - content
-                    - date
-                    - author
             new:
                 form_options: { validation_groups: ['registration'] }
-                fields:
-                    - content
-                    - date
-                    - author
             list:
                 sort: [ 'date', 'ASC' ]
                 actions: ['show']

@@ -7,6 +7,9 @@ use AppBundle\Entity\News;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Form\NewsType;
+use JavierEguiluz\Bundle\EasyAdminBundle\Event\EasyAdminEvents;
+use AppBundle\Entity\Comment;
+use AppBundle\Form\CommentType;
 
 /**
  * Class NewsController
@@ -79,5 +82,54 @@ class NewsController extends BaseAdminController
         return $this->render($this->entity['templates']['new'], array(
                 'form' => $newsForm->createView()
             ));
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return Response
+     */
+    protected function showNewsAction()
+    {
+        $this->dispatch(EasyAdminEvents::PRE_SHOW);
+
+        $id = $this->request->query->get('id');
+        $easyadmin = $this->request->attributes->get('easyadmin');
+        $entity = $easyadmin['item'];
+
+        $comments = $entity->getComments();
+
+        $comment = new Comment();
+        $comment->setDate(new \DateTime());
+        $comment->setAuthor($this->getUser());
+        $comment->setNewsId($entity);
+        $commentForm = $this->createForm(CommentType::class, $comment);
+        $commentForm->handleRequest($this->request);
+        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
+            $this->denyAccessUnlessGranted('new', $comment);
+            $comment = $commentForm->getData();
+            $comment->setDate(new \DateTime());
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($comment);
+            $em->flush();
+        }
+
+
+        $fields = $this->entity['show']['fields'];
+        $deleteForm = $this->createDeleteForm($this->entity['name'], $id);
+
+        $this->dispatch(EasyAdminEvents::POST_SHOW, array(
+            'deleteForm' => $deleteForm,
+            'fields' => $fields,
+            'entity' => $entity,
+        ));
+
+        return $this->render($this->entity['templates']['show'], array(
+            'entity' => $entity,
+            'fields' => $fields,
+            'delete_form' => $deleteForm->createView(),
+            'comment_form' => $commentForm->createView(),
+            'comments' => $comments,
+        ));
     }
 }
