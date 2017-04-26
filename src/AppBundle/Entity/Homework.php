@@ -182,4 +182,28 @@ class Homework implements HasOwnerInterface
     {
         return $this->lecturer;
     }
+
+    /**
+     * Add assignment
+     *
+     * @param \AppBundle\Entity\Assignment $assignment
+     *
+     * @return Homework
+     */
+    public function addAssignment(\AppBundle\Entity\Assignment $assignment)
+    {
+        $this->assignments[] = $assignment;
+
+        return $this;
+    }
+
+    /**
+     * Remove assignment
+     *
+     * @param \AppBundle\Entity\Assignment $assignment
+     */
+    public function removeAssignment(\AppBundle\Entity\Assignment $assignment)
+    {
+        $this->assignments->removeElement($assignment);
+    }
 }

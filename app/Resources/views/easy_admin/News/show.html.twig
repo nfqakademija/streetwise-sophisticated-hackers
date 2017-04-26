@@ -1,4 +1,5 @@
 {% extends '@EasyAdmin/default/show.html.twig' %}
+{% form_theme comment_form with easyadmin_config('design.form_theme') %}
 
 {% block main %}
     <div class="form-horizontal">
@@ -22,7 +23,7 @@
         <div class="form-group form-actions">
             <div class="col-sm-10 col-sm-offset-2">
                 {% block item_actions %}
-                    {% set _show_actions = easyadmin_get_actions_for_show_item(_entity_config.name) %}
+                    {% set _show_actions = custom_get_actions_for_show_item(_entity_config.name, entity) %}
                     {% set _request_parameters = { entity: _entity_config.name, referer: app.request.query.get('referer') } %}
 
                     {% for action in _show_actions %}

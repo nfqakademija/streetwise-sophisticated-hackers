@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
+use AppBundle\Entity\CommentThread;
 use JavierEguiluz\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
 use AppBundle\Entity\News;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -97,23 +98,62 @@ class NewsController extends BaseAdminController
         $easyadmin = $this->request->attributes->get('easyadmin');
         $entity = $easyadmin['item'];
 
-        $comments = $entity->getComments();
+        $comments = null;
+        $em = $this->get('doctrine.orm.default_entity_manager');
+        if ($entity->getThreadId() != null) {
+            // TODO: is it possible to refactor this?
+            $thread = $em->createQueryBuilder()
+                ->select('e')
+                ->from('AppBundle:CommentThread', 'e')
+                ->where('e.id = ' . $entity->getThreadId())
+                ->getQuery()
+                ->getOneOrNullResult();
+            // TODO: check if returns Null
+            $comments = $thread->getComments();
+        }
 
         $comment = new Comment();
         $comment->setDate(new \DateTime());
         $comment->setAuthor($this->getUser());
-        $comment->setNewsId($entity);
+        $comment->setNewsId($entity); // TODO: remove this
         $commentForm = $this->createForm(CommentType::class, $comment);
         $commentForm->handleRequest($this->request);
         if ($commentForm->isSubmitted() && $commentForm->isValid()) {
             $this->denyAccessUnlessGranted('new', $comment);
             $comment = $commentForm->getData();
             $comment->setDate(new \DateTime());
-            $em = $this->getDoctrine()->getManager();
+
+            if ($entity->getThreadId() == null) {
+                $thread = new CommentThread();
+                $thread->setOwnerName($entity->toString());
+                $em->persist($thread);
+                $em->flush();
+                $entity->setThreadId($thread->getId());
+            } else {
+                // TODO: is it possible to refactor this?
+                $thread = $em->createQueryBuilder()
+                    ->select('e')
+                    ->from('AppBundle:CommentThread', 'e')
+                    ->where('e.id = ' . $entity->getThreadId())
+                    ->getQuery()
+                    ->getOneOrNullResult();
+            }
+            // TODO: check if getOneOrNullResult() returned NULL
+
+            $thread->addComment($comment);
+            $comment->setThread($thread);
+
+            $em->persist($entity);
             $em->persist($comment);
             $em->flush();
-        }
 
+            $queryParameters = [
+                'action' => 'show',
+                'entity' => 'News',
+                'id' => $entity->getId(),
+            ];
+            return $this->redirect($this->get('router')->generate('easyadmin', $queryParameters));
+        }
 
         $fields = $this->entity['show']['fields'];
         $deleteForm = $this->createDeleteForm($this->entity['name'], $id);

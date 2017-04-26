@@ -251,7 +251,6 @@ easy_admin:
             form:
                 fields:
                     - content
-                    - date
             edit:
                 form_options: { validation_groups: ['Default'] }
             new:
