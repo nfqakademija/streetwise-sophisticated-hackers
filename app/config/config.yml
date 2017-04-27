@@ -103,49 +103,8 @@ vich_uploader:
 easy_admin:
     site_name: '<img src="/assets/img/nfq.png" />'
     design:
-        menu:
-            - User
-            - Lecture
-            - Homework
-            - News
-            - Comment
         brand_color: '#000000'
     entities:
-        User:
-            controller: AppBundle\Controller\Admin\UserController
-            class: AppBundle\Entity\User
-            form:
-                fields:
-                    - username
-                    - name
-                    - { property: 'email', type: 'email', label: 'Email' }
-                    - enabled
-                    - { property: 'roles', type: 'choice', type_options: { multiple: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_LECTOR': 'ROLE_LECTOR', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
-            edit:
-                form_options: { validation_groups: ['Default'] }
-                fields:
-                    # if administrators are allowed to edit users' passwords and roles, add this:
-                    - { property: 'plainPassword', label: 'New password', type: 'password', type_options: { required: false } }
-                    - { property: 'confirmPassword', label: 'Confirm password', type: 'password', type_options: { required: false } }
-            new:
-                form_options: { validation_groups: ['Default', 'registration'] }
-                fields:
-                    # if administrators are allowed to edit users' passwords and roles, add this:
-                    - { property: 'plainPassword', label: 'Password', type: 'password', type_options: { required: true } }
-                    - { property: 'confirmPassword', label: 'Confirm password', type: 'password', type_options: { required: false } }
-            list:
-                actions: ['show']
-                fields:
-                    - name
-                    - email
-                    - roles
-            show:
-                fields:
-                    - username
-                    - name
-                    - email
-                    - enabled
-                    - roles
         Lecture:
             controller: AppBundle\Controller\Admin\LectureController
             class: AppBundle\Entity\Lecture
@@ -202,7 +161,6 @@ easy_admin:
                     - description
                     - dueDate
                     - lecturer
-
         Assignment:
             controller: AppBundle\Controller\Admin\AssignmentController
             class: AppBundle\Entity\Assignment
@@ -216,56 +174,3 @@ easy_admin:
                     - { property: 'work', template: 'work.html.twig', base_path: "/admin/download/homework" }
                     - grade
                     - { property: 'slides', template: 'slides.html.twig', base_path: '%app.path.lecture_slides%' }
-        News:
-            controller: AppBundle\Controller\Admin\NewsController
-            class: AppBundle\Entity\News
-            access_role: ROLE_LECTOR
-            form:
-                fields:
-                    - title
-                    - description
-                    - date
-                    - author
-            edit:
-                form_options: { validation_groups: ['Default'] }
-            new:
-                form_options: { validation_groups: ['registration'] }
-            list:
-                actions: ['show']
-                sort: [ 'date', 'ASC' ]
-                fields:
-                    - title
-                    - date
-                    - author
-            show:
-                fields:
-                    - title
-                    - description
-                    - date
-                    - author
-        Comment:
-            controller: AppBundle\Controller\Admin\CommentController
-            class: AppBundle\Entity\Comment
-            access_role: ROLE_USER
-            disabled_actions: ['new']
-            form:
-                fields:
-                    - content
-            edit:
-                form_options: { validation_groups: ['Default'] }
-            new:
-                form_options: { validation_groups: ['registration'] }
-            list:
-                sort: [ 'date', 'ASC' ]
-                actions: ['show']
-                fields:
-                    - newsId
-                    - content
-                    - author
-                    - date
-            show:
-                fields:
-                    - newsId
-                    - content
-                    - author
-                    - date

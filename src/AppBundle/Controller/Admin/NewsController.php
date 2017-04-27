@@ -86,6 +86,21 @@ class NewsController extends BaseAdminController
     }
 
     /**
+     * @param int $commentThreadId
+     * @return CommentThread | null
+     */
+    private function getThreadById(int $commentThreadId)
+    {
+        $em = $this->get('doctrine.orm.default_entity_manager');
+        return $em->createQueryBuilder()
+            ->select('e')
+            ->from('AppBundle:CommentThread', 'e')
+            ->where('e.id = ' . $commentThreadId)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
      * {@inheritdoc}
      *
      * @return Response
@@ -99,58 +114,41 @@ class NewsController extends BaseAdminController
         $entity = $easyadmin['item'];
 
         $comments = null;
-        $em = $this->get('doctrine.orm.default_entity_manager');
         if ($entity->getThreadId() != null) {
-            // TODO: is it possible to refactor this?
-            $thread = $em->createQueryBuilder()
-                ->select('e')
-                ->from('AppBundle:CommentThread', 'e')
-                ->where('e.id = ' . $entity->getThreadId())
-                ->getQuery()
-                ->getOneOrNullResult();
-            // TODO: check if returns Null
-            $comments = $thread->getComments();
+            $thread = $this->getThreadById($entity->getThreadId());
+            if ($thread != null) {
+                $comments = $thread->getComments();
+            }
         }
 
         $comment = new Comment();
-        $comment->setDate(new \DateTime());
-        $comment->setAuthor($this->getUser());
-        $comment->setNewsId($entity); // TODO: remove this
         $commentForm = $this->createForm(CommentType::class, $comment);
         $commentForm->handleRequest($this->request);
         if ($commentForm->isSubmitted() && $commentForm->isValid()) {
             $this->denyAccessUnlessGranted('new', $comment);
-            $comment = $commentForm->getData();
-            $comment->setDate(new \DateTime());
 
-            if ($entity->getThreadId() == null) {
+            $comment->setAuthor($this->getUser());
+            $comment = $commentForm->getData();
+
+            $em = $this->get('doctrine.orm.default_entity_manager');
+            if (($entity->getThreadId() == null) or ($thread == null)) {
                 $thread = new CommentThread();
-                $thread->setOwnerName($entity->toString());
+                $thread->setOwnerName($entity->__toString());
                 $em->persist($thread);
                 $em->flush();
                 $entity->setThreadId($thread->getId());
-            } else {
-                // TODO: is it possible to refactor this?
-                $thread = $em->createQueryBuilder()
-                    ->select('e')
-                    ->from('AppBundle:CommentThread', 'e')
-                    ->where('e.id = ' . $entity->getThreadId())
-                    ->getQuery()
-                    ->getOneOrNullResult();
+                $em->persist($entity);
             }
-            // TODO: check if getOneOrNullResult() returned NULL
 
-            $thread->addComment($comment);
             $comment->setThread($thread);
-
-            $em->persist($entity);
+            $thread->addComment($comment);
             $em->persist($comment);
             $em->flush();
 
             $queryParameters = [
                 'action' => 'show',
-                'entity' => 'News',
-                'id' => $entity->getId(),
+                'entity' => $this->entity['name'],
+                'id' => $id,
             ];
             return $this->redirect($this->get('router')->generate('easyadmin', $queryParameters));
         }

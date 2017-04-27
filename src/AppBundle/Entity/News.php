@@ -4,8 +4,6 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use AppBundle\Entity\CommentThread;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity()
@@ -53,11 +51,6 @@ class News implements HasOwnerInterface
      * @Assert\NotBlank()
      */
     private $author;
-
-    /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Comment", mappedBy="newsId")
-     */
-    private $comments;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -151,54 +144,12 @@ class News implements HasOwnerInterface
     }
 
     /**
-     * Add comment
-     *
-     * @param \AppBundle\Entity\Comment $comment
-     *
-     * @return News
-     */
-    public function addComment(Comment $comment)
-    {
-        $this->comments[] = $comment;
-
-        return $this;
-    }
-
-    /**
-     * Remove comment
-     *
-     * @param \AppBundle\Entity\Comment $comment
-     */
-    public function removeComment(Comment $comment)
-    {
-        $this->comments->removeElement($comment);
-    }
-
-    /**
-     * Get comments
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getComments()
-    {
-        return $this->comments;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getOwner(): User
     {
         return $this->author;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->comments = new ArrayCollection();
-    }
-
 
     /**
      * Set threadId
@@ -227,7 +178,7 @@ class News implements HasOwnerInterface
     /**
      * @return string
      */
-    public function toString()
+    public function __toString()
     {
         return 'News #' . $this->id;
     }

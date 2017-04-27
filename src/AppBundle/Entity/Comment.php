@@ -20,16 +20,9 @@ class Comment implements HasOwnerInterface
      */
     private $id;
 
-    // TODO: remove this
-    /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\News", inversedBy="comments")
-     * @ORM\JoinColumn(fieldName="news id", name="news_id", referencedColumnName="id")
-     */
-    private $newsId;
-
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\CommentThread", inversedBy="comments")
-     * @ORM\JoinColumn(fieldName="thread id", name="thread_id", referencedColumnName="id")
+     * @ORM\JoinColumn(referencedColumnName="id", nullable=false)
      */
     private $thread;
 
@@ -121,26 +114,6 @@ class Comment implements HasOwnerInterface
     }
 
     /**
-     * Set newsId
-     *
-     * @param \AppBundle\Entity\News $newsId
-     */
-    public function setNewsId(News $newsId = null)
-    {
-        $this->newsId = $newsId;
-    }
-
-    /**
-     * Get newsId
-     *
-     * @return \AppBundle\Entity\News
-     */
-    public function getNewsId()
-    {
-        return $this->newsId;
-    }
-
-    /**
      * Set author
      *
      * @param \AppBundle\Entity\User $author
@@ -194,5 +167,13 @@ class Comment implements HasOwnerInterface
     public function getThread()
     {
         return $this->thread;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return "Comment #" . $this->id;
     }
 }
