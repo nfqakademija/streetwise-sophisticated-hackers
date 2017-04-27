@@ -13,12 +13,13 @@ use FOS\UserBundle\Controller\RegistrationController as BaseController;
 class RegistrationController extends BaseController
 {
     /**
-     * @param Request $request
-     *
-     * @return Response
+     * {@inheritdoc}
      */
     public function registerAction(Request $request)
     {
-        return $this->redirect("/admin/?action=new&entity=User");
+        return $this->redirectToRoute('easyadmin', [
+            'action' => 'new',
+            'entity' => 'User',
+        ]);
     }
 }

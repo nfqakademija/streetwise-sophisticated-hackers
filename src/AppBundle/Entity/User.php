@@ -11,7 +11,7 @@ use FOS\MessageBundle\Model\ParticipantInterface;
  * @ORM\Entity
  * @ORM\Table(name="fos_user")
  */
-class User extends BaseUser implements ParticipantInterface
+class User extends BaseUser implements ParticipantInterface, HasOwnerInterface
 {
     /**
      * @var string $id
@@ -101,5 +101,13 @@ class User extends BaseUser implements ParticipantInterface
     public function isStudent()
     {
         return (!in_array('ROLE_ADMIN', $this->roles) && !in_array('ROLE_LECTOR', $this->roles));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOwner(): User
+    {
+        return $this;
     }
 }

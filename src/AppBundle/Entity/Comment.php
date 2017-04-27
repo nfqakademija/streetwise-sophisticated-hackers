@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity()
  * @ORM\Table(name="comments")
  */
-class Comment
+class Comment implements HasOwnerInterface
 {
     /**
      * @var int $id
@@ -153,6 +153,14 @@ class Comment
      * @return \AppBundle\Entity\User
      */
     public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getOwner(): User
     {
         return $this->author;
     }

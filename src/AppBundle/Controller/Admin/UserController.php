@@ -16,8 +16,6 @@ use Symfony\Component\HttpFoundation\Response;
 class UserController extends BaseAdminController
 {
     /**
-     * {@inheritdoc}
-     *
      * @return User
      */
     public function createNewUserEntity()
@@ -26,8 +24,6 @@ class UserController extends BaseAdminController
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @param User $user
      */
     public function prePersistUserEntity(User $user)
@@ -36,8 +32,6 @@ class UserController extends BaseAdminController
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @param User $user
      */
     public function preUpdateUserEntity(User $user)
@@ -46,15 +40,13 @@ class UserController extends BaseAdminController
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return Response|RedirectResponse
      */
     public function editUserAction()
     {
         $easyadmin = $this->request->attributes->get('easyadmin');
         $entity = $easyadmin['item'];
-        $this->denyAccessUnlessGranted('delete', $entity);
+        $this->denyAccessUnlessGranted('edit', $entity);
 
         $this->dispatch(EasyAdminEvents::PRE_EDIT);
 
@@ -101,7 +93,10 @@ class UserController extends BaseAdminController
 
             return !empty($refererUrl)
                 ? $this->redirect(urldecode($refererUrl))
-                : $this->redirect($this->generateUrl('easyadmin', array('action' => 'list', 'entity' => $this->entity['name'])));
+                : $this->redirectToRoute('easyadmin', [
+                    'action' => 'list',
+                    'entity' => $this->entity['name'],
+                ]);
         }
 
         $this->dispatch(EasyAdminEvents::POST_EDIT);
@@ -119,8 +114,6 @@ class UserController extends BaseAdminController
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return RedirectResponse
      */
     public function deleteUserAction()
@@ -133,11 +126,9 @@ class UserController extends BaseAdminController
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return Response|RedirectResponse
      */
-    protected function newAction()
+    protected function newUserAction()
     {
         $user = new User();
         $this->denyAccessUnlessGranted('new', $user);

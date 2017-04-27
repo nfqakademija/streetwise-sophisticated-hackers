@@ -59,7 +59,6 @@ class NewsController extends BaseAdminController
 
         $newsForm->handleRequest($this->request);
         if ($newsForm->isSubmitted() && $newsForm->isValid()) {
-
             $this->denyAccessUnlessGranted('new', $news);
 
             $news = $newsForm->getData();
@@ -79,7 +78,6 @@ class NewsController extends BaseAdminController
 
         return $this->render($this->entity['templates']['new'], array(
                 'form' => $newsForm->createView()
-            )
-        );
+            ));
     }
 }
