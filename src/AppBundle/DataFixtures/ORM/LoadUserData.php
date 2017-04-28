@@ -6,14 +6,11 @@ use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use AppBundle\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 class LoadUserData implements FixtureInterface, ContainerAwareInterface
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    use ContainerAwareTrait;
 
     public function createUser($userName, $role)
     {
@@ -21,7 +18,7 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface
         $user->setName($userName);
         $user->setUsername($userName);
         $user->setEmail($userName . '@streetwise.com');
-        $user->setEnabled(TRUE);
+        $user->setEnabled(true);
         $user->addRole('ROLE_' . $role);
 
         $encoder = $this->container->get('security.password_encoder');
@@ -29,11 +26,6 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface
         $user->setPassword($password);
 
         return $user;
-    }
-
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
     }
 
     public function load(ObjectManager $manager)
