@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Lectures Timetable{% endblock %}
+
+{% block body %}
+    <ol class="breadcrumb">
+        <li><a href="/">Home</a></li>
+        <li class="active">Lectures</li>
+    </ol>
+
+    <h1 class="content-title">Lectures Timetable</h1>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Lecturer</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for lecture in lectures %}
+            <tr>
+                <td><a href="{{ path('lecture_show', { 'id': lecture.id }) }}">{{ lecture.title }}</a></td>
+                <td>{% if lecture.date %}{{ lecture.date|date('Y-m-d') }}{% endif %}</td>
+                <td><a href="{{ path('lecture_show', { 'id': lecture.id }) }}">{{ lecture.lecturer.name }}</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    
+{% endblock %}

@@ -1,0 +1,17 @@
+{
+  "name": "custom-bootstrap",
+  "version": "1.0.0",
+  "description": "NFQ Academy website Twitter Bootstrap customization",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "eleggua",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-less": "^1.4.1",
+    "grunt-contrib-watch": "^1.0.0",
+    "jit-grunt": "^0.10.0"
+  },
+  "license": "ISC"
+}

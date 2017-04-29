@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ lecture.title }}{% endblock %}
+
+{% block body %}
+    <ol class="breadcrumb">
+        <li><a href="/">Home</a></li>
+        <li><a href="{{ path('lecture_index') }}">Lectures</a></li>
+        <li class="active">{{ lecture.title }}</li>
+    </ol>
+
+    <h1 class="content-title">{{ lecture.title }} <br /><small>Lecture</small></h1>
+    <hr />
+    <p>Date: {% if lecture.date %}{{ lecture.date|date('Y-m-d') }}{% endif %}</p>
+
+    <article>{{ lecture.description }}</article>
+
+
+    <p><a href="{{ path('lecture_index') }}">Back to the list</a></p>
+
+{% endblock %}
