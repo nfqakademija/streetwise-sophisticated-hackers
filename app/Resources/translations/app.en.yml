@@ -1,0 +1,11 @@
+home: Home
+title: Title
+date: Date
+lecturer: Lecturer
+back_to_the_list: Back to the list
+
+lecture:
+    lectures: Lectures
+
+lecture_index:
+    timetable: Lectures Timetable

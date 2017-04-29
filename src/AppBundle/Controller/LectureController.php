@@ -26,9 +26,12 @@ class LectureController extends Controller
 
         $lectures = $em->getRepository('AppBundle:Lecture')->findAll();
 
-        return $this->render('lecture/index.html.twig', array(
-            'lectures' => $lectures,
-        ));
+        return $this->render(
+            'lecture/index.html.twig',
+            [
+                'lectures' => $lectures,
+            ]
+        );
     }
 
     /**

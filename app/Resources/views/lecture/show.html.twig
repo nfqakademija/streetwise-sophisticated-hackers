@@ -1,11 +1,13 @@
 {% extends 'base.html.twig' %}
 
+{% trans_default_domain "app" %}
+
 {% block title %}{{ lecture.title }}{% endblock %}
 
 {% block body %}
     <ol class="breadcrumb">
-        <li><a href="/">Home</a></li>
-        <li><a href="{{ path('lecture_index') }}">Lectures</a></li>
+        <li><a href="/">{{ 'home'|trans }}</a></li>
+        <li><a href="{{ path('lecture_index') }}">{{ 'lecture.lectures'|trans }}</a></li>
         <li class="active">{{ lecture.title }}</li>
     </ol>
 
@@ -16,6 +18,6 @@
     <article>{{ lecture.description }}</article>
 
 
-    <p><a href="{{ path('lecture_index') }}">Back to the list</a></p>
+    <p><a href="{{ path('lecture_index') }}">{{ 'back_to_the_list'|trans }}</a></p>
 
 {% endblock %}
