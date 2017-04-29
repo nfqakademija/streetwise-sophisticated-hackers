@@ -101,20 +101,26 @@ class HomeworkController extends BaseAdminController
         $fields = $this->entity['show']['fields'];
         $deleteForm = $this->createDeleteForm($this->entity['name'], $id);
 
-        $this->dispatch(EasyAdminEvents::POST_SHOW, array(
-            'deleteForm' => $deleteForm,
-            'fields' => $fields,
-            'entity' => $entity,
-        ));
+        $this->dispatch(
+            EasyAdminEvents::POST_SHOW,
+            [
+                'deleteForm' => $deleteForm,
+                'fields' => $fields,
+                'entity' => $entity,
+            ]
+        );
 
 
-        return $this->render($this->entity['templates']['show'], array(
-            'entity' => $entity,
-            'fields' => $fields,
-            'delete_form' => $deleteForm->createView(),
-            'assignment_form' => $assignmentForm->createView(),
-            'assignments' => $assignments,
-            'my_assignment' => $myAssignment,
-        ));
+        return $this->render(
+            $this->entity['templates']['show'],
+            [
+                'entity' => $entity,
+                'fields' => $fields,
+                'delete_form' => $deleteForm->createView(),
+                'assignment_form' => $assignmentForm->createView(),
+                'assignments' => $assignments,
+                'my_assignment' => $myAssignment,
+            ]
+        );
     }
 }

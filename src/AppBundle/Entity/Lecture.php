@@ -46,6 +46,11 @@ class Lecture implements HasOwnerInterface
      *
      * @ORM\Column(name="date", type="date")
      * @Assert\NotBlank()
+     * @Assert\Range(
+     *     min = "now",
+     *     max = "+2 years",
+     *     groups="create"
+     * )
      */
     private $date;
 

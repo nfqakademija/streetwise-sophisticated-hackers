@@ -69,6 +69,9 @@ class AppExtension extends EasyAdminTwigExtension
         return $functions;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getFilters()
     {
         $filters = parent::getFilters();
@@ -155,7 +158,9 @@ class AppExtension extends EasyAdminTwigExtension
      */
     public function userHasLectorAccess($entity)
     {
-        if (null === $token = $this->tokenStorage->getToken()) {
+        $token = $this->tokenStorage->getToken();
+
+        if (null === $token) {
             return false;
         }
 

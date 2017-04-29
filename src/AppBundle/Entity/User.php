@@ -50,6 +50,8 @@ class User extends BaseUser implements HasOwnerInterface
 
     /**
      * @var string $confirmPassword
+     *
+     * @Assert\NotBlank(groups="registration")
      */
     private $confirmPassword;
 

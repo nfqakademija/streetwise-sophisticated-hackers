@@ -107,16 +107,23 @@ easy_admin:
     design:
         assets:
             css:
-                - '/bundles/custom/css/style.css'
+                - 'https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css'
+                - 'https://cdn.jsdelivr.net/jquery.ui.timepicker.addon/1.4.5/jquery-ui-timepicker-addon.min.css'
+                - '/assets/css/admin.css'
+            js:
+                - 'https://code.jquery.com/ui/1.12.1/jquery-ui.js'
+                - 'https://cdn.jsdelivr.net/jquery.ui.timepicker.addon/1.4.5/jquery-ui-timepicker-addon.min.js'
+                - '/assets/js/datepicker.js'
         menu:
             - { entity: 'Lecture', label: 'Lectures', icon: 'book', default: true }
             - { entity: 'Homework', label: 'Homework', icon: 'laptop' }
             - { entity: 'News', label: 'News', icon: 'bullhorn' }
             - { entity: 'User', label: 'Users', icon: 'users' }
         brand_color: '#000000'
-    list:
-        actions:
-            - { name: 'show', icon: 'user' }
+    formats:
+            date:     'Y-m-d'
+            time:     'H:i'
+            datetime: 'Y-m-d H:i'
     entities:
         User:
             controller: AppBundle\Controller\Admin\UserController
@@ -165,14 +172,14 @@ easy_admin:
                 fields:
                     - title
                     - description
-                    - date
+                    - { property: 'date', type: 'AppBundle\Form\DatePickerType' }
                     - lecturer
             edit:
                 form_options: { validation_groups: ['Default'] }
                 fields:
                     - { property: 'slidesFile', type: 'vich_file' }
             new:
-                form_options: { validation_groups: ['registration'] }
+                form_options: { validation_groups: ['create'] }
             list:
                 title: 'Lectures'
                 sort: [ 'date', 'ASC' ]
@@ -195,12 +202,12 @@ easy_admin:
                 fields:
                     - title
                     - description
-                    - dueDate
+                    - { property: 'dueDate', type: 'AppBundle\Form\DateTimePickerType' }
                     - lecturer
             edit:
                 form_options: { validation_groups: ['Default'] }
             new:
-                form_options: { validation_groups: ['registration'] }
+                form_options: { validation_groups: ['create'] }
             list:
                 sort: [ 'dueDate', 'ASC' ]
                 actions: ['show']

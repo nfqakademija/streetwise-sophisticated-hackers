@@ -42,6 +42,11 @@ class Homework implements HasOwnerInterface
      * @var \DateTime
      *
      * @ORM\Column(name="due_date", type="datetime")
+     * @Assert\Range(
+     *     min = "now",
+     *     max = "+2 years",
+     *     groups="create"
+     * )
      */
     private $dueDate;
 
@@ -183,6 +188,9 @@ class Homework implements HasOwnerInterface
         return $this->lecturer;
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->title;

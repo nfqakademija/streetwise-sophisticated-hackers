@@ -1,0 +1,32 @@
+.custom-table tr {
+    border: 1px solid #CCC !important;
+    background: #EEE;
+}
+.custom-table td {
+    background: #fff;
+}
+
+.custom-table th {
+    background: #EEE;
+}
+
+.user-header .username {
+    padding-top: 30px;
+}
+
+.user-header .gravatar {
+    display: inline-block;
+    text-align: right;
+}
+
+.content-wrapper {
+    padding: 40px 30px;
+}
+
+.content-header {
+    padding-bottom: 20px !important;
+}
+
+.title {
+    font-weight: bold;
+}

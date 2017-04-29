@@ -1,5 +1,11 @@
 {% extends '@EasyAdmin/default/show.html.twig' %}
 
+{% block content_title %}
+    {% spaceless %}
+        {{ entity }}
+    {% endspaceless %}
+{% endblock %}
+
 {% block item_actions %}
     {% set _show_actions = custom_get_actions_for_show_item(_entity_config.name, entity) %}
     {% set _request_parameters = { entity: _entity_config.name, referer: app.request.query.get('referer') } %}

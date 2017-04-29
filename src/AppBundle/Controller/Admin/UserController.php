@@ -82,21 +82,34 @@ class UserController extends BaseAdminController
 
         $editForm->handleRequest($this->request);
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->dispatch(EasyAdminEvents::PRE_UPDATE, array('entity' => $entity));
+            $this->dispatch(
+                EasyAdminEvents::PRE_UPDATE,
+                [
+                    'entity' => $entity
+                ]
+            );
 
             $this->preUpdateEntity($entity);
             $this->em->flush();
 
-            $this->dispatch(EasyAdminEvents::POST_UPDATE, array('entity' => $entity));
+            $this->dispatch(
+                EasyAdminEvents::POST_UPDATE,
+                [
+                    'entity' => $entity
+                ]
+            );
 
             $refererUrl = $this->request->query->get('referer', '');
 
             return !empty($refererUrl)
                 ? $this->redirect(urldecode($refererUrl))
-                : $this->redirectToRoute('easyadmin', [
-                    'action' => 'list',
-                    'entity' => $this->entity['name'],
-                ]);
+                : $this->redirectToRoute(
+                    'easyadmin',
+                    [
+                        'action' => 'list',
+                        'entity' => $this->entity['name'],
+                    ]
+                );
         }
 
         $this->dispatch(EasyAdminEvents::POST_EDIT);
@@ -136,6 +149,9 @@ class UserController extends BaseAdminController
         return parent::newAction();
     }
 
+    /**
+     * @return Response
+     */
     protected function showUserAction()
     {
         $this->dispatch(EasyAdminEvents::PRE_SHOW);
@@ -148,24 +164,17 @@ class UserController extends BaseAdminController
         $deleteForm = $this->createDeleteForm($this->entity['name'], $id);
 
         $lectures = [];
+        $assignments = [];
 
         if ($entity->isLector()) {
-            $em = $this->getDoctrine()->getManager();
-
-            $lectures = $em->getRepository('AppBundle:Lecture')
+            $lectures = $this->em->getRepository('AppBundle:Lecture')
                 ->findBy(
                     [
                         'lecturer' => $entity->getId()
                     ]
                 );
-        }
-
-        $assignments = [];
-
-        if ($entity->isStudent()) {
-            $em = $this->getDoctrine()->getManager();
-
-            $assignments = $em->getRepository('AppBundle:Assignment')
+        } elseif ($entity->isStudent()) {
+            $assignments = $this->em->getRepository('AppBundle:Assignment')
                 ->findBy(
                     [
                         'student' => $entity->getId()
@@ -173,18 +182,24 @@ class UserController extends BaseAdminController
                 );
         }
 
-        $this->dispatch(EasyAdminEvents::POST_SHOW, array(
-            'deleteForm' => $deleteForm,
-            'fields' => $fields,
-            'entity' => $entity,
-        ));
+        $this->dispatch(
+            EasyAdminEvents::POST_SHOW,
+            [
+                'deleteForm' => $deleteForm,
+                'fields' => $fields,
+                'entity' => $entity,
+            ]
+        );
 
-        return $this->render($this->entity['templates']['show'], array(
-            'entity' => $entity,
-            'fields' => $fields,
-            'delete_form' => $deleteForm->createView(),
-            'lectures' => $lectures,
-            'assignments' => $assignments
-        ));
+        return $this->render(
+            $this->entity['templates']['show'],
+            [
+                'entity' => $entity,
+                'fields' => $fields,
+                'delete_form' => $deleteForm->createView(),
+                'lectures' => $lectures,
+                'assignments' => $assignments,
+            ]
+        );
     }
 }
