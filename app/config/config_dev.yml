@@ -98,7 +98,7 @@ easy_admin:
                 sort: [ 'date', 'ASC' ]
                 fields:
                     - id
-                    - threadId
+                    - thread
                     - title
                     - date
                     - author

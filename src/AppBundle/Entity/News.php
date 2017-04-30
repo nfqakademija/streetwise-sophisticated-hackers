@@ -53,9 +53,9 @@ class News implements HasOwnerInterface
     private $author;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\CommentThread", cascade={"all"})
      */
-    private $threadId;
+    private $thread;
 
     /**
      * Get id
@@ -152,34 +152,31 @@ class News implements HasOwnerInterface
     }
 
     /**
-     * Set threadId
-     *
-     * @param integer $threadId
-     *
-     * @return News
-     */
-    public function setThreadId($threadId)
-    {
-        $this->threadId = $threadId;
-
-        return $this;
-    }
-
-    /**
-     * Get threadId
-     *
-     * @return integer
-     */
-    public function getThreadId()
-    {
-        return $this->threadId;
-    }
-
-    /**
      * @return string
      */
     public function __toString()
     {
         return 'News #' . $this->id;
+    }
+
+    /**
+     * Set thread
+     * @param \AppBundle\Entity\CommentThread $thread
+     * @return News
+     */
+    public function setThread(CommentThread $thread = null)
+    {
+        $this->thread = $thread;
+
+        return $this;
+    }
+
+    /**
+     * Get thread
+     * @return \AppBundle\Entity\CommentThread
+     */
+    public function getThread()
+    {
+        return $this->thread;
     }
 }

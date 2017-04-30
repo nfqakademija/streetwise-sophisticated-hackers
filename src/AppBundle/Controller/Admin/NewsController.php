@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller\Admin;
 
-use AppBundle\Entity\CommentThread;
 use JavierEguiluz\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
 use AppBundle\Entity\News;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -40,7 +39,6 @@ class NewsController extends BaseAdminController
         $easyadmin = $this->request->attributes->get('easyadmin');
         $entity = $easyadmin['item'];
         $this->denyAccessUnlessGranted('delete', $entity);
-        // TODO: delete CommentThread when deleting EntityWithComments
         return parent::deleteAction();
     }
 
@@ -91,7 +89,7 @@ class NewsController extends BaseAdminController
         $easyadmin = $this->request->attributes->get('easyadmin');
         $entity = $easyadmin['item'];
 
-        $comments = $this->getCommentsFromThread($entity->getThreadId());
+        $comments = $this->getEntityComments($entity);
 
         $comment = new Comment();
         $commentForm = $this->createForm(CommentType::class, $comment);
