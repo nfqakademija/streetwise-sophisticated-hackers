@@ -34,6 +34,7 @@ class CommentThread
      * @var Comment[]|ArrayCollection
      */
     protected $comments;
+
     /**
      * Constructor
      */
@@ -103,7 +104,7 @@ class CommentThread
     /**
      * Get comments
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Comment[]|ArrayCollection
      */
     public function getComments()
     {

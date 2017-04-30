@@ -18,9 +18,9 @@ use AppBundle\Form\CommentType;
  */
 class NewsController extends BaseAdminController
 {
+    use CommentTrait;
+
     /**
-     * {@inheritdoc}
-     *
      * @return Response|RedirectResponse
      */
     public function editNewsAction()
@@ -33,8 +33,6 @@ class NewsController extends BaseAdminController
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return RedirectResponse
      */
     public function deleteNewsAction()
@@ -42,13 +40,11 @@ class NewsController extends BaseAdminController
         $easyadmin = $this->request->attributes->get('easyadmin');
         $entity = $easyadmin['item'];
         $this->denyAccessUnlessGranted('delete', $entity);
-
+        // TODO: delete CommentThread when deleting EntityWithComments
         return parent::deleteAction();
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return Response|RedirectResponse
      */
     protected function newNewsAction()
@@ -60,21 +56,20 @@ class NewsController extends BaseAdminController
         $news->setAuthor($this->getUser());
 
         $newsForm = $this->createForm(NewsType::class, $news);
-
         $newsForm->handleRequest($this->request);
         if ($newsForm->isSubmitted() && $newsForm->isValid()) {
             $this->denyAccessUnlessGranted('new', $news);
 
             $news = $newsForm->getData();
-            $news->setDate(new \DateTime());
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($news);
             $em->flush();
 
             $queryParameters = [
-                'action' => 'list',
-                'entity' => 'News'
+                'action' => 'show',
+                'entity' => 'News',
+                'id' => $news->getId(),
             ];
 
             return $this->redirect($this->get('router')->generate('easyadmin', $queryParameters));
@@ -86,23 +81,6 @@ class NewsController extends BaseAdminController
     }
 
     /**
-     * @param int $commentThreadId
-     * @return CommentThread | null
-     */
-    private function getThreadById(int $commentThreadId)
-    {
-        $em = $this->get('doctrine.orm.default_entity_manager');
-        return $em->createQueryBuilder()
-            ->select('e')
-            ->from('AppBundle:CommentThread', 'e')
-            ->where('e.id = ' . $commentThreadId)
-            ->getQuery()
-            ->getOneOrNullResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     *
      * @return Response
      */
     protected function showNewsAction()
@@ -113,13 +91,7 @@ class NewsController extends BaseAdminController
         $easyadmin = $this->request->attributes->get('easyadmin');
         $entity = $easyadmin['item'];
 
-        $comments = null;
-        if ($entity->getThreadId() != null) {
-            $thread = $this->getThreadById($entity->getThreadId());
-            if ($thread != null) {
-                $comments = $thread->getComments();
-            }
-        }
+        $comments = $this->getCommentsFromThread($entity->getThreadId());
 
         $comment = new Comment();
         $commentForm = $this->createForm(CommentType::class, $comment);
@@ -129,19 +101,10 @@ class NewsController extends BaseAdminController
 
             $comment->setAuthor($this->getUser());
             $comment = $commentForm->getData();
-
-            $em = $this->get('doctrine.orm.default_entity_manager');
-            if (($entity->getThreadId() == null) or ($thread == null)) {
-                $thread = new CommentThread();
-                $thread->setOwnerName($entity->__toString());
-                $em->persist($thread);
-                $em->flush();
-                $entity->setThreadId($thread->getId());
-                $em->persist($entity);
-            }
-
+            $thread = $this->getThreadPromise($entity);
             $comment->setThread($thread);
             $thread->addComment($comment);
+            $em = $this->get('doctrine.orm.default_entity_manager');
             $em->persist($comment);
             $em->flush();
 
