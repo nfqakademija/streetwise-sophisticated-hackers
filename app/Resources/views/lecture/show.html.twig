@@ -11,9 +11,9 @@
         <li class="active">{{ lecture.title }}</li>
     </ol>
 
-    <h1 class="content-title">{{ lecture.title }} <br /><small>Lecture</small></h1>
+    <h1 class="content-title">{{ lecture.title }} <br /><small>{{ 'lecture.lecture'|trans }}</small></h1>
     <hr />
-    <p>Date: {% if lecture.date %}{{ lecture.date|date('Y-m-d') }}{% endif %}</p>
+    <p>{{ 'date'|trans }}: {% if lecture.date %}{{ lecture.date|date('Y-m-d') }}{% endif %}</p>
 
     <article>{{ lecture.description }}</article>
 

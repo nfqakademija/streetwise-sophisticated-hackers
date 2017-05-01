@@ -31,7 +31,7 @@ class AssignmentType extends AbstractType
                 ]
             )
             ->add(
-                'save',
+                'upload',
                 SubmitType::class
             )
         ;

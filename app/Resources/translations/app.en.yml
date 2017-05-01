@@ -3,9 +3,24 @@ title: Title
 date: Date
 lecturer: Lecturer
 back_to_the_list: Back to the list
+show: Show
+student: Student
+action: Action
 
 lecture:
     lectures: Lectures
+    lecture: Lecture
 
 lecture_index:
     timetable: Lectures Timetable
+
+homework:
+    due_date: Due date
+    homework: Homework
+
+assignment:
+    my: My Assignment
+    grade: Grade
+    file: File
+    assignments: Assignments
+    new: Upload Assignment

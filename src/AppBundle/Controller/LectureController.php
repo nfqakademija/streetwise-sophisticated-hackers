@@ -24,7 +24,13 @@ class LectureController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $lectures = $em->getRepository('AppBundle:Lecture')->findAll();
+        $lectures =
+            $em
+                ->getRepository('AppBundle:Lecture')
+                ->findBy(
+                    [],
+                    ['date' => 'ASC']
+                );
 
         return $this->render(
             'lecture/index.html.twig',
@@ -43,8 +49,11 @@ class LectureController extends Controller
     public function showAction(Lecture $lecture)
     {
 
-        return $this->render('lecture/show.html.twig', array(
-            'lecture' => $lecture,
-        ));
+        return $this->render(
+            'lecture/show.html.twig',
+            [
+                'lecture' => $lecture,
+            ]
+        );
     }
 }

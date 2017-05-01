@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% trans_default_domain "app" %}
+
+{% block title %}{{ homework.title }}{% endblock %}
+
+{% block body %}
+    <ol class="breadcrumb">
+        <li><a href="/">{{ 'home'|trans }}</a></li>
+        <li><a href="{{ path('homework_index') }}">{{ 'homework.homework'|trans }}</a></li>
+        <li class="active">{{ homework.title }}</li>
+    </ol>
+
+    <h1 class="content-title">{{ homework.title }} <br /><small>{{ 'homework.homework'|trans }}</small></h1>
+    <hr />
+    <p>{{ 'date'|trans }}: {% if homework.dueDate %}{{ homework.dueDate|date('Y-m-d') }}{% endif %}</p>
+
+    <article>{{ homework.description }}</article>
+
+
+    <p><a href="{{ path('homework_index') }}">{{ 'back_to_the_list'|trans }}</a></p>
+
+    <div class="assignment-block">
+    {% if my_assignment is not null %}
+        <h3>{{ 'assignment.my'|trans }}</h3>
+        <p>{{ 'assignment.grade'|trans }}: {{ my_assignment.grade }}</p>
+        <p>{{ 'assignment.file'|trans }}: <a href="{{ path('homework_download', { 'file': my_assignment.work }) }}">{{ my_assignment.work }}</a></p>
+        <p><a href="{{ path('lecture_show', { 'id': my_assignment.id }) }}">{{ 'show'|trans }}</a></p>
+    {% elseif app.user.isStudent %}
+        {% form_theme assignment_form 'bootstrap_3_horizontal_layout.html.twig' %}
+
+        <h3>{{ 'assignment.new'|trans }}</h3>
+        <div class="">
+            {{ form_start(assignment_form) }}
+            {{ form_widget(assignment_form) }}
+            {{ form_end(assignment_form) }}
+        </div>
+    {% else %}
+        <h3>{{ 'assignment.assignments'|trans }}</h3>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>{{ 'student'|trans }}</th>
+                    <th>{{ 'assignment.file'|trans }}</th>
+                    <th>{{ 'assignment.grade'|trans }}</th>
+                    <th>{{ 'action'|trans }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for assignment in assignments %}
+                    <tr>
+                        <td><a href="{{ path('lecture_show', { 'id': assignment.id }) }}">{{ assignment.student }}</a></td>
+                        <td><a href="{{ path('homework_download', { 'file': assignment.work }) }}">{{ assignment.work }}</a></td>
+                        <td>{{ assignment.grade }}</td>
+                        <td><a href="{{ path('lecture_show', { 'id': assignment.id }) }}">{{ 'show'|trans }}</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+    </div>
+{% endblock %}
