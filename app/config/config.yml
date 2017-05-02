@@ -208,7 +208,6 @@ easy_admin:
                     - description
                     - dueDate
                     - lecturer
-
         Assignment:
             controller: AppBundle\Controller\Admin\AssignmentController
             class: AppBundle\Entity\Assignment
@@ -226,14 +225,14 @@ easy_admin:
             controller: AppBundle\Controller\Admin\NewsController
             class: AppBundle\Entity\News
             access_role: ROLE_LECTOR
-            edit:
-                form_options: { validation_groups: ['Default'] }
             form:
                 fields:
                     - title
                     - description
                     - date
                     - author
+            edit:
+                form_options: { validation_groups: ['Default'] }
             new:
                 form_options: { validation_groups: ['registration'] }
             list:
@@ -253,13 +252,13 @@ easy_admin:
             controller: AppBundle\Controller\Admin\CommentController
             class: AppBundle\Entity\Comment
             access_role: ROLE_USER
-            edit:
-                form_options: { validation_groups: ['Default'] }
             form:
                 fields:
                     - content
                     - date
                     - author
+            edit:
+                form_options: { validation_groups: ['Default'] }
             new:
                 form_options: { validation_groups: ['registration'] }
             list:

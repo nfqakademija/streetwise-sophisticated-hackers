@@ -53,9 +53,9 @@ class News implements HasOwnerInterface
     private $author;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Comment", mappedBy="newsId")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\CommentThread", cascade={"all"})
      */
-    private $comments;
+    private $thread;
 
     /**
      * Get id
@@ -144,44 +144,39 @@ class News implements HasOwnerInterface
     }
 
     /**
-     * Add comment
-     *
-     * @param \AppBundle\Entity\Comment $comment
-     *
-     * @return News
-     */
-    public function addComment(Comment $comment)
-    {
-        $this->comments[] = $comment;
-
-        return $this;
-    }
-
-    /**
-     * Remove comment
-     *
-     * @param \AppBundle\Entity\Comment $comment
-     */
-    public function removeComment(Comment $comment)
-    {
-        $this->comments->removeElement($comment);
-    }
-
-    /**
-     * Get comments
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getComments()
-    {
-        return $this->comments;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getOwner(): User
     {
         return $this->author;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return 'News #' . $this->id;
+    }
+
+    /**
+     * Set thread
+     * @param \AppBundle\Entity\CommentThread $thread
+     * @return News
+     */
+    public function setThread(CommentThread $thread = null)
+    {
+        $this->thread = $thread;
+
+        return $this;
+    }
+
+    /**
+     * Get thread
+     * @return \AppBundle\Entity\CommentThread
+     */
+    public function getThread()
+    {
+        return $this->thread;
     }
 }
