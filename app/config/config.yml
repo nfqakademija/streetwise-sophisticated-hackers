@@ -108,13 +108,6 @@ fos_message:
 easy_admin:
     site_name: '<img src="/assets/img/nfq.png" />'
     design:
-        menu:
-            - { label: 'Messenger', url: '/messages' }
-            - News
-            - Lecture
-            - Homework
-            - User
-            - Comment
         brand_color: '#000000'
     entities:
         User:

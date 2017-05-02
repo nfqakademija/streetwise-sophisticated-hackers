@@ -23,6 +23,7 @@ monolog:
 easy_admin:
     design:
         menu:
+            - { label: 'Messenger', url: '/messages' }
             - User
             - Lecture
             - Homework
