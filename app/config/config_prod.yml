@@ -41,10 +41,6 @@ easy_admin:
                     - { property: 'roles', type: 'choice', type_options: { multiple: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_LECTOR': 'ROLE_LECTOR', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
             edit:
                 form_options: { validation_groups: ['Default'] }
-                fields:
-                    # if administrators are allowed to edit users' passwords and roles, add this:
-                    - { property: 'plainPassword', label: 'New password', type: 'password', type_options: { required: false } }
-                    - { property: 'confirmPassword', label: 'Confirm password', type: 'password', type_options: { required: false } }
             new:
                 form_options: { validation_groups: ['Default', 'registration'] }
                 fields:

@@ -69,6 +69,12 @@ class User extends BaseUser implements ParticipantInterface, HasOwnerInterface
      */
     private $interests;
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->name = '';
+    }
+
     /**
      * @return string
      */
@@ -131,16 +137,6 @@ class User extends BaseUser implements ParticipantInterface, HasOwnerInterface
     public function setName(string $name)
     {
         $this->name = $name;
-    }
-
-    /**
-     * @Assert\IsTrue(message = "Passwords are not the same")
-     *
-     * @return boolean
-     */
-    public function isPasswordLegal()
-    {
-        return ($this->plainPassword == $this->confirmPassword);
     }
 
     /**
