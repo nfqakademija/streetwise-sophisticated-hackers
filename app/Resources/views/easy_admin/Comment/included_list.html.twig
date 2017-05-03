@@ -1,0 +1,44 @@
+<h4>{{ 'submitted.comments'|trans(_trans_parameters, 'EasyAdminBundle') }}</h4>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+        <tr>
+            <th class="datetime">
+                {{ 'submitted'|trans(_trans_parameters, 'EasyAdminBundle') }}
+            </th>
+            <th class="string">
+                {{ 'content'|trans(_trans_parameters, 'EasyAdminBundle') }}
+            </th>
+            <th class="string">
+                {{ 'author'|trans(_trans_parameters, 'EasyAdminBundle') }}
+            </th>
+            <th>
+                <span>{{ 'actions'|trans(_trans_parameters, 'EasyAdminBundle') }}</span>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for comment in comments %}
+                <tr>
+                    <td data-label="Date" class="sorted datetime">
+                        {{ comment.date|date('Y-m-d H:i:s') }}
+                    </td>
+                    <td data-label="Content" class="string">
+                        {{ comment.content }}
+                    </td>
+                    <td class="string">
+                        <a href="{{ path('easyadmin', {'action': 'show', 'entity': 'User', 'id': comment.author.id}) }}" >
+                            {{ comment.author }}
+                        </a>
+                    </td>
+                    <td data-label="Actions" class="actions">
+                        <a class="action-show"
+                           href="{{ path('easyadmin', {'action': 'show', 'entity': 'Comment', 'id': comment.id}) }}" >
+                            {{ 'show.action'|trans(_trans_parameters, 'EasyAdminBundle') }}
+                        </a>
+					</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
