@@ -51,10 +51,6 @@ class UserController extends BaseAdminController
         $this->dispatch(EasyAdminEvents::PRE_EDIT);
 
         $id = $this->request->query->get('id');
-        $easyadmin = $this->request->attributes->get('easyadmin');
-        $entity = $easyadmin['item'];
-
-        $this->denyAccessUnlessGranted('edit', $entity);
 
         //TODO: updateEntityProperty is private
         /*if ($this->request->isXmlHttpRequest() && $property = $this->request->query->get('property')) {
@@ -72,7 +68,7 @@ class UserController extends BaseAdminController
 
         $fields = $this->entity['edit']['fields'];
 
-        if (!$this->getUser()->hasRole('ROLE_ADMIN') && $this->getUser()->getId() == $this->request->query->get('id')) {
+        if (!$this->getUser()->hasRole('ROLE_ADMIN') && $this->getUser()->getId() == $id) {
             $editForm = $this->createForm(UserType::class, $entity);
         } else {
             $editForm = $this->createEditForm($entity, $fields);
@@ -82,6 +78,12 @@ class UserController extends BaseAdminController
 
         $editForm->handleRequest($this->request);
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+            if ($entity->getPlainPassword() != null) {
+                $encoder = $this->container->get('security.password_encoder');
+                $password = $encoder->encodePassword($entity, $entity->getPlainPassword());
+                $entity->setPassword($password);
+            }
+
             $this->dispatch(EasyAdminEvents::PRE_UPDATE, array('entity' => $entity));
 
             $this->preUpdateEntity($entity);
