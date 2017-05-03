@@ -6,6 +6,7 @@ use AppBundle\Entity\News;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * News controller.
@@ -20,16 +21,24 @@ class NewsController extends Controller
      * @Route("/", name="news_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $news = $em->getRepository('AppBundle:News')->findAll();
+        $dql = "SELECT a FROM AppBundle:News a ORDER BY a.date DESC";
+        $query = $em->createQuery($dql);
+
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            5
+        );
 
         return $this->render(
             'news/index.html.twig',
             [
-                'news' => $news,
+                'pagination' => $pagination,
             ]
         );
     }
