@@ -42,6 +42,8 @@ twig:
     strict_variables: '%kernel.debug%'
     paths:
       '%kernel.root_dir%/Resources': AppBundle
+    globals:
+        gravatar_url: 'https://www.gravatar.com/avatar/'
 
 # Doctrine Configuration
 doctrine:
@@ -108,16 +110,32 @@ fos_message:
 easy_admin:
     site_name: '<img src="/assets/img/nfq.png" />'
     design:
+        assets:
+            css:
+                - 'https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css'
+                - 'https://cdn.jsdelivr.net/jquery.ui.timepicker.addon/1.4.5/jquery-ui-timepicker-addon.min.css'
+                - '/assets/css/admin.css'
+            js:
+                - 'https://code.jquery.com/ui/1.12.1/jquery-ui.js'
+                - 'https://cdn.jsdelivr.net/jquery.ui.timepicker.addon/1.4.5/jquery-ui-timepicker-addon.min.js'
+                - '/assets/js/datepicker.js'
         brand_color: '#000000'
+    formats:
+            date:     'Y-m-d'
+            time:     'H:i'
+            datetime: 'Y-m-d H:i'
     entities:
         User:
             controller: AppBundle\Controller\Admin\UserController
             class: AppBundle\Entity\User
+            image_base_path: 'https://www.gravatar.com/avatar/'
             form:
                 fields:
                     - username
                     - name
                     - { property: 'email', type: 'email', label: 'Email' }
+                    - occupation
+                    - { property: 'interests', label: 'Programming interests' }
                     - enabled
                     - { property: 'roles', type: 'choice', type_options: { multiple: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_LECTOR': 'ROLE_LECTOR', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
             edit:
@@ -133,18 +151,20 @@ easy_admin:
                     - { property: 'plainPassword', label: 'Password', type: 'password', type_options: { required: true } }
                     - { property: 'confirmPassword', label: 'Confirm password', type: 'password', type_options: { required: false } }
             list:
+                title: 'Users'
                 actions: ['show']
                 fields:
+                    - {property: 'gravatar', type: 'image'}
                     - name
                     - email
-                    - roles
+                    - role
             show:
                 fields:
-                    - username
-                    - name
                     - email
+                    - occupation
+                    - { property: 'interests', label: 'Programming interests' }
                     - enabled
-                    - roles
+                    - role
         Lecture:
             controller: AppBundle\Controller\Admin\LectureController
             class: AppBundle\Entity\Lecture
@@ -152,15 +172,16 @@ easy_admin:
                 fields:
                     - title
                     - description
-                    - date
+                    - { property: 'date', type: 'AppBundle\Form\DatePickerType' }
                     - lecturer
             edit:
                 form_options: { validation_groups: ['Default'] }
                 fields:
                     - { property: 'slidesFile', type: 'vich_file' }
             new:
-                form_options: { validation_groups: ['registration'] }
+                form_options: { validation_groups: ['create'] }
             list:
+                title: 'Lectures'
                 sort: [ 'date', 'ASC' ]
                 actions: ['show']
                 fields:
@@ -169,7 +190,6 @@ easy_admin:
                     - lecturer
             show:
                 fields:
-                    - title
                     - description
                     - date
                     - lecturer
@@ -182,12 +202,12 @@ easy_admin:
                 fields:
                     - title
                     - description
-                    - dueDate
+                    - { property: 'dueDate', type: 'AppBundle\Form\DateTimePickerType' }
                     - lecturer
             edit:
                 form_options: { validation_groups: ['Default'] }
             new:
-                form_options: { validation_groups: ['registration'] }
+                form_options: { validation_groups: ['create'] }
             list:
                 sort: [ 'dueDate', 'ASC' ]
                 actions: ['show']
@@ -197,7 +217,6 @@ easy_admin:
                     - lecturer
             show:
                 fields:
-                    - title
                     - description
                     - dueDate
                     - lecturer
@@ -213,7 +232,6 @@ easy_admin:
                     - date
                     - { property: 'work', template: 'work.html.twig', base_path: "/admin/download/homework" }
                     - grade
-                    - { property: 'slides', template: 'slides.html.twig', base_path: '%app.path.lecture_slides%' }
         News:
             controller: AppBundle\Controller\Admin\NewsController
             class: AppBundle\Entity\News
@@ -237,7 +255,6 @@ easy_admin:
                     - author
             show:
                 fields:
-                    - title
                     - description
                     - date
                     - author

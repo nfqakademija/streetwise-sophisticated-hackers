@@ -46,6 +46,11 @@ class Lecture implements HasOwnerInterface
      *
      * @ORM\Column(name="date", type="date")
      * @Assert\NotBlank()
+     * @Assert\Range(
+     *     min = "now",
+     *     max = "+2 years",
+     *     groups="create"
+     * )
      */
     private $date;
 
@@ -224,6 +229,14 @@ class Lecture implements HasOwnerInterface
             // if 'updatedAt' is not defined in your entity, use another property
             $this->updatedAt = new \DateTime('now');
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->title;
     }
 
     /**

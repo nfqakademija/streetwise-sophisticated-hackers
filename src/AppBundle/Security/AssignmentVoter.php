@@ -114,7 +114,7 @@ class AssignmentVoter extends Voter
      */
     private function canView(Assignment $subject, User $user): bool
     {
-        return ($user === $subject->getStudent() || !$user->isStudent());
+        return ($user->getId() == $subject->getOwner()->getId() || !$user->isStudent());
     }
 
     /**
@@ -135,6 +135,6 @@ class AssignmentVoter extends Voter
      */
     public function canGrade(Assignment $subject, User $user): bool
     {
-        return $user === $subject->getHomework()->getLecturer();
+        return $user->getId() == $subject->getHomework()->getOwner()->getId();
     }
 }

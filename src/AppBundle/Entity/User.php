@@ -29,7 +29,7 @@ class User extends BaseUser implements ParticipantInterface, HasOwnerInterface
      * @Assert\Length(min=3, max=100)
      * @Assert\NotBlank()
      */
-    protected $name;
+    private $name;
 
     /**
      * @var string $email
@@ -50,8 +50,56 @@ class User extends BaseUser implements ParticipantInterface, HasOwnerInterface
 
     /**
      * @var string $confirmPassword
+     *
+     * @Assert\NotBlank(groups="registration")
      */
-    protected $confirmPassword;
+    private $confirmPassword;
+
+    /**
+     * @var string $occupation
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $occupation;
+
+    /**
+     * @var string $interests
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $interests;
+
+    /**
+     * @return string
+     */
+    public function getInterests()
+    {
+        return $this->interests;
+    }
+
+    /**
+     * @param string $interests
+     */
+    public function setInterests(string $interests)
+    {
+        $this->interests = $interests;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOccupation()
+    {
+        return $this->occupation;
+    }
+
+    /**
+     * @param string $occupation
+     */
+    public function setOccupation(string $occupation)
+    {
+        $this->occupation = $occupation;
+    }
 
     /**
      * @return string
@@ -98,9 +146,33 @@ class User extends BaseUser implements ParticipantInterface, HasOwnerInterface
     /**
      * @return bool
      */
-    public function isStudent()
+    public function isStudent():bool
     {
         return (!in_array('ROLE_ADMIN', $this->roles) && !in_array('ROLE_LECTOR', $this->roles));
+    }
+
+    /**
+     * @return bool
+     */
+    public function isLector():bool
+    {
+        return (in_array('ROLE_LECTOR', $this->roles));
+    }
+
+    /**
+     * @return string
+     */
+    public function getRole()
+    {
+        if (in_array('ROLE_ADMIN', $this->roles)) {
+            return "Administrator";
+        }
+
+        if (in_array('ROLE_LECTOR', $this->roles)) {
+            return "Lecturer";
+        }
+
+        return "Student";
     }
 
     /**
@@ -109,5 +181,21 @@ class User extends BaseUser implements ParticipantInterface, HasOwnerInterface
     public function getOwner(): User
     {
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGravatar()
+    {
+        return md5($this->getEmail());
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->name;
     }
 }

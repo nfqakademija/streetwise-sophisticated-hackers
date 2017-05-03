@@ -32,9 +32,10 @@ class AppExtension extends EasyAdminTwigExtension
      *
      * @param ConfigManager $configManager
      * @param PropertyAccessor $propertyAccessor
-     * @param bool $debug
      * @param TokenStorageInterface $tokenStorage
      * @param AccessDecisionManagerInterface $decisionManager
+     * @param LogoutUrlGenerator $logoutUrlGenerator
+     * @param bool $debug
      */
     public function __construct(
         ConfigManager $configManager,
@@ -55,11 +56,28 @@ class AppExtension extends EasyAdminTwigExtension
     public function getFunctions()
     {
         $functions = parent::getFunctions();
+
         $functions[] = new \Twig_SimpleFunction('custom_get_actions_for_*_item', [
             $this,
             'getActionsForCertainItem',
         ]);
+        $functions[] = new \Twig_SimpleFunction('user_has_access', [
+            $this,
+            'userHasLectorAccess'
+        ]);
+
         return $functions;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFilters()
+    {
+        $filters = parent::getFilters();
+        $filters[] = new \Twig_SimpleFilter('gravatar', [$this, 'gravatarFilter'], ['is_safe' => array('html')]);
+
+        return $filters;
     }
 
     /**
@@ -114,7 +132,7 @@ class AppExtension extends EasyAdminTwigExtension
             return false;
         }
 
-        $accessRole = $this->getAccessRole($entityName);
+        $accessRole = $this->getEntityAccessRole($entityName);
 
         return ($parent && $this->decisionManager->decide($token, [$accessRole]));
     }
@@ -124,12 +142,41 @@ class AppExtension extends EasyAdminTwigExtension
      *
      * @return string
      */
-    private function getAccessRole(string $entityName)
+    private function getEntityAccessRole(string $entityName)
     {
         if (isset($this->getEntityConfiguration($entityName)['access_role'])) {
             return $this->getEntityConfiguration($entityName)['access_role'];
         }
 
         return 'ROLE_ADMIN';
+    }
+
+    /**
+     * @param string $entity
+     *
+     * @return bool
+     */
+    public function userHasLectorAccess($entity)
+    {
+        $token = $this->tokenStorage->getToken();
+
+        if (null === $token) {
+            return false;
+        }
+
+        $user = $token->getUser();
+
+        return ($entity instanceof HasOwnerInterface && $entity->getOwner()->getId() == $user->getId() ||
+            $this->decisionManager->decide($token, ['ROLE_LECTOR']));
+    }
+
+    /**
+     * @param string $email
+     *
+     * @return string
+     */
+    public function gravatarFilter($email)
+    {
+        return md5($email);
     }
 }

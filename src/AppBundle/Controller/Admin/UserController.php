@@ -78,6 +78,12 @@ class UserController extends BaseAdminController
 
         $editForm->handleRequest($this->request);
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $this->dispatch(
+                EasyAdminEvents::PRE_UPDATE,
+                [
+                    'entity' => $entity
+                ]
+            );
             if ($entity->getPlainPassword() != null) {
                 $encoder = $this->container->get('security.password_encoder');
                 $password = $encoder->encodePassword($entity, $entity->getPlainPassword());
@@ -89,16 +95,24 @@ class UserController extends BaseAdminController
             $this->preUpdateEntity($entity);
             $this->em->flush();
 
-            $this->dispatch(EasyAdminEvents::POST_UPDATE, array('entity' => $entity));
+            $this->dispatch(
+                EasyAdminEvents::POST_UPDATE,
+                [
+                    'entity' => $entity
+                ]
+            );
 
             $refererUrl = $this->request->query->get('referer', '');
 
             return !empty($refererUrl)
                 ? $this->redirect(urldecode($refererUrl))
-                : $this->redirectToRoute('easyadmin', [
-                    'action' => 'list',
-                    'entity' => $this->entity['name'],
-                ]);
+                : $this->redirectToRoute(
+                    'easyadmin',
+                    [
+                        'action' => 'list',
+                        'entity' => $this->entity['name'],
+                    ]
+                );
         }
 
         $this->dispatch(EasyAdminEvents::POST_EDIT);
@@ -136,5 +150,59 @@ class UserController extends BaseAdminController
         $this->denyAccessUnlessGranted('new', $user);
 
         return parent::newAction();
+    }
+
+    /**
+     * @return Response
+     */
+    protected function showUserAction()
+    {
+        $this->dispatch(EasyAdminEvents::PRE_SHOW);
+
+        $id = $this->request->query->get('id');
+        $easyadmin = $this->request->attributes->get('easyadmin');
+        $entity = $easyadmin['item'];
+
+        $fields = $this->entity['show']['fields'];
+        $deleteForm = $this->createDeleteForm($this->entity['name'], $id);
+
+        $lectures = [];
+        $assignments = [];
+
+        if ($entity->isLector()) {
+            $lectures = $this->em->getRepository('AppBundle:Lecture')
+                ->findBy(
+                    [
+                        'lecturer' => $entity->getId()
+                    ]
+                );
+        } elseif ($entity->isStudent()) {
+            $assignments = $this->em->getRepository('AppBundle:Assignment')
+                ->findBy(
+                    [
+                        'student' => $entity->getId()
+                    ]
+                );
+        }
+
+        $this->dispatch(
+            EasyAdminEvents::POST_SHOW,
+            [
+                'deleteForm' => $deleteForm,
+                'fields' => $fields,
+                'entity' => $entity,
+            ]
+        );
+
+        return $this->render(
+            $this->entity['templates']['show'],
+            [
+                'entity' => $entity,
+                'fields' => $fields,
+                'delete_form' => $deleteForm->createView(),
+                'lectures' => $lectures,
+                'assignments' => $assignments,
+            ]
+        );
     }
 }
