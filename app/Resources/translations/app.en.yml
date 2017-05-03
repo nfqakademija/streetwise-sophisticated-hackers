@@ -10,8 +10,6 @@ action: Action
 lecture:
     lectures: Lectures
     lecture: Lecture
-
-lecture_index:
     timetable: Lectures Timetable
 
 homework:
@@ -26,3 +24,8 @@ assignment:
     new: Upload Assignment
     submitted: Submitted
     assignment: Assignment
+
+news:
+    news: News
+    author: Author
+    posted_on: Posted on

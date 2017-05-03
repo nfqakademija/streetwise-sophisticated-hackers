@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% trans_default_domain "app" %}
+
+{% block title %}{{ news.title }}{% endblock %}
+
+{% block body %}
+    <ol class="breadcrumb">
+        <li><a href="/">{{ 'home'|trans }}</a></li>
+        <li><a href="{{ path('news_index') }}">{{ 'news.news'|trans }}</a></li>
+        <li class="active">{{ news.title }}</li>
+    </ol>
+
+    <h1 class="content-title">{{ news.title }} <br /><small>{{ 'news.news'|trans }}</small></h1>
+    <hr />
+    <p>{{ 'news.author'|trans }}: <a href="{{ path('news_show', { 'id': news.id }) }}">{{ news.author }}</a></p>
+    <p>{{ 'news.posted_on'|trans }}: {% if news.date %}{{ news.date|date('Y-m-d') }}{% endif %}</p>
+
+    <article>{{ news.description }}</article>
+
+
+    <p><a href="{{ path('news_index') }}">{{ 'back_to_the_list'|trans }}</a></p>
+
+{% endblock %}
