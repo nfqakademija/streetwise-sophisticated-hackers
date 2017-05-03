@@ -29,3 +29,11 @@ news:
     news: News
     author: Author
     posted_on: Posted on
+
+user:
+    users: Users
+    name: Name
+    email: Email
+    role: Role
+    occupation: Occupation
+    interests: Interests

@@ -14,6 +14,7 @@
     <h1 class="content-title">{{ homework.title }} <br /><small>{{ 'homework.homework'|trans }}</small></h1>
     <hr />
     <p>{{ 'date'|trans }}: {% if homework.dueDate %}{{ homework.dueDate|date('Y-m-d') }}{% endif %}</p>
+    <p>{{ 'lecturer'|trans }}: <a href="{{ path('user_show', { 'id': homework.lecturer.id }) }}">{{ homework.lecturer }}</a></p>
 
     <article>{{ homework.description }}</article>
 
@@ -49,7 +50,7 @@
             <tbody>
                 {% for assignment in assignments %}
                     <tr>
-                        <td><a href="{{ path('lecture_show', { 'id': assignment.id }) }}">{{ assignment.student }}</a></td>
+                        <td><a href="{{ path('user_show', { 'id': assignment.student.id }) }}">{{ assignment.student }}</a></td>
                         <td><a href="{{ path('homework_download', { 'file': assignment.work }) }}">{{ assignment.work }}</a></td>
                         <td>{{ assignment.grade }}</td>
                         <td><a href="{{ path('assignment_show', { 'id': assignment.id }) }}">{{ 'show'|trans }}</a></td>

@@ -25,7 +25,7 @@
             <tr>
                 <td><a href="{{ path('lecture_show', { 'id': lecture.id }) }}">{{ lecture.title }}</a></td>
                 <td>{% if lecture.date %}{{ lecture.date|date('Y-m-d') }}{% endif %}</td>
-                <td><a href="{{ path('lecture_show', { 'id': lecture.id }) }}">{{ lecture.lecturer.name }}</a></td>
+                <td><a href="{{ path('user_show', { 'id': lecture.lecturer.id }) }}">{{ lecture.lecturer }}</a></td>
             </tr>
         {% endfor %}
         </tbody>

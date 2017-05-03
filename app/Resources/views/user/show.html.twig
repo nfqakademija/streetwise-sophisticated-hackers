@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% trans_default_domain "app" %}
+
+{% block title %}{{ user.name }}{% endblock %}
+
+{% block body %}
+    <ol class="breadcrumb">
+        <li><a href="/">{{ 'home'|trans }}</a></li>
+        <li><a href="{{ path('user_index') }}">{{ 'user.users'|trans }}</a></li>
+        <li class="active">{{ user.name }}</li>
+    </ol>
+
+    <div class="row">
+        <div class="col-md-1 col-md-offset-3">
+            <img src="{{ gravatar_url }}{{ user.email|gravatar }}" />
+        </div>
+        <div class="col-md-6">
+            <h1>{{ user.name }}</h1>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <p>{{ 'user.email'|trans }}: {{ user.email }}</a></p>
+            <p>{{ 'user.role'|trans }}: {{ user.role }}</p>
+            <p>{{ 'user.occupation'|trans }}: {{ user.occupation }}</p>
+            <p>{{ 'user.interests'|trans }}: {{ user.interests }}</p>
+            <p><a href="{{ path('user_index') }}">{{ 'back_to_the_list'|trans }}</a></p>
+        </div>
+    </div>
+
+{% endblock %}

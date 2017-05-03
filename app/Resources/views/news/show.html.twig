@@ -13,7 +13,7 @@
 
     <h1 class="content-title">{{ news.title }} <br /><small>{{ 'news.news'|trans }}</small></h1>
     <hr />
-    <p>{{ 'news.author'|trans }}: <a href="{{ path('news_show', { 'id': news.id }) }}">{{ news.author }}</a></p>
+    <p>{{ 'news.author'|trans }}: <a href="{{ path('user_show', { 'id': news.author.id }) }}">{{ news.author }}</a></p>
     <p>{{ 'news.posted_on'|trans }}: {% if news.date %}{{ news.date|date('Y-m-d') }}{% endif %}</p>
 
     <article>{{ news.description }}</article>

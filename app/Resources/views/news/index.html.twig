@@ -16,7 +16,7 @@
         <div class="news-block">
             <h3><a href="{{ path('news_show', { 'id': news.id }) }}">{{ news.title }}</a></h3>
             <p>{{ 'news.posted_on'|trans }} {% if news.date %}{{ news.date|date('Y-m-d') }}{% endif %}</p>
-            <p>{{ 'news.author'|trans }}: <a href="{{ path('news_show', { 'id': news.id }) }}">{{ news.author }}</a></p>
+            <p>{{ 'news.author'|trans }}: <a href="{{ path('user_show', { 'id': news.author.id }) }}">{{ news.author }}</a></p>
             <p>{{ news.description|slice(0, 500) }}...</p>
         </div>
     {% endfor %}

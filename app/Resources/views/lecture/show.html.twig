@@ -14,6 +14,7 @@
     <h1 class="content-title">{{ lecture.title }} <br /><small>{{ 'lecture.lecture'|trans }}</small></h1>
     <hr />
     <p>{{ 'date'|trans }}: {% if lecture.date %}{{ lecture.date|date('Y-m-d') }}{% endif %}</p>
+    <p>{{ 'lecturer'|trans }}: <a href="{{ path('user_show', { 'id': lecture.lecturer.id }) }}">{{ lecture.lecturer }}</a></p>
 
     <article>{{ lecture.description }}</article>
 
