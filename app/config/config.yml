@@ -99,8 +99,13 @@ vich_uploader:
             namer:              vich_uploader.namer_origname
         work_file:
             uri_prefix: '%app.path.homework_assignments%'
-            upload_destination: %kernel.root_dir%/Resources/uploads/files/homework/assignments
+            upload_destination: '%kernel.root_dir%/Resources/uploads/files/homework/assignments'
             namer:              vich_uploader.namer_origname
+
+fos_message:
+    db_driver: orm
+    thread_class: AppBundle\Entity\Thread
+    message_class: AppBundle\Entity\Message
 
 easy_admin:
     site_name: '<img src="/assets/img/nfq.png" />'
@@ -114,11 +119,6 @@ easy_admin:
                 - 'https://code.jquery.com/ui/1.12.1/jquery-ui.js'
                 - 'https://cdn.jsdelivr.net/jquery.ui.timepicker.addon/1.4.5/jquery-ui-timepicker-addon.min.js'
                 - '/assets/js/datepicker.js'
-        menu:
-            - { entity: 'Lecture', label: 'Lectures', icon: 'book', default: true }
-            - { entity: 'Homework', label: 'Homework', icon: 'laptop' }
-            - { entity: 'News', label: 'News', icon: 'bullhorn' }
-            - { entity: 'User', label: 'Users', icon: 'users' }
         brand_color: '#000000'
     formats:
             date:     'Y-m-d'
@@ -220,7 +220,6 @@ easy_admin:
                     - description
                     - dueDate
                     - lecturer
-
         Assignment:
             controller: AppBundle\Controller\Admin\AssignmentController
             class: AppBundle\Entity\Assignment
@@ -237,20 +236,16 @@ easy_admin:
             controller: AppBundle\Controller\Admin\NewsController
             class: AppBundle\Entity\News
             access_role: ROLE_LECTOR
+            form:
+                fields:
+                    - title
+                    - description
+                    - date
+                    - author
             edit:
                 form_options: { validation_groups: ['Default'] }
-                fields:
-                    - title
-                    - description
-                    - date
-                    - author
             new:
                 form_options: { validation_groups: ['registration'] }
-                fields:
-                    - title
-                    - description
-                    - date
-                    - author
             list:
                 actions: ['show']
                 sort: [ 'date', 'ASC' ]
@@ -267,18 +262,15 @@ easy_admin:
             controller: AppBundle\Controller\Admin\CommentController
             class: AppBundle\Entity\Comment
             access_role: ROLE_USER
+            form:
+                fields:
+                    - content
+                    - date
+                    - author
             edit:
                 form_options: { validation_groups: ['Default'] }
-                fields:
-                    - content
-                    - date
-                    - author
             new:
                 form_options: { validation_groups: ['registration'] }
-                fields:
-                    - content
-                    - date
-                    - author
             list:
                 sort: [ 'date', 'ASC' ]
                 actions: ['show']
