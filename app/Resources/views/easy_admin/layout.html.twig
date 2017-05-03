@@ -2,7 +2,7 @@
 
 {% block user_menu_dropdown %}
     <li>
-        <a href="/profile"><i class="fa fa-user"></i> {{ 'user.profile'|trans(domain = 'EasyAdminBundle') }}</a>
+        <a href="{{ path('easyadmin', { action: 'show', entity: 'User', id: app.user.id })|raw }}"><i class="fa fa-user"></i> {{ 'user.profile'|trans(domain = 'EasyAdminBundle') }}</a>
     </li>
     <li>
         <a href="{{ _logout_path }}"><i class="fa fa-sign-out"></i> {{ 'user.signout'|trans(domain = 'EasyAdminBundle') }}</a>

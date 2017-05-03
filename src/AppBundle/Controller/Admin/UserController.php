@@ -3,7 +3,7 @@
 namespace AppBundle\Controller\Admin;
 
 use AppBundle\Form\UserType;
-use AppBundle\Form\UserWithPasswordType;
+use AppBundle\Form\UserBigType;
 use JavierEguiluz\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
 use JavierEguiluz\Bundle\EasyAdminBundle\Event\EasyAdminEvents;
 use AppBundle\Entity\User;
@@ -72,7 +72,7 @@ class UserController extends BaseAdminController
         if ($this->getUser()->hasRole('ROLE_ADMIN') && $this->getUser()->getId() != $id) {
             $editForm = $this->createEditForm($entity, $fields);
         } elseif ($this->getUser()->hasRole('ROLE_ADMIN')) {
-            $editForm = $this->createForm(UserWithPasswordType::class, $entity);
+            $editForm = $this->createForm(UserBigType::class, $entity);
         } else {
             $editForm = $this->createForm(UserType::class, $entity);
         }

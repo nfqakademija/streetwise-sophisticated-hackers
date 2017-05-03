@@ -8,7 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class UserWithPasswordType extends AbstractType
+class UserBigType extends AbstractType
 {
     /**
      * {@inheritdoc}
