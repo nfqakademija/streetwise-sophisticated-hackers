@@ -80,7 +80,9 @@ class HomeworkController extends Controller
             $em->persist($assignment);
             $em->flush();
 
-            return $this->redirectToRoute('homework_index');
+            return $this->redirectToRoute('homework_show', [
+                'id' => $homework->getId(),
+            ]);
         }
 
         return $this->render(

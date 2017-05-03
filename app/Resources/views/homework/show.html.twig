@@ -19,13 +19,13 @@
 
 
     <p><a href="{{ path('homework_index') }}">{{ 'back_to_the_list'|trans }}</a></p>
-
+    <hr />
     <div class="assignment-block">
     {% if my_assignment is not null %}
         <h3>{{ 'assignment.my'|trans }}</h3>
         <p>{{ 'assignment.grade'|trans }}: {{ my_assignment.grade }}</p>
         <p>{{ 'assignment.file'|trans }}: <a href="{{ path('homework_download', { 'file': my_assignment.work }) }}">{{ my_assignment.work }}</a></p>
-        <p><a href="{{ path('lecture_show', { 'id': my_assignment.id }) }}">{{ 'show'|trans }}</a></p>
+        <p><a class="btn btn-default" role="button" href="{{ path('assignment_show', { 'id': my_assignment.id }) }}">{{ 'show'|trans }}</a></p>
     {% elseif app.user.isStudent %}
         {% form_theme assignment_form 'bootstrap_3_horizontal_layout.html.twig' %}
 
@@ -52,7 +52,7 @@
                         <td><a href="{{ path('lecture_show', { 'id': assignment.id }) }}">{{ assignment.student }}</a></td>
                         <td><a href="{{ path('homework_download', { 'file': assignment.work }) }}">{{ assignment.work }}</a></td>
                         <td>{{ assignment.grade }}</td>
-                        <td><a href="{{ path('lecture_show', { 'id': assignment.id }) }}">{{ 'show'|trans }}</a></td>
+                        <td><a href="{{ path('assignment_show', { 'id': assignment.id }) }}">{{ 'show'|trans }}</a></td>
                     </tr>
                 {% endfor %}
             </tbody>

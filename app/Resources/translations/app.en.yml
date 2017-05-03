@@ -24,3 +24,5 @@ assignment:
     file: File
     assignments: Assignments
     new: Upload Assignment
+    submitted: Submitted
+    assignment: Assignment
