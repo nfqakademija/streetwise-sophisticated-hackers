@@ -1,0 +1,1 @@
+server 'deploy.nfqakademija.lt', user: 'streetwisehacker', roles: %w{web}
