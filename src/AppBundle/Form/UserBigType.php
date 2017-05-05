@@ -2,13 +2,13 @@
 
 namespace AppBundle\Form;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class UserBigType extends AbstractType
+class UserBigType extends UserType
 {
     /**
      * {@inheritdoc}
@@ -21,34 +21,42 @@ class UserBigType extends AbstractType
         $builder
             ->add(
                 'username',
-                TextType::class
+                TextType::class,
+                [
+                    'constraints' => [
+                        new NotBlank(),
+                        new Length(array(
+                            'max' => 180
+                        ))
+                    ]
+                ]
             )
             ->add(
                 'name',
-                TextType::class
-            )
-            ->add(
-                'email',
-                EmailType::class
-            )
-            ->add(
-                'occupation',
                 TextType::class,
                 [
-                    'required'    => false,
+                    'constraints' => [
+                        new NotBlank(),
+                        new Length(array(
+                            'min' => 3,
+                            'max' => 100
+                        ))
+                    ]
                 ]
-            )
-            ->add(
-                'interests',
-                TextType::class,
-                [
-                    'required'    => false,
-                ]
-            )
-            ->add(
-                'save',
-                SubmitType::class
             )
         ;
+        parent::buildForm($builder, $options);
+    }
+
+    public function setDefaultOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => UserBigType::class,
+        ));
+    }
+
+    public function getName()
+    {
+        return 'bigUser';
     }
 }

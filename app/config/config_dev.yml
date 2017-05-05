@@ -61,7 +61,6 @@ easy_admin:
                 fields:
                     # if administrators are allowed to edit users' passwords and roles, add this:
                     - { property: 'plainPassword', label: 'Password', type: 'password', type_options: { required: true } }
-                    - { property: 'confirmPassword', label: 'Confirm password', type: 'password', type_options: { required: false } }
             list:
                 actions: ['show']
                 fields:

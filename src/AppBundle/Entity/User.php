@@ -29,13 +29,13 @@ class User extends BaseUser implements ParticipantInterface, HasOwnerInterface
      * @Assert\Length(min=3, max=100)
      * @Assert\NotBlank()
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string $email
      *
      * @Assert\Email()
-     * @Assert\Length(max=255)
+     * @Assert\Length(max=180)
      * @Assert\NotBlank()
      */
     protected $email;
@@ -43,31 +43,24 @@ class User extends BaseUser implements ParticipantInterface, HasOwnerInterface
     /**
      * @var string $plainPassword
      *
-     * @Assert\Length(min=6,max=255)
+     * @Assert\Length(min=6,max=72)
      * @Assert\NotBlank(groups="registration")
      */
     protected $plainPassword;
-
-    /**
-     * @var string $confirmPassword
-     *
-     * @Assert\NotBlank(groups="registration")
-     */
-    private $confirmPassword;
 
     /**
      * @var string $occupation
      *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $occupation;
+    protected $occupation;
 
     /**
      * @var string $interests
      *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $interests;
+    protected $interests;
 
     public function __construct()
     {
@@ -105,22 +98,6 @@ class User extends BaseUser implements ParticipantInterface, HasOwnerInterface
     public function setOccupation(string $occupation)
     {
         $this->occupation = $occupation;
-    }
-
-    /**
-     * @return string
-     */
-    public function getConfirmPassword()
-    {
-        return $this->confirmPassword;
-    }
-
-    /**
-     * @param string $confirmPassword
-     */
-    public function setConfirmPassword(string $confirmPassword)
-    {
-        $this->confirmPassword = $confirmPassword;
     }
 
     /**

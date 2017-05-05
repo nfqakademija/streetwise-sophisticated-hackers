@@ -4,11 +4,13 @@ namespace AppBundle\Controller\Admin;
 
 use AppBundle\Form\UserType;
 use AppBundle\Form\UserBigType;
+use AppBundle\Form\UserFullType;
 use JavierEguiluz\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
 use JavierEguiluz\Bundle\EasyAdminBundle\Event\EasyAdminEvents;
 use AppBundle\Entity\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
  * Class UserController
@@ -70,12 +72,17 @@ class UserController extends BaseAdminController
         $fields = $this->entity['edit']['fields'];
 
         if ($this->getUser()->hasRole('ROLE_ADMIN') && $this->getUser()->getId() != $id) {
-            $editForm = $this->createEditForm($entity, $fields);
+            $editForm = $this->createForm(UserFullType::class, $entity);
         } elseif ($this->getUser()->hasRole('ROLE_ADMIN')) {
             $editForm = $this->createForm(UserBigType::class, $entity);
         } else {
             $editForm = $this->createForm(UserType::class, $entity);
         }
+        // TODO: move submit button from controller to template
+        $editForm->add('submit', SubmitType::class, array(
+            'label' => 'Save',
+            'attr'  => array('class' => 'btn btn-default pull-left')
+        ));
 
         $deleteForm = $this->createDeleteForm($this->entity['name'], $id);
 
@@ -91,7 +98,7 @@ class UserController extends BaseAdminController
                 $encoder = $this->container->get('security.password_encoder');
                 $password = $encoder->encodePassword($entity, $entity->getPlainPassword());
                 $entity->setPassword($password);
-                $entity->eraseCredentials();
+                //$entity->eraseCredentials();
             }
 
             $this->dispatch(EasyAdminEvents::PRE_UPDATE, array('entity' => $entity));
@@ -120,7 +127,6 @@ class UserController extends BaseAdminController
         }
 
         $this->dispatch(EasyAdminEvents::POST_EDIT);
-
 
         return $this->render(
             $this->entity['templates']['edit'],
