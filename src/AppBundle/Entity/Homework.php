@@ -104,10 +104,12 @@ class Homework implements HasOwnerInterface
      * Set title
      *
      * @param string $title
+     * @return $this
      */
     public function setTitle(string $title)
     {
         $this->title = $title;
+        return $this;
     }
 
     /**
@@ -124,10 +126,12 @@ class Homework implements HasOwnerInterface
      * Set description
      *
      * @param string $description
+     * @return $this
      */
     public function setDescription(string $description)
     {
         $this->description = $description;
+        return $this;
     }
 
     /**
@@ -144,10 +148,12 @@ class Homework implements HasOwnerInterface
      * Set dueDate
      *
      * @param \DateTime $dueDate
+     * @return $this
      */
     public function setDueDate(\DateTime $dueDate)
     {
         $this->dueDate = $dueDate;
+        return $this;
     }
 
     /**

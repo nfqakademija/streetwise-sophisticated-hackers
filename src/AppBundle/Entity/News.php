@@ -71,10 +71,12 @@ class News implements HasOwnerInterface
      * Set title
      *
      * @param string $title
+     * @return $this
      */
     public function setTitle(string $title)
     {
         $this->title = $title;
+        return $this;
     }
 
     /**
@@ -91,10 +93,12 @@ class News implements HasOwnerInterface
      * Set description
      *
      * @param string $description
+     * @return $this
      */
     public function setDescription(string $description)
     {
         $this->description = $description;
+        return $this;
     }
 
     /**
@@ -111,10 +115,12 @@ class News implements HasOwnerInterface
      * Set date
      *
      * @param \DateTime $date
+     * @return $this
      */
     public function setDate($date)
     {
         $this->date = $date;
+        return $this;
     }
 
     /**
@@ -129,10 +135,12 @@ class News implements HasOwnerInterface
 
     /**
      * @param User $author
+     * @return $this
      */
     public function setAuthor(User $author)
     {
         $this->author = $author;
+        return $this;
     }
 
     /**
