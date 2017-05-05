@@ -17,6 +17,7 @@
         "doctrine/doctrine-cache-bundle": "^1.2",
         "doctrine/doctrine-migrations-bundle": "^1.0",
         "doctrine/orm": "^2.5",
+        "friendsofsymfony/message-bundle": "^1.3",
         "friendsofsymfony/user-bundle": "~2.0",
         "fzaninotto/faker": "^1.6",
         "incenteev/composer-parameter-handler": "^2.0",

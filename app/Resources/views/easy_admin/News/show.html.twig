@@ -1,11 +1,5 @@
 {% extends '@EasyAdmin/default/show.html.twig' %}
-{% form_theme assignment_form with easyadmin_config('design.form_theme') %}
-
-{% block content_title %}
-    {% spaceless %}
-        {{ entity }}
-    {% endspaceless %}
-{% endblock %}
+{% form_theme comment_form with easyadmin_config('design.form_theme') %}
 
 {% block main %}
     <div class="form-horizontal">
@@ -54,34 +48,25 @@
     </div>
 
     {% block delete_form %}
-        {{ include('@EasyAdmin/default/includes/_delete_form.html.twig', {
-            view: 'show',
-            referer: app.request.query.get('referer', ''),
-            delete_form: delete_form,
-            _translation_domain: _entity_config.translation_domain,
-            _trans_parameters: _trans_parameters,
-            _entity_config: _entity_config,
-        }, with_context = false) }}
+        {{ parent() }}
     {% endblock delete_form %}
 
-    {% if my_assignment is not null %}
-        {{ include('@AppBundle/views/easy_admin/Assignment/included_show.html.twig', {
-            my_assignment: my_assignment,
-            _trans_parameters: _trans_parameters
-        }, with_context = false) }}
-    {% elseif app.user.isStudent %}
+    <h4>{{ 'new.comment'|trans(_trans_parameters, 'EasyAdminBundle') }}</h4>
+    <div class="form-horizontal">
+        {{ form_start(comment_form) }}
+        {{ form_widget(comment_form) }}
+        <input type="submit" />
+        {{ form_end(comment_form) }}
+    </div>
 
-        <h4>{{ 'new.assignment'|trans(_trans_parameters, 'EasyAdminBundle') }}</h4>
-        <div class="form-horizontal">
-        {{ form_start(assignment_form) }}
-        {{ form_widget(assignment_form) }}
-        {{ form_end(assignment_form) }}
-        </div>
-    {% else %}
-        {{ include('@AppBundle/views/easy_admin/Assignment/included_list.html.twig', {
-            assignments: assignments,
-            _trans_parameters: _trans_parameters
-        }, with_context = false) }}
-    {% endif %}
+    {{
+        include(
+            '@AppBundle/views/easy_admin/Comment/included_list.html.twig',
+            {
+                comments: comments,
+                _trans_parameters: _trans_parameters
+            },
+            with_context = false)
+    }}
+
 {% endblock %}
-

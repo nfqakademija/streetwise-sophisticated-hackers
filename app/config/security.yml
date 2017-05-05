@@ -1,5 +1,7 @@
 # app/config/security.yml
 security:
+    access_decision_manager:
+        strategy: unanimous
     encoders:
         FOS\UserBundle\Model\UserInterface: bcrypt
 

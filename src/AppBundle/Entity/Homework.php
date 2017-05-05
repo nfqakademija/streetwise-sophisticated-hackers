@@ -42,6 +42,11 @@ class Homework implements HasOwnerInterface
      * @var \DateTime
      *
      * @ORM\Column(name="due_date", type="datetime")
+     * @Assert\Range(
+     *     min = "now",
+     *     max = "+2 years",
+     *     groups="create"
+     * )
      */
     private $dueDate;
 
@@ -187,5 +192,37 @@ class Homework implements HasOwnerInterface
     public function getOwner(): User
     {
         return $this->lecturer;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Add assignment
+     *
+     * @param \AppBundle\Entity\Assignment $assignment
+     *
+     * @return Homework
+     */
+    public function addAssignment(\AppBundle\Entity\Assignment $assignment)
+    {
+        $this->assignments[] = $assignment;
+
+        return $this;
+    }
+
+    /**
+     * Remove assignment
+     *
+     * @param \AppBundle\Entity\Assignment $assignment
+     */
+    public function removeAssignment(\AppBundle\Entity\Assignment $assignment)
+    {
+        $this->assignments->removeElement($assignment);
     }
 }
