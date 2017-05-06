@@ -25,6 +25,9 @@ class HomeworkController extends Controller
      */
     public function indexAction()
     {
+        $homework = new Homework();
+        $this->denyAccessUnlessGranted('list', $homework);
+
         $em = $this->getDoctrine()->getManager();
 
         $homeworks =
@@ -48,9 +51,14 @@ class HomeworkController extends Controller
      *
      * @Route("/{id}", name="homework_show")
      * @Method({"GET", "POST"})
+     *
+     * @param Request $request
+     * @param Homework $homework
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function showAction(Request $request, Homework $homework)
     {
+        $this->denyAccessUnlessGranted('show', $homework);
         $assignments = $homework->getAssignments();
 
         $em = $this->getDoctrine()->getManager();

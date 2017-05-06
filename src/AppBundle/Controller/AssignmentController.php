@@ -19,6 +19,9 @@ class AssignmentController extends Controller
      *
      * @Route("/{id}", name="assignment_show")
      * @Method("GET")
+     *
+     * @param Assignment $assignment
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(Assignment $assignment)
     {

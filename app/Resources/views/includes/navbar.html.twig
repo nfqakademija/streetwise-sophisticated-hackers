@@ -8,16 +8,21 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/"><img src="/assets/img/nfq.png" /></a>
+            <a class="navbar-brand" href="/"><img src="{{ asset('assets/img/nfq.png') }}" /></a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="{{ path('lecture_index') }}">Lectures</a></li>
-                <li><a href="{{ path('homework_index') }}">Homework</a></li>
+            <ul class="nav navbar-nav">
                 <li><a href="{{ path('news_index') }}">News</a></li>
+				<li><a href="{{ path('lecture_index') }}">Lectures</a></li>
+                <li><a href="{{ path('homework_index') }}">Homework</a></li>
                 <li><a href="{{ path('user_index') }}">Users</a></li>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li><a href="{{ path('easyadmin') }}">Admin page</a></li>
+                {% endif %}
+            </ul>
+			<ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle username" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                         <span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{ app.user.name }} <span class="caret"></span>
@@ -30,6 +35,11 @@
                     </ul>
                 </li>
             </ul>
+        </div><!-- /.navbar-collapse -->
+		
+		<!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>

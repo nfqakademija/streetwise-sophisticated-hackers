@@ -36,11 +36,6 @@ monolog:
 easy_admin:
     design:
         menu:
-            - { label: 'Messenger', url: '/messages', icon: 'envelope' }
-            - { entity: 'User', label: 'Users', icon: 'users' }
-            - { entity: 'Lecture', label: 'Lectures', icon: 'book', default: true }
-            - { entity: 'Homework', label: 'Homework', icon: 'laptop' }
-            - { entity: 'News', label: 'News', icon: 'bullhorn' }
             - CommentThread
             - Comment
     entities:
