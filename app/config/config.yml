@@ -143,13 +143,11 @@ easy_admin:
                 fields:
                     # if administrators are allowed to edit users' passwords and roles, add this:
                     - { property: 'plainPassword', label: 'New password', type: 'password', type_options: { required: false } }
-                    - { property: 'confirmPassword', label: 'Confirm password', type: 'password', type_options: { required: false } }
             new:
                 form_options: { validation_groups: ['Default', 'registration'] }
                 fields:
                     # if administrators are allowed to edit users' passwords and roles, add this:
                     - { property: 'plainPassword', label: 'Password', type: 'password', type_options: { required: true } }
-                    - { property: 'confirmPassword', label: 'Confirm password', type: 'password', type_options: { required: false } }
             list:
                 title: 'Users'
                 actions: ['show']

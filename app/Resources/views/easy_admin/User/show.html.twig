@@ -50,6 +50,9 @@
                     trans_parameters: _trans_parameters,
                     item_id: _entity_id
                 }, with_context = false) }}
+                {% if app.user.id == entity.id %}
+                    <a class="" href="{{ path('fos_user_change_password') }}">Change Password</a>
+                {% endif %}
             {% endblock item_actions %}
             </div>
         </div>
@@ -87,6 +90,7 @@
                     {% endfor %}
                 {% endif %}
             </table>
+        </div>
     {% endif %}
 
     {% if entity.isStudent and user_has_access(entity) %}
@@ -114,6 +118,7 @@
                             </tr>
                         {% endfor %}
                 </table>
+            </div>
     {% endif %}
 {% endblock %}
 
