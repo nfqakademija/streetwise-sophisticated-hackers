@@ -36,7 +36,7 @@
             {{ form_widget(assignment_form) }}
             {{ form_end(assignment_form) }}
         </div>
-    {% else %}
+    {% elseif assignments|length > 0 %}
         <h3>{{ 'assignment.assignments'|trans }}</h3>
         <table class="table table-hover">
             <thead>

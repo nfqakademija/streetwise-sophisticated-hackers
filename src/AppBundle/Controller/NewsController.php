@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Controller\Admin\CommentTrait;
 
 /**
  * News controller.
@@ -15,6 +16,8 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class NewsController extends Controller
 {
+    use CommentTrait;
+
     /**
      * Lists all news entities.
      *
@@ -55,7 +58,7 @@ class NewsController extends Controller
      * Finds and displays a news entity.
      *
      * @Route("/{id}", name="news_show")
-     * @Method("GET")
+     * @Method({"GET"})
      *
      * @param News $news
      * @return \Symfony\Component\HttpFoundation\Response
@@ -63,10 +66,14 @@ class NewsController extends Controller
     public function showAction(News $news)
     {
         $this->denyAccessUnlessGranted('show', $news);
+
+        $comments = $this->getEntityComments($news);
+
         return $this->render(
             'news/show.html.twig',
             [
                 'news' => $news,
+                'comments' => $comments,
             ]
         );
     }

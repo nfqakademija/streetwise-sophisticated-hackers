@@ -20,5 +20,8 @@
 
 
     <p><a href="{{ path('news_index') }}">{{ 'back_to_the_list'|trans }}</a></p>
+    {% if comments %}
+        {{ include('@AppBundle/views/Comment/list.html.twig') }}
+    {% endif %}
 
 {% endblock %}

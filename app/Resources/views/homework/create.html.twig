@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% trans_default_domain "app" %}
+
+{% block title %}{{ 'homework.create'|trans }}{% endblock %}
+
+{% block body %}
+    {{ form_start(homework_form) }}
+    {{ form_widget(homework_form) }}
+    <button type="submit" class="btn btn-success"> Submit </button>
+    {{ form_end(homework_form) }}
+{% endblock %}

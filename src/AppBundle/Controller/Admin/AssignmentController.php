@@ -2,10 +2,8 @@
 
 namespace AppBundle\Controller\Admin;
 
-use AppBundle\Entity\Assignment;
 use JavierEguiluz\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
 use JavierEguiluz\Bundle\EasyAdminBundle\Event\EasyAdminEvents;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;

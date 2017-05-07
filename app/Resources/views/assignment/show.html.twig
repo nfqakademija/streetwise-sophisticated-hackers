@@ -18,7 +18,16 @@
     <p>{{ 'homework.due_date'|trans }}: {% if assignment.homework.dueDate %}{{ assignment.homework.dueDate|date('Y-m-d') }}{% endif %}</p>
     <p>{{ 'assignment.submitted'|trans }}: {% if assignment.date %}{{ assignment.date|date('Y-m-d') }}{% endif %}</p>
     <p>{{ 'assignment.file'|trans }}: <a href="{{ path('homework_download', { 'file': assignment.work }) }}">{{ assignment.work }}</a></p>
+    {% if assignment.grade %}
+        <p>{{ 'assignment.grade'|trans }}: {{ assignment.grade }}</a></p>
+    {% endif %}
 
     <p><a href="{{ path('homework_show', { 'id': assignment.homework.id }) }}">Back to homework</a></p>
 
+    {% if assignment.homework.lecturer == app.user %}
+        {{ form_start(grade_form) }}
+        {{ form_widget(grade_form) }}
+        <button type="submit" class="btn btn-success"> Submit </button>
+        {{ form_end(grade_form) }}
+    {% endif %}
 {% endblock %}

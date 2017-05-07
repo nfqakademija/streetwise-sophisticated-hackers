@@ -1,0 +1,37 @@
+{% trans_default_domain "app" %}
+
+<h4>{{ 'comment.comments'|trans }}</h4>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+        <tr>
+            <th class="datetime">
+                {{ 'comment.submitted'|trans }}
+            </th>
+            <th class="string">
+                {{ 'comment.content'|trans }}
+            </th>
+            <th class="string">
+                {{ 'comment.author'|trans }}
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for comment in comments %}
+            <tr>
+                <td data-label="Date" class="sorted datetime">
+                    {{ comment.date|date('Y-m-d H:i:s') }}
+                </td>
+                <td data-label="Content" class="string">
+                    {{ comment.content }}
+                </td>
+                <td class="string">
+                    <a href="{{ path('user_show', {'id': comment.author.id}) }}" >
+                        {{ comment.author }}
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

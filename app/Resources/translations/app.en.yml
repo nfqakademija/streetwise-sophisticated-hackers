@@ -6,6 +6,7 @@ back_to_the_list: Back to the list
 show: Show
 student: Student
 action: Action
+description: Description
 
 lecture:
     lectures: Lectures
@@ -13,6 +14,7 @@ lecture:
     timetable: Lectures Timetable
 
 homework:
+    create: Create Homework
     due_date: Due date
     homework: Homework
 
@@ -37,3 +39,9 @@ user:
     role: Role
     occupation: Occupation
     interests: Interests
+
+comment:
+    comments: Comments
+    submitted: Submitted
+    content: Content
+    author: Author

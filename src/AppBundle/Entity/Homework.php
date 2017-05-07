@@ -203,7 +203,7 @@ class Homework implements HasOwnerInterface
      *
      * @return Homework
      */
-    public function addAssignment(\AppBundle\Entity\Assignment $assignment)
+    public function addAssignment(Assignment $assignment)
     {
         $this->assignments[] = $assignment;
 
@@ -215,7 +215,7 @@ class Homework implements HasOwnerInterface
      *
      * @param \AppBundle\Entity\Assignment $assignment
      */
-    public function removeAssignment(\AppBundle\Entity\Assignment $assignment)
+    public function removeAssignment(Assignment $assignment)
     {
         $this->assignments->removeElement($assignment);
     }
