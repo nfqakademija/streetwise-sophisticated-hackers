@@ -22,6 +22,9 @@ class LectureController extends Controller
      */
     public function indexAction()
     {
+        $lecture = new Lecture();
+        $this->denyAccessUnlessGranted('list', $lecture);
+
         $em = $this->getDoctrine()->getManager();
 
         $lectures =
@@ -45,10 +48,13 @@ class LectureController extends Controller
      *
      * @Route("/{id}", name="lecture_show")
      * @Method("GET")
+     *
+     * @param Lecture $lecture
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(Lecture $lecture)
     {
-
+        $this->denyAccessUnlessGranted('show', $lecture);
         return $this->render(
             'lecture/show.html.twig',
             [
