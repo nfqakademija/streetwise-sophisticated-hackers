@@ -50,7 +50,7 @@ class LectureController extends BaseAdminController
     }
 
     /**
-     * @Route("/admin/download/lecture/{file}", name="lecture_download")
+     * @Route("/download/lecture/{file}", name="lecture_download")
      *
      * @param string $file
      * @return Response
