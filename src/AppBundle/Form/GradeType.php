@@ -31,10 +31,6 @@ class GradeType extends AbstractType
                     ]
                 ]
             )
-            ->add(
-                'save',
-                SubmitType::class
-            )
         ;
     }
 

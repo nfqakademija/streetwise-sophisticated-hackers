@@ -6,6 +6,7 @@ use AppBundle\Controller\Admin\CommentTrait;
 use AppBundle\Entity\Assignment;
 use AppBundle\Entity\Comment;
 use AppBundle\Form\CommentType;
+use AppBundle\Form\GradeType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -42,6 +43,8 @@ class AssignmentController extends Controller
         $commentForm = $this->createForm(CommentType::class, $comment);
         $commentForm->handleRequest($request);
 
+        $em = $this->get('doctrine.orm.default_entity_manager');
+
         if ($commentForm->isSubmitted() && $commentForm->isValid()) {
             $this->denyAccessUnlessGranted('new', $comment);
 
@@ -50,8 +53,25 @@ class AssignmentController extends Controller
             $thread = $this->getThreadPromise($assignment);
             $comment->setThread($thread);
 
-            $em = $this->get('doctrine.orm.default_entity_manager');
             $em->persist($comment);
+            $em->flush();
+
+            return $this->redirectToRoute(
+                'assignment_show',
+                [
+                    'id' => $assignment->getId(),
+                ]
+            );
+        }
+
+        $gradeForm = $this->createForm(GradeType::class, $assignment);
+        $gradeForm->handleRequest($request);
+
+        if ($gradeForm->isSubmitted() && $gradeForm->isValid()) {
+            $this->denyAccessUnlessGranted('grade', $assignment);
+            $assignment = $gradeForm->getData();
+
+            $em->persist($assignment);
             $em->flush();
 
             return $this->redirectToRoute(
@@ -68,6 +88,7 @@ class AssignmentController extends Controller
                 'assignment' => $assignment,
                 'comment_form' => $commentForm->createView(),
                 'comments' => $comments,
+                'grade_form' => $gradeForm->createView(),
             ]
         );
     }

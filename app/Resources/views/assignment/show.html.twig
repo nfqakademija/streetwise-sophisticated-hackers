@@ -3,6 +3,7 @@
 {% trans_default_domain "app" %}
 
 {% form_theme comment_form 'bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme grade_form 'bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block title %}{{ 'assignment.assignment'|trans }}{% endblock %}
 
@@ -20,8 +21,21 @@
     <p>{{ 'homework.due_date'|trans }}: {% if assignment.homework.dueDate %}{{ assignment.homework.dueDate|date('Y-m-d') }}{% endif %}</p>
     <p>{{ 'assignment.submitted'|trans }}: {% if assignment.date %}{{ assignment.date|date('Y-m-d') }}{% endif %}</p>
     <p>{{ 'assignment.file'|trans }}: <a href="{{ path('homework_download', { 'file': assignment.work }) }}">{{ assignment.work }}</a></p>
+    <p>{{ 'assignment.grade'|trans }}: {{ assignment.grade }}</p>
 
     <p><a href="{{ path('homework_show', { 'id': assignment.homework.id }) }}">Back to homework</a></p>
+
+    {% if assignment.homework.lecturer == app.user %}
+        <div class="grade-block">
+            <h4>{{ 'assignment.grade'|trans }}</h4>
+            <div class="form-horizontal">
+                {{ form_start(grade_form) }}
+                {{ form_widget(grade_form) }}
+                <button class="btn btn-default center-block" type="submit">Submit</button>
+                {{ form_end(grade_form) }}
+            </div>
+        </div>
+    {% endif %}
 
     <div class="comments-block">
         <h4>{{ 'comment.new'|trans }}</h4>
