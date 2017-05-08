@@ -6,13 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
 
 /**
  * Lecture
  *
  * @ORM\Table(name="lecture")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\LectureRepository")
+ * @ORM\Entity
  * @Vich\Uploadable
  */
 class Lecture implements HasOwnerInterface
@@ -84,6 +83,11 @@ class Lecture implements HasOwnerInterface
      *
      */
     private $updatedAt;
+
+    /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\CommentThread", cascade={"all"})
+     */
+    private $thread;
 
     /**
      * @return \DateTime
@@ -245,5 +249,26 @@ class Lecture implements HasOwnerInterface
     public function getOwner(): User
     {
         return $this->lecturer;
+    }
+
+    /**
+     * Set thread
+     * @param \AppBundle\Entity\CommentThread $thread
+     * @return Lecture
+     */
+    public function setThread(CommentThread $thread = null)
+    {
+        $this->thread = $thread;
+
+        return $this;
+    }
+
+    /**
+     * Get thread
+     * @return \AppBundle\Entity\CommentThread
+     */
+    public function getThread()
+    {
+        return $this->thread;
     }
 }

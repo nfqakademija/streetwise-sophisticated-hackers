@@ -10,6 +10,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\HomeworkType;
+use AppBundle\Controller\Admin\CommentTrait;
+use AppBundle\Entity\Comment;
+use AppBundle\Form\CommentType;
 
 /**
  * Homework controller.
@@ -18,6 +21,8 @@ use AppBundle\Form\HomeworkType;
  */
 class HomeworkController extends Controller
 {
+    use CommentTrait;
+
     /**
      * Lists all homework entities.
      *
@@ -60,10 +65,11 @@ class HomeworkController extends Controller
     public function showAction(Request $request, Homework $homework)
     {
         $this->denyAccessUnlessGranted('show', $homework);
+
+        $em = $this->get('doctrine.orm.default_entity_manager');
+
+        $comments = $this->getEntityComments($homework);
         $assignments = $homework->getAssignments();
-
-        $em = $this->getDoctrine()->getManager();
-
         $myAssignment = $em->getRepository('AppBundle:Assignment')
             ->findOneBy(
                 [
@@ -72,26 +78,55 @@ class HomeworkController extends Controller
                 ]
             );
 
+        $comment = new Comment();
+        $commentForm = $this->get('form.factory')
+            ->createNamedBuilder('commentForm', CommentType::class, $comment)
+            ->getForm();
+
         $assignment = new Assignment();
         $assignment->setDate(new \DateTime());
         $assignment->setHomework($homework);
         $assignment->setStudent($this->getUser());
+        $assignmentForm = $this->get('form.factory')
+            ->createNamedBuilder('assignmentForm', AssignmentType::class, $assignment)
+            ->getForm();
 
-        $assignmentForm = $this->createForm(AssignmentType::class, $assignment);
+        if ('POST' === $request->getMethod()) {
+            if ($request->request->has('assignmentForm')) {
+                $assignmentForm->handleRequest($request);
+                if ($assignmentForm->isSubmitted() && $assignmentForm->isValid() && $myAssignment == null) {
+                    $assignment = new Assignment();
+                    $this->denyAccessUnlessGranted('new', $assignment);
+                    $assignment = $assignmentForm->getData();
+                    $em->persist($assignment);
+                    $em->flush();
 
-        $assignmentForm->handleRequest($request);
+                    return $this->redirectToRoute('homework_show', [
+                        'id' => $homework->getId(),
+                    ]);
+                }
+            }
+            if ($request->request->has('commentForm')) {
+                $commentForm->handleRequest($request);
+                if ($commentForm->isSubmitted() && $commentForm->isValid()) {
+                    $this->denyAccessUnlessGranted('new', $comment);
+                    $comment = $commentForm->getData();
+                    $comment->setAuthor($this->getUser());
 
-        if ($assignmentForm->isSubmitted() && $assignmentForm->isValid() && $myAssignment == null) {
-            $this->denyAccessUnlessGranted('new', $assignment);
-            $assignment = $assignmentForm->getData();
-            $assignment->setDate(new \DateTime());
+                    $thread = $this->getThreadPromise($homework);
+                    $comment->setThread($thread);
+                    $thread->addComment($comment);
+                    $em->persist($comment);
+                    $em->flush();
 
-            $em->persist($assignment);
-            $em->flush();
-
-            return $this->redirectToRoute('homework_show', [
-                'id' => $homework->getId(),
-            ]);
+                    return $this->redirectToRoute(
+                        'homework_show',
+                        [
+                            'id' => $homework->getId()
+                        ]
+                    );
+                }
+            }
         }
 
         return $this->render(
@@ -99,8 +134,10 @@ class HomeworkController extends Controller
             [
                 'homework' => $homework,
                 'assignment_form' => $assignmentForm->createView(),
+                'comment_form' => $commentForm->createView(),
                 'my_assignment' => $myAssignment,
                 'assignments' => $assignments,
+                'comments' => $comments,
             ]
         );
     }

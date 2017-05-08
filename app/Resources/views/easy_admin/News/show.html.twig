@@ -59,6 +59,7 @@
         {{ form_end(comment_form) }}
     </div>
 
+    {% if comments %}
     {{
         include(
             '@AppBundle/views/easy_admin/Comment/included_list.html.twig',
@@ -68,5 +69,6 @@
             },
             with_context = false)
     }}
+    {% endif %}
 
 {% endblock %}

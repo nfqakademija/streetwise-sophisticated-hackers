@@ -20,6 +20,14 @@
 
 
     <p><a href="{{ path('news_index') }}">{{ 'back_to_the_list'|trans }}</a></p>
+
+    <h4>{{ 'comment.new'|trans }}</h4>
+    <div class="form-horizontal">
+        {{ form_start(comment_form) }}
+        {{ form_widget(comment_form) }}
+        <input type="submit" />
+        {{ form_end(comment_form) }}
+    </div>
     {% if comments %}
         {{ include('@AppBundle/views/Comment/list.html.twig') }}
     {% endif %}

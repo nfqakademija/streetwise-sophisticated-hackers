@@ -78,7 +78,7 @@
         <button type="submit" class="btn btn-success"> Upload </button>
         {{ form_end(assignment_form) }}
         </div>
-    {% else %}
+    {% elseif assignments|length > 0 %}
         {{ include('@AppBundle/views/easy_admin/Assignment/included_list.html.twig', {
             assignments: assignments,
             _trans_parameters: _trans_parameters

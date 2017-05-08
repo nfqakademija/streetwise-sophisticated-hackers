@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
  * Assignment
  *
  * @ORM\Table(name="assignment")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\AssignmentRepository")
+ * @ORM\Entity
  * @Vich\Uploadable
  */
 class Assignment implements HasOwnerInterface
