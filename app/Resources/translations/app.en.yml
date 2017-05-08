@@ -11,6 +11,7 @@ lecture:
     lectures: Lectures
     lecture: Lecture
     timetable: Lectures Timetable
+    slides: Slides
 
 homework:
     due_date: Due date

@@ -18,7 +18,7 @@
 				<li><a href="{{ path('lecture_index') }}">Lectures</a></li>
                 <li><a href="{{ path('homework_index') }}">Homework</a></li>
                 <li><a href="{{ path('user_index') }}">Users</a></li>
-                {% if is_granted('ROLE_ADMIN') %}
+                {% if is_granted('ROLE_LECTOR') %}
                     <li><a href="{{ path('easyadmin') }}">Admin page</a></li>
                 {% endif %}
             </ul>

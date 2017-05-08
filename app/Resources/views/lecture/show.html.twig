@@ -15,6 +15,9 @@
     <hr />
     <p>{{ 'date'|trans }}: {% if lecture.date %}{{ lecture.date|date('Y-m-d') }}{% endif %}</p>
     <p>{{ 'lecturer'|trans }}: <a href="{{ path('user_show', { 'id': lecture.lecturer.id }) }}">{{ lecture.lecturer }}</a></p>
+    {% if(lecture.slides) %}
+        <p>{{ 'lecture.slides'|trans }}: <a href="{{ path('lecture_download', { 'file': lecture.slides }) }}">{{ lecture.slides }}</a></p>
+    {% endif %}
 
     <article>{{ lecture.description }}</article>
 
