@@ -79,6 +79,11 @@ class Assignment implements HasOwnerInterface
     private $workFile;
 
     /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\CommentThread", cascade={"all"})
+     */
+    private $thread;
+
+    /**
      * @return User
      */
     public function getStudent(): User
@@ -206,5 +211,34 @@ class Assignment implements HasOwnerInterface
     public function getOwner(): User
     {
         return $this->student;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return 'Assignment #' . $this->id;
+    }
+
+    /**
+     * Get thread
+     * @return \AppBundle\Entity\CommentThread
+     */
+    public function getThread()
+    {
+        return $this->thread;
+    }
+
+    /**
+     * Set thread
+     * @param \AppBundle\Entity\CommentThread $thread
+     * @return Assignment
+     */
+    public function setThread($thread)
+    {
+        $this->thread = $thread;
+
+        return $this;
     }
 }
