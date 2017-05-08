@@ -2,6 +2,8 @@
 
 {% trans_default_domain "app" %}
 
+{% form_theme comment_form 'bootstrap_3_horizontal_layout.html.twig' %}
+
 {% block title %}{{ lecture.title }}{% endblock %}
 
 {% block body %}
@@ -21,7 +23,23 @@
 
     <article>{{ lecture.description }}</article>
 
-
     <p><a href="{{ path('lecture_index') }}">{{ 'back_to_the_list'|trans }}</a></p>
 
+    <div class="comments-block">
+        <h4>{{ 'comment.new'|trans }}</h4>
+        <div class="form-horizontal">
+            {{ form_start(comment_form) }}
+            {{ form_widget(comment_form) }}
+            <button class="btn btn-default center-block" type="submit">Submit</button>
+            {{ form_end(comment_form) }}
+        </div>
+        {% for comment in comments %}
+            <hr />
+            <div class="comment">
+                <p>{{ 'author'|trans }}: <a href="{{ path('user_show', { 'id': comment.author.id }) }}">{{ comment.author }}</a></p>
+                <p>{{ 'comment.posted_on'|trans }}: {% if comment.date %}{{ comment.date|date('Y-m-d H:i') }}{% endif %}</p>
+                {{ comment.content }}
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

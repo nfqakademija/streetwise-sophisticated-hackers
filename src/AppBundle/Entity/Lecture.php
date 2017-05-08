@@ -86,6 +86,11 @@ class Lecture implements HasOwnerInterface
     private $updatedAt;
 
     /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\CommentThread", cascade={"all"})
+     */
+    private $thread;
+
+    /**
      * @return \DateTime
      */
     public function getUpdatedAt()
@@ -245,5 +250,26 @@ class Lecture implements HasOwnerInterface
     public function getOwner(): User
     {
         return $this->lecturer;
+    }
+
+    /**
+     * Get thread
+     * @return \AppBundle\Entity\CommentThread
+     */
+    public function getThread()
+    {
+        return $this->thread;
+    }
+
+    /**
+     * Set thread
+     * @param \AppBundle\Entity\CommentThread $thread
+     * @return Lecture
+     */
+    public function setThread($thread)
+    {
+        $this->thread = $thread;
+
+        return $this;
     }
 }
