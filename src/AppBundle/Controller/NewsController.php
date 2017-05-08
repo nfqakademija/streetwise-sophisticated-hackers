@@ -20,13 +20,21 @@ class NewsController extends Controller
      *
      * @Route("/", name="news_index")
      * @Method("GET")
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request)
     {
+        $news = new News();
+        $this->denyAccessUnlessGranted('show', $news);
         $em = $this->getDoctrine()->getManager();
-
-        $dql = "SELECT a FROM AppBundle:News a ORDER BY a.date DESC";
-        $query = $em->createQuery($dql);
+        $query = $em
+            ->getRepository('AppBundle:News')
+            ->findBy(
+                [],
+                ['date' => 'DESC']
+            );
 
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
@@ -48,10 +56,13 @@ class NewsController extends Controller
      *
      * @Route("/{id}", name="news_show")
      * @Method("GET")
+     *
+     * @param News $news
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(News $news)
     {
-
+        $this->denyAccessUnlessGranted('show', $news);
         return $this->render(
             'news/show.html.twig',
             [

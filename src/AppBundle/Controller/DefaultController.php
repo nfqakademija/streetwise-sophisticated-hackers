@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/default", name="homepage")
+     * @Route("/default", name="default")
      */
     public function indexAction(Request $request)
     {
@@ -25,10 +25,10 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/admin/")
+     * @Route("/", name="homepage")
      */
-    public function adminAction(Request $request)
+    public function adminAction()
     {
-        return $this->redirect('/');
+        return $this->redirect('/news');
     }
 }

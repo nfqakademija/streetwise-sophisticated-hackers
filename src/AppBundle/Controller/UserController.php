@@ -22,6 +22,8 @@ class UserController extends Controller
      */
     public function indexAction()
     {
+        $user = new User();
+        $this->denyAccessUnlessGranted('list', $user);
         $em = $this->getDoctrine()->getManager();
 
         $users = $em->getRepository('AppBundle:User')->findAll();
@@ -39,9 +41,14 @@ class UserController extends Controller
      *
      * @Route("/{id}", name="user_show")
      * @Method("GET")
+     *
+     * @param User $user
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(User $user)
     {
+        $this->denyAccessUnlessGranted('show', $user);
+
         $em = $this->getDoctrine()->getManager();
 
         $lectures = [];
