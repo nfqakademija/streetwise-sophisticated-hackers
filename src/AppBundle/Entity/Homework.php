@@ -11,7 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Homework
  *
  * @ORM\Table(name="homework")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\HomeworkRepository")
+ * @ORM\Entity
  */
 class Homework implements HasOwnerInterface
 {

@@ -28,7 +28,7 @@
                         <span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{ app.user.name }} <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Messages</a></li>
+                        <li><a href="{{ path('fos_message_inbox') }}">Messages</a></li>
                         <li><a href="{{ path('user_show', { 'id': app.user.id }) }}">My Profile</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="{{ path('fos_user_security_logout') }}">Logout</a></li>

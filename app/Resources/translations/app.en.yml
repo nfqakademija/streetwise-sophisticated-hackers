@@ -13,10 +13,12 @@ lecture:
     lecture: Lecture
     timetable: Lectures Timetable
     slides: Slides
+    new: Create Lecture
 
 homework:
     due_date: Due date
     homework: Homework
+    new: Create Homework
 
 assignment:
     my: My Assignment
@@ -30,6 +32,7 @@ assignment:
 news:
     news: News
     posted_on: Posted on
+    new: Create News
 
 user:
     users: Users
@@ -42,3 +45,10 @@ user:
 comment:
     new: Add comment
     posted_on: Posted on
+
+message:
+    messenger: Messenger
+    id: Id
+    sender: Sender
+    createdat: Created At
+    body: Body

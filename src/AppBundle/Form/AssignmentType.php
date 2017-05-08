@@ -4,8 +4,6 @@ namespace AppBundle\Form;
 
 use AppBundle\Entity\Assignment;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Vich\UploaderBundle\Form\Type\VichFileType;
@@ -29,10 +27,6 @@ class AssignmentType extends AbstractType
                     'allow_delete' => true, // optional, default is true
                     'download_link' => true, // optional, default is true
                 ]
-            )
-            ->add(
-                'upload',
-                SubmitType::class
             )
         ;
     }

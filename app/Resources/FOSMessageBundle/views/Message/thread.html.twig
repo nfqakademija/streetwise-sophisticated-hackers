@@ -1,21 +1,23 @@
-{% extends 'FOSMessageBundle::layout.html.twig' %}
+{% extends '@AppBundle/FOSMessageBundle/views/layout.html.twig' %}
+
+{% trans_default_domain "app" %}
 
 {% block fos_message_content %}
 
 <h2>{% trans from 'FOSMessageBundle' %} subject {% endtrans %}: {{ thread.subject }}</h2>
 
-<table border=1>
+<table>
 	<tr>
-		<th> Id </th>
-		<th> Sender </th>
-		<th> Created At </th>
-		<th>{% trans from 'FOSMessageBundle' %} body {% endtrans %}</th>
+		<th>{{ 'message.id'|trans }}</th>
+		<th>{{ 'message.sender'|trans }}</th>
+		<th>{{ 'message.createdat'|trans }}</th>
+		<th>{{ 'message.body'|trans }}</th>
 	</tr>
 	{% for message in thread.messages %}
 		<tr>
-			<td> {{ message.id }} </td>
-			<td> {{ message.sender }} </td>
-			<td> {{ message.createdAt|date }} </td>
+			<td>{{ message.id }}</td>
+			<td>{{ message.sender }}</td>
+			<td>{{ message.createdAt|date }}</td>
 			<td>{{ message.body }}</td>
 		</tr>
 	{% endfor %}
@@ -23,8 +25,10 @@
 
 <h3>{% trans from 'FOSMessageBundle' %}reply{% endtrans %}</h3>
 <form action="{{ url('fos_message_thread_view', {'threadId': thread.id}) }}" method="post">
+	{{ form_start(form) }}
     {{ form_widget(form) }}
     <input type="submit" />
+	{{ form_end(form) }}
 </form>
 
 {% endblock %}

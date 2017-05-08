@@ -1,5 +1,5 @@
 {% if threads %}
-<table border=1>
+<table>
     <thead>
         <tr>
             <th>{% trans from 'FOSMessageBundle' %}subject{% endtrans %}</th>
@@ -63,5 +63,5 @@
     </tbody>
 </table>
 {% else %}
-    {% trans from 'FOSMessageBundle' %}no_thread{% endtrans %}.
+    <h5>{% trans from 'FOSMessageBundle' %}no_thread{% endtrans %}.</h5>
 {% endif %}
