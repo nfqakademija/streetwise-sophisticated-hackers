@@ -6,6 +6,7 @@ back_to_the_list: Back to the list
 show: Show
 student: Student
 action: Action
+author: Author
 
 lecture:
     lectures: Lectures
@@ -28,7 +29,6 @@ assignment:
 
 news:
     news: News
-    author: Author
     posted_on: Posted on
 
 user:
@@ -38,3 +38,7 @@ user:
     role: Role
     occupation: Occupation
     interests: Interests
+
+comment:
+    new: Add comment
+    posted_on: Posted on
