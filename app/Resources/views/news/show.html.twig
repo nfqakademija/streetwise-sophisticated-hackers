@@ -38,9 +38,6 @@
                 <p>{{ 'comment.posted_on'|trans }}: {% if comment.date %}{{ comment.date|date('Y-m-d H:i') }}{% endif %}</p>
                 {{ comment.content }}
             </div>
-
         {% endfor %}
-
     </div>
-
 {% endblock %}

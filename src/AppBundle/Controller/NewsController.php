@@ -18,7 +18,11 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class NewsController extends Controller
 {
+    /**
+     * Trait with comment methods
+     */
     use CommentTrait;
+
     /**
      * Lists all news entities.
      *
@@ -66,11 +70,14 @@ class NewsController extends Controller
      */
     public function showAction(News $news, Request $request)
     {
+        $this->denyAccessUnlessGranted('show', $news);
+
         $comments = $this->getEntityComments($news);
 
         $comment = new Comment();
         $commentForm = $this->createForm(CommentType::class, $comment);
         $commentForm->handleRequest($request);
+
         if ($commentForm->isSubmitted() && $commentForm->isValid()) {
             $this->denyAccessUnlessGranted('new', $comment);
 
@@ -78,7 +85,7 @@ class NewsController extends Controller
             $comment = $commentForm->getData();
             $thread = $this->getThreadPromise($news);
             $comment->setThread($thread);
-            $thread->addComment($comment);
+
             $em = $this->get('doctrine.orm.default_entity_manager');
             $em->persist($comment);
             $em->flush();
@@ -91,7 +98,6 @@ class NewsController extends Controller
             );
         }
 
-        $this->denyAccessUnlessGranted('show', $news);
         return $this->render(
             'news/show.html.twig',
             [
