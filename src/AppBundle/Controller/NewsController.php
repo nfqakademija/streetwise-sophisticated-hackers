@@ -107,6 +107,7 @@ class NewsController extends Controller
 
     /**
      * @Route("/create", name="news_create")
+     * @Method({"GET", "POST"})
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response

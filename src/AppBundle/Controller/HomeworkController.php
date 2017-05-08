@@ -144,6 +144,7 @@ class HomeworkController extends Controller
 
     /**
      * @Route("/create", name="homework_create")
+     * @Method({"GET", "POST"})
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response

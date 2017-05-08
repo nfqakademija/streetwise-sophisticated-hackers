@@ -99,6 +99,7 @@ class LectureController extends Controller
 
     /**
      * @Route("/create", name="lecture_create")
+     * @Method({"GET", "POST"})
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
