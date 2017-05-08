@@ -2,9 +2,12 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Controller\Admin\CommentTrait;
 use AppBundle\Entity\Assignment;
+use AppBundle\Entity\Comment;
 use AppBundle\Entity\Homework;
 use AppBundle\Form\AssignmentType;
+use AppBundle\Form\CommentType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -17,6 +20,11 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class HomeworkController extends Controller
 {
+    /**
+     * Trait with comment methods
+     */
+    use CommentTrait;
+
     /**
      * Lists all homework entities.
      *
@@ -59,6 +67,7 @@ class HomeworkController extends Controller
     public function showAction(Request $request, Homework $homework)
     {
         $this->denyAccessUnlessGranted('show', $homework);
+
         $assignments = $homework->getAssignments();
 
         $em = $this->getDoctrine()->getManager();
@@ -88,9 +97,37 @@ class HomeworkController extends Controller
             $em->persist($assignment);
             $em->flush();
 
-            return $this->redirectToRoute('homework_show', [
-                'id' => $homework->getId(),
-            ]);
+            return $this->redirectToRoute(
+                'homework_show',
+                [
+                    'id' => $homework->getId(),
+                ]
+            );
+        }
+
+        $comments = $this->getEntityComments($homework);
+
+        $comment = new Comment();
+        $commentForm = $this->createForm(CommentType::class, $comment);
+        $commentForm->handleRequest($request);
+
+        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
+            $this->denyAccessUnlessGranted('new', $comment);
+
+            $comment->setAuthor($this->getUser());
+            $comment = $commentForm->getData();
+            $thread = $this->getThreadPromise($homework);
+            $comment->setThread($thread);
+
+            $em->persist($comment);
+            $em->flush();
+
+            return $this->redirectToRoute(
+                'homework_show',
+                [
+                    'id' => $homework->getId(),
+                ]
+            );
         }
 
         return $this->render(
@@ -100,6 +137,8 @@ class HomeworkController extends Controller
                 'assignment_form' => $assignmentForm->createView(),
                 'my_assignment' => $myAssignment,
                 'assignments' => $assignments,
+                'comment_form' => $commentForm->createView(),
+                'comments' => $comments,
             ]
         );
     }

@@ -67,6 +67,11 @@ class Homework implements HasOwnerInterface
     private $assignments;
 
     /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\CommentThread", cascade={"all"})
+     */
+    private $thread;
+
+    /**
      * @return mixed
      */
     public function getAssignments()
@@ -218,5 +223,26 @@ class Homework implements HasOwnerInterface
     public function removeAssignment(\AppBundle\Entity\Assignment $assignment)
     {
         $this->assignments->removeElement($assignment);
+    }
+
+    /**
+     * Get thread
+     * @return \AppBundle\Entity\CommentThread
+     */
+    public function getThread()
+    {
+        return $this->thread;
+    }
+
+    /**
+     * Set thread
+     * @param \AppBundle\Entity\CommentThread $thread
+     * @return Homework
+     */
+    public function setThread($thread)
+    {
+        $this->thread = $thread;
+
+        return $this;
     }
 }
