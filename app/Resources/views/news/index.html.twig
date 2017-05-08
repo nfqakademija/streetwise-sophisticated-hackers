@@ -12,6 +12,10 @@
 
     <h1 class="content-title">{{ 'news.news'|trans }}</h1>
 
+    {% if not app.user.isStudent %}
+        <h4><a href="{{ path('news_create') }}">{{ 'news.create'|trans }}</a></h4>
+    {% endif %}
+
     {% for news in pagination %}
         <div class="news-block">
             <h3><a href="{{ path('news_show', { 'id': news.id }) }}">{{ news.title }}</a></h3>

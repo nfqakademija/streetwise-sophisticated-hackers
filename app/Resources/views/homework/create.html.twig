@@ -5,6 +5,13 @@
 {% block title %}{{ 'homework.create'|trans }}{% endblock %}
 
 {% block body %}
+    <ol class="breadcrumb">
+        <li><a href="/">{{ 'home'|trans }}</a></li>
+        <li><a href="{{ path('homework_index') }}">{{ 'homework.homework'|trans }}</a></li>
+        <li class="active">{{ 'homework.create'|trans }}</li>
+    </ol>
+
+    <h1>{{ 'homework.create'|trans }}</h1>
     {{ form_start(homework_form) }}
     {{ form_widget(homework_form) }}
     <button type="submit" class="btn btn-success"> Submit </button>

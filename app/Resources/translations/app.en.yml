@@ -9,6 +9,7 @@ action: Action
 description: Description
 
 lecture:
+    create: Create Lecture
     lectures: Lectures
     lecture: Lecture
     timetable: Lectures Timetable
@@ -28,6 +29,7 @@ assignment:
     assignment: Assignment
 
 news:
+    create: Create News
     news: News
     author: Author
     posted_on: Posted on

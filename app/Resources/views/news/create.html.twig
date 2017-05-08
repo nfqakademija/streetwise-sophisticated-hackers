@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% trans_default_domain "app" %}
+
+{% block title %}{{ 'news.create'|trans }}{% endblock %}
+
+{% block body %}
+    <ol class="breadcrumb">
+        <li><a href="/">{{ 'home'|trans }}</a></li>
+        <li><a href="{{ path('news_index') }}">{{ 'news.news'|trans }}</a></li>
+        <li class="active">{{ 'news.create'|trans }}</li>
+    </ol>
+
+    <h1>{{ 'news.create'|trans }}</h1>
+    {{ form_start(news_form) }}
+    {{ form_widget(news_form) }}
+    <button type="submit" class="btn btn-success"> Submit </button>
+    {{ form_end(news_form) }}
+{% endblock %}

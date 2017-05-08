@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Controller\Admin\CommentTrait;
 use AppBundle\Entity\Comment;
 use AppBundle\Form\CommentType;
+use AppBundle\Form\NewsType;
 
 /**
  * News controller.
@@ -59,7 +60,7 @@ class NewsController extends Controller
     /**
      * Finds and displays a news entity.
      *
-     * @Route("/{id}", name="news_show")
+     * @Route("/{id}", name="news_show", requirements={"id": "\d+"})
      * @Method({"GET", "POST"})
      *
      * @param Request $request
@@ -101,6 +102,35 @@ class NewsController extends Controller
                 'comments' => $comments,
                 'comment_form' => $commentForm->createView()
             ]
+        );
+    }
+
+    /**
+     * @Route("/create", name="news_create")
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function createAction(Request $request)
+    {
+        $news = new News();
+        $this->denyAccessUnlessGranted('new', $news);
+        $news->setAuthor($this->getUser());
+        $news->setDate(new \DateTime());
+        $form = $this->createForm(NewsType::class, $news);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $news = $form->getData();
+            $em = $this->get('doctrine.orm.default_entity_manager');
+            $em->persist($news);
+            $em->flush();
+            return $this->redirectToRoute('news_show', [
+                'id' => $news->getId(),
+            ]);
+        }
+        return $this->render(
+            '@AppBundle/views/news/create.html.twig',
+            ['news_form' => $form->createView()]
         );
     }
 }

@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% trans_default_domain "app" %}
+
+{% block title %}{{ 'lecture.create'|trans }}{% endblock %}
+
+{% block body %}
+    <ol class="breadcrumb">
+        <li><a href="/">{{ 'home'|trans }}</a></li>
+        <li><a href="{{ path('lecture_index') }}">{{ 'lecture.lectures'|trans }}</a></li>
+        <li class="active">{{ 'lecture.create'|trans }}</li>
+    </ol>
+
+    <h1>{{ 'lecture.create'|trans }}</h1>
+    {{ form_start(lecture_form) }}
+    {{ form_widget(lecture_form) }}
+    <button type="submit" class="btn btn-success"> Submit </button>
+    {{ form_end(lecture_form) }}
+{% endblock %}
