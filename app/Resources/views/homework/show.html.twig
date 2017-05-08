@@ -15,7 +15,7 @@
 
     <h1 class="content-title">{{ homework.title }} <br /><small>{{ 'homework.homework'|trans }}</small></h1>
     <hr />
-    <p>{{ 'date'|trans }}: {% if homework.dueDate %}{{ homework.dueDate|date('Y-m-d') }}{% endif %}</p>
+    <p>{{ 'homework.due_date'|trans }}: {% if homework.dueDate %}{{ homework.dueDate|date('Y-m-d H:i') }}{% endif %}</p>
     <p>{{ 'lecturer'|trans }}: <a href="{{ path('user_show', { 'id': homework.lecturer.id }) }}">{{ homework.lecturer }}</a></p>
 
     <article>{{ homework.description }}</article>

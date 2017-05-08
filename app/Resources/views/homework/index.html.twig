@@ -24,7 +24,7 @@
         {% for homework in homeworks %}
             <tr>
                 <td><a href="{{ path('homework_show', { 'id': homework.id }) }}">{{ homework.title }}</a></td>
-                <td>{% if homework.dueDate %}{{ homework.dueDate|date('Y-m-d') }}{% endif %}</td>
+                <td>{% if homework.dueDate %}{{ homework.dueDate|date('Y-m-d H:i') }}{% endif %}</td>
                 <td><a href="{{ path('user_show', { 'id': homework.lecturer.id }) }}">{{ homework.lecturer }}</a></td>
             </tr>
         {% endfor %}

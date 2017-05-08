@@ -18,8 +18,8 @@
     <h1 class="content-title">{{ 'assignment.assignment'|trans }}</h1>
     <hr />
     <p>{{ 'student'|trans }}: <a href="{{ path('user_show', { 'id': assignment.student.id }) }}">{{ assignment.student }}</a></p>
-    <p>{{ 'homework.due_date'|trans }}: {% if assignment.homework.dueDate %}{{ assignment.homework.dueDate|date('Y-m-d') }}{% endif %}</p>
-    <p>{{ 'assignment.submitted'|trans }}: {% if assignment.date %}{{ assignment.date|date('Y-m-d') }}{% endif %}</p>
+    <p>{{ 'homework.due_date'|trans }}: {% if assignment.homework.dueDate %}{{ assignment.homework.dueDate|date('Y-m-d H:i') }}{% endif %}</p>
+    <p>{{ 'assignment.submitted'|trans }}: {% if assignment.date %}{{ assignment.date|date('Y-m-d H:i') }}{% endif %}</p>
     <p>{{ 'assignment.file'|trans }}: <a href="{{ path('homework_download', { 'file': assignment.work }) }}">{{ assignment.work }}</a></p>
     <p>{{ 'assignment.grade'|trans }}: {{ assignment.grade }}</p>
 
