@@ -42,11 +42,33 @@ class UserController extends Controller
      */
     public function showAction(User $user)
     {
+        $em = $this->getDoctrine()->getManager();
+
+        $lectures = [];
+        $assignments = [];
+
+        if ($user->isLector()) {
+            $lectures = $em->getRepository('AppBundle:Lecture')
+                ->findBy(
+                    [
+                        'lecturer' => $user->getId()
+                    ]
+                );
+        } elseif ($user->isStudent()) {
+            $assignments = $em->getRepository('AppBundle:Assignment')
+                ->findBy(
+                    [
+                        'student' => $user->getId()
+                    ]
+                );
+        }
 
         return $this->render(
             'user/show.html.twig',
             [
                 'user' => $user,
+                'lectures' => $lectures,
+                'assignments' => $assignments,
             ]
         );
     }

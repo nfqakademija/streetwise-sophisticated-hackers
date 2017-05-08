@@ -30,4 +30,50 @@
         </div>
     </div>
 
+    {% if user.islector %}
+    <h4>{{ 'lecture.lectures'|trans }}</h4>
+    <table class="table">
+        <thead>
+        <tr>
+            <th class="string">
+                {{ 'title'|trans }}
+            </th>
+        </tr>
+        </thead>
+            {% for lecture in lectures %}
+                <tr>
+                    <td class="string">
+                        <a class="" href="{{ path('lecture_show', { 'id': lecture.id }) }}">{{ lecture.title }}</a>
+                    </td>
+                </tr>
+            {% endfor %}
+    </table>
+    {% endif %}
+
+    {% if user.isStudent and user_has_access(user) %}
+    <h4>{{ 'homework.homework'|trans }}</h4>
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="string">
+                    {{ 'homework.homework'|trans }}
+                </th>
+                <th class="string">
+                    {{ 'assignment.grade'|trans }}
+                </th>
+            </tr>
+            </thead>
+            {% for assignment in assignments %}
+                <tr>
+                    <td class="string">
+                        <a class="" href="{{ path('assignment_show', { 'id': assignment.id }) }}">{{ assignment.homework.title }}</a>
+                    </td>
+                    <td class="string">
+                        {{ assignment.grade }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+
 {% endblock %}
