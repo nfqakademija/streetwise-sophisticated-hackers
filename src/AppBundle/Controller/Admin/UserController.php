@@ -71,10 +71,12 @@ class UserController extends BaseAdminController
 
         $fields = $this->entity['edit']['fields'];
 
-        if ($this->getUser()->hasRole('ROLE_ADMIN') && $this->getUser()->getId() != $id) {
-            $editForm = $this->createForm(UserFullType::class, $entity);
-        } elseif ($this->getUser()->hasRole('ROLE_ADMIN')) {
+        if ($this->getUser()->getId() == $id) {
             $editForm = $this->createForm(UserBigType::class, $entity);
+        } elseif ($this->getUser()->hasRole('ROLE_ADMIN') && $entity->hasRole('ROLE_ADMIN')) {
+            $editForm = $this->createForm(UserType::class, $entity);
+        } elseif ($this->getUser()->hasRole('ROLE_ADMIN')) {
+            $editForm = $this->createForm(UserFullType::class, $entity);
         } else {
             $editForm = $this->createForm(UserType::class, $entity);
         }
