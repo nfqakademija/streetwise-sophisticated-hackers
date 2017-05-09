@@ -17,9 +17,11 @@
 
 </head>
 <body>
-    {{ include('@AppBundle/views/includes/navbar.html.twig') }}
-    <div class="container">
-        {% block body %}{% endblock %}
+    <div class="content">
+        {{ include('@AppBundle/views/includes/navbar.html.twig') }}
+        <div class="container">
+            {% block body %}{% endblock %}
+        </div>
     </div>
     <footer>
         <ul>
