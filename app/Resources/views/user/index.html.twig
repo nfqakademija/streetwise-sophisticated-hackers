@@ -12,13 +12,14 @@
 
     <h1 class="content-title">{{ 'user.users'|trans }}</h1>
 
-    <table class="table table-hover">
+    <table class="table table-hover users-table">
         <thead>
         <tr>
             <th></th>
             <th>{{ 'user.name'|trans }}</th>
             <th>{{ 'user.email'|trans }}</th>
             <th>{{ 'user.role'|trans }}</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -28,6 +29,7 @@
                 <td><a href="{{ path('user_show', { 'id': user.id }) }}">{{ user.name }}</a></td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.role }}</td>
+                <td><a href="{{ path('user_index') }}"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> {{ 'message'|trans }}</a></td>
             </tr>
         {% endfor %}
         </tbody>

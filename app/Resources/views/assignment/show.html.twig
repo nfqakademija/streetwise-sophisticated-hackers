@@ -26,7 +26,11 @@
             <li>{{ 'assignment.grade'|trans }}: {{ assignment.grade }}</li>
         </ul>
 
-        <div class="back-link"><a href="{{ path('homework_show', { 'id': assignment.homework.id }) }}">Back to homework</a></div>
+        <div class="content-link">
+            <a href="{{ path('homework_show', { 'id': assignment.homework.id }) }}">
+                <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>  {{ 'assignment.back_to_homework'|trans }}
+            </a>
+        </div>
     </div>
     {% if assignment.homework.lecturer == app.user %}
         <div class="grade-block border-top">
