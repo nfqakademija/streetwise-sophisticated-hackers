@@ -13,7 +13,7 @@ trait CommentTrait
     private function getEntityComments($entity)
     {
         if ($entity->getThread() == null) {
-            return null;
+            return [];
         }
         return $entity->getThread()->getComments();
     }
