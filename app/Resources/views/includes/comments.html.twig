@@ -17,4 +17,5 @@
             {{ comment.content|nl2br }}
         </div>
     {% endfor %}
+    {{ knp_pagination_render(comments) }}
 </div>
