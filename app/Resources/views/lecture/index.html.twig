@@ -11,9 +11,12 @@
     </ol>
 
     <h1 class="content-title">{{ 'lecture.timetable'|trans }}</h1>
-    {% if not app.user.isStudent %}
+
+    {# TODO: hardcoded role check, need to check voter permission #}
+    {% if is_granted('ROLE_ADMIN') %}
         <h4><a href="{{ path('lecture_create') }}">{{ 'lecture.new'|trans }}</a></h4>
     {% endif %}
+
     <table class="table table-hover">
         <thead>
             <tr>
