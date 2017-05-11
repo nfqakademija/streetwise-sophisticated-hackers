@@ -16,17 +16,24 @@
     </ol>
 
     <h1 class="content-title">{{ 'assignment.assignment'|trans }}</h1>
-    <hr />
-    <p>{{ 'student'|trans }}: <a href="{{ path('user_show', { 'id': assignment.student.id }) }}">{{ assignment.student }}</a></p>
-    <p>{{ 'homework.due_date'|trans }}: {% if assignment.homework.dueDate %}{{ assignment.homework.dueDate|date('Y-m-d H:i') }}{% endif %}</p>
-    <p>{{ 'assignment.submitted'|trans }}: {% if assignment.date %}{{ assignment.date|date('Y-m-d H:i') }}{% endif %}</p>
-    <p>{{ 'assignment.file'|trans }}: <a href="{{ path('homework_download', { 'file': assignment.work }) }}">{{ assignment.work }}</a></p>
-    <p>{{ 'assignment.grade'|trans }}: {{ assignment.grade }}</p>
 
-    <p><a href="{{ path('homework_show', { 'id': assignment.homework.id }) }}">Back to homework</a></p>
+    <div class="content-body border-top">
+        <ul class="info-header">
+            <li>{{ 'student'|trans }}: <a href="{{ path('user_show', { 'id': assignment.student.id }) }}">{{ assignment.student }}</a></li>
+            <li>{{ 'homework.due_date'|trans }}: {% if assignment.homework.dueDate %}{{ assignment.homework.dueDate|date('Y-m-d H:i') }}{% endif %}</li>
+            <li>{{ 'assignment.submitted'|trans }}: {% if assignment.date %}{{ assignment.date|date('Y-m-d H:i') }}{% endif %}</li>
+            <li>{{ 'assignment.file'|trans }}: <a href="{{ path('homework_download', { 'file': assignment.work }) }}">{{ assignment.work }}</a></li>
+            <li>{{ 'assignment.grade'|trans }}: {{ assignment.grade }}</li>
+        </ul>
 
+        <div class="content-link">
+            <a href="{{ path('homework_show', { 'id': assignment.homework.id }) }}">
+                <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>  {{ 'assignment.back_to_homework'|trans }}
+            </a>
+        </div>
+    </div>
     {% if assignment.homework.lecturer == app.user %}
-        <div class="grade-block">
+        <div class="grade-block border-top">
             <h4>{{ 'assignment.grade'|trans }}</h4>
             <div class="form-horizontal">
                 {{ form_start(grade_form) }}
@@ -37,21 +44,5 @@
         </div>
     {% endif %}
 
-    <div class="comments-block">
-        <h4>{{ 'comment.new'|trans }}</h4>
-        <div class="form-horizontal">
-            {{ form_start(comment_form) }}
-            {{ form_widget(comment_form) }}
-            <button class="btn btn-default center-block" type="submit">Submit</button>
-            {{ form_end(comment_form) }}
-        </div>
-        {% for comment in comments %}
-            <hr />
-            <div class="comment">
-                <p>{{ 'author'|trans }}: <a href="{{ path('user_show', { 'id': comment.author.id }) }}">{{ comment.author }}</a></p>
-                <p>{{ 'comment.posted_on'|trans }}: {% if comment.date %}{{ comment.date|date('Y-m-d H:i') }}{% endif %}</p>
-                {{ comment.content }}
-            </div>
-        {% endfor %}
-    </div>
+    {{ include('@AppBundle/views/includes/comments.html.twig', with_context = true) }}
 {% endblock %}

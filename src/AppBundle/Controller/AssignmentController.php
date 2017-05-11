@@ -38,7 +38,14 @@ class AssignmentController extends Controller
     {
         $this->denyAccessUnlessGranted('show', $assignment);
 
-        $comments = $this->getEntityComments($assignment);
+        $query = $this->getEntityComments($assignment);
+
+        $paginator  = $this->get('knp_paginator');
+        $comments = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            10
+        );
 
         $comment = new Comment();
         $commentForm = $this->createForm(CommentType::class, $comment);

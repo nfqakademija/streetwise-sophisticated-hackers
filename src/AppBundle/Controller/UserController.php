@@ -6,6 +6,7 @@ use AppBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * User controller.
@@ -19,19 +20,34 @@ class UserController extends Controller
      *
      * @Route("/", name="user_index")
      * @Method("GET")
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $user = new User();
         $this->denyAccessUnlessGranted('list', $user);
         $em = $this->getDoctrine()->getManager();
 
-        $users = $em->getRepository('AppBundle:User')->findAll();
+        $query = $em
+            ->getRepository('AppBundle:User')
+            ->findBy(
+                [],
+                ['name' => 'ASC']
+            );
+
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            5
+        );
 
         return $this->render(
             'user/index.html.twig',
             [
-                'users' => $users,
+                'users' => $pagination,
             ]
         );
     }

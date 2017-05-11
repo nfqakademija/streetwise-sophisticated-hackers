@@ -14,32 +14,18 @@
     </ol>
 
     <h1 class="content-title">{{ lecture.title }} <br /><small>{{ 'lecture.lecture'|trans }}</small></h1>
-    <hr />
-    <p>{{ 'date'|trans }}: {% if lecture.date %}{{ lecture.date|date('Y-m-d') }}{% endif %}</p>
-    <p>{{ 'lecturer'|trans }}: <a href="{{ path('user_show', { 'id': lecture.lecturer.id }) }}">{{ lecture.lecturer }}</a></p>
-    {% if(lecture.slides) %}
-        <p>{{ 'lecture.slides'|trans }}: <a href="{{ path('lecture_download', { 'file': lecture.slides }) }}">{{ lecture.slides }}</a></p>
-    {% endif %}
+    <div class="content-body border-top">
+        <ul class="info-header">
+            <li>{{ 'date'|trans }}: {% if lecture.date %}{{ lecture.date|date('Y-m-d') }}{% endif %}</li>
+            <li>{{ 'lecturer'|trans }}: <a href="{{ path('user_show', { 'id': lecture.lecturer.id }) }}">{{ lecture.lecturer }}</a></li>
+            {% if(lecture.slides) %}
+                <li>{{ 'lecture.slides'|trans }}: <a href="{{ path('lecture_download', { 'file': lecture.slides }) }}">{{ lecture.slides }}</a></li>
+            {% endif %}
+        </ul>
+        <article>{{ lecture.description|nl2br }}</article>
 
-    <article>{{ lecture.description }}</article>
-
-    <p><a href="{{ path('lecture_index') }}">{{ 'back_to_the_list'|trans }}</a></p>
-
-    <div class="comments-block">
-        <h4>{{ 'comment.new'|trans }}</h4>
-        <div class="form-horizontal">
-            {{ form_start(comment_form) }}
-            {{ form_widget(comment_form) }}
-            <button class="btn btn-default center-block" type="submit">Submit</button>
-            {{ form_end(comment_form) }}
-        </div>
-        {% for comment in comments %}
-            <hr />
-            <div class="comment">
-                <p>{{ 'author'|trans }}: <a href="{{ path('user_show', { 'id': comment.author.id }) }}">{{ comment.author }}</a></p>
-                <p>{{ 'comment.posted_on'|trans }}: {% if comment.date %}{{ comment.date|date('Y-m-d H:i') }}{% endif %}</p>
-                {{ comment.content }}
-            </div>
-        {% endfor %}
+        <div class="content-link"><a href="{{ path('lecture_index') }}"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> {{ 'back_to_the_list'|trans }}</a></div>
     </div>
+
+    {{ include('@AppBundle/views/includes/comments.html.twig', with_context = true) }}
 {% endblock %}

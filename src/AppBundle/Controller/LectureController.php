@@ -67,7 +67,14 @@ class LectureController extends Controller
     {
         $this->denyAccessUnlessGranted('show', $lecture);
 
-        $comments = $this->getEntityComments($lecture);
+        $query = $this->getEntityComments($lecture);
+
+        $paginator  = $this->get('knp_paginator');
+        $comments = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            10
+        );
 
         $comment = new Comment();
         $commentForm = $this->createForm(CommentType::class, $comment);
