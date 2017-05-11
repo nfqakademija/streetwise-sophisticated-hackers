@@ -84,6 +84,20 @@
                 <target><![CDATA[{0} No results found|{1} <strong>1</strong> result found|]1,Inf] <strong>%count%</strong> results found]]></target>
             </trans-unit>
 
+            <!-- comments list -->
+            <trans-unit id="comment.author">
+                <source>comment.author</source>
+                <target>Author</target>
+            </trans-unit>
+            <trans-unit id="comment.content">
+                <source>comment.content</source>
+                <target>Content</target>
+            </trans-unit>
+            <trans-unit id="comment.comments">
+                <source>comment.comments</source>
+                <target>Comments</target>
+            </trans-unit>
+
             <!-- 'search' view -->
             <trans-unit id="search.no_results">
                 <source>search.no_results</source>

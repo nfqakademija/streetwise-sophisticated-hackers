@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Form\LectureType;
 
 /**
  * Lecture controller.
@@ -34,7 +35,7 @@ class LectureController extends Controller
         $lecture = new Lecture();
         $this->denyAccessUnlessGranted('list', $lecture);
 
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->get('doctrine.orm.default_entity_manager');
 
         $lectures =
             $em
@@ -55,10 +56,11 @@ class LectureController extends Controller
     /**
      * Finds and displays a lecture entity.
      *
-     * @Route("/{id}", name="lecture_show")
+     * @Route("/{id}", name="lecture_show", requirements={"id": "\d+"})
      * @Method({"GET", "POST"})
      *
      * @param Lecture $lecture
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(Lecture $lecture, Request $request)
@@ -104,6 +106,36 @@ class LectureController extends Controller
                 'comment_form' => $commentForm->createView(),
                 'comments' => $comments,
             ]
+        );
+    }
+
+    /**
+     * @Route("/create", name="lecture_create")
+     * @Method({"GET", "POST"})
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function createAction(Request $request)
+    {
+        $lecture = new Lecture();
+        $this->denyAccessUnlessGranted('new', $lecture);
+        $lecture->setLecturer($this->getUser());
+        $lecture->setDate(new \DateTime('tomorrow 17:00'));
+        $form = $this->createForm(LectureType::class, $lecture);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $lecture = $form->getData();
+            $em = $this->get('doctrine.orm.default_entity_manager');
+            $em->persist($lecture);
+            $em->flush();
+            return $this->redirectToRoute('lecture_show', [
+                'id' => $lecture->getId(),
+            ]);
+        }
+        return $this->render(
+            '@AppBundle/views/lecture/create.html.twig',
+            ['lecture_form' => $form->createView()]
         );
     }
 }

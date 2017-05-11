@@ -27,10 +27,11 @@ class AssignmentController extends Controller
     /**
      * Finds and displays a assignment entity.
      *
-     * @Route("/{id}", name="assignment_show")
+     * @Route("/{id}", name="assignment_show", requirements={"id": "\d+"})
      * @Method({"GET", "POST"})
      *
      * @param Assignment $assignment
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(Assignment $assignment, Request $request)

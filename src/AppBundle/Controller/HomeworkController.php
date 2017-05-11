@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Form\HomeworkType;
 
 /**
  * Homework controller.
@@ -36,7 +37,7 @@ class HomeworkController extends Controller
         $homework = new Homework();
         $this->denyAccessUnlessGranted('list', $homework);
 
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->get('doctrine.orm.default_entity_manager');
 
         $homeworks =
             $em
@@ -57,7 +58,7 @@ class HomeworkController extends Controller
     /**
      * Finds and displays a homework entity.
      *
-     * @Route("/{id}", name="homework_show")
+     * @Route("/{id}", name="homework_show", requirements={"id": "\d+"})
      * @Method({"GET", "POST"})
      *
      * @param Request $request
@@ -70,7 +71,7 @@ class HomeworkController extends Controller
 
         $assignments = $homework->getAssignments();
 
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->get('doctrine.orm.default_entity_manager');
 
         $myAssignment = $em->getRepository('AppBundle:Assignment')
             ->findOneBy(
@@ -147,6 +148,36 @@ class HomeworkController extends Controller
                 'comment_form' => $commentForm->createView(),
                 'comments' => $comments,
             ]
+        );
+    }
+
+    /**
+     * @Route("/create", name="homework_create")
+     * @Method({"GET", "POST"})
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function createAction(Request $request)
+    {
+        $homework = new Homework();
+        $this->denyAccessUnlessGranted('new', $homework);
+        $homework->setLecturer($this->getUser());
+        $homework->setDueDate(new \DateTime('tomorrow 23:59'));
+        $form = $this->createForm(HomeworkType::class, $homework);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $homework = $form->getData();
+            $em = $this->get('doctrine.orm.default_entity_manager');
+            $em->persist($homework);
+            $em->flush();
+            return $this->redirectToRoute('homework_show', [
+                'id' => $homework->getId(),
+            ]);
+        }
+        return $this->render(
+            '@AppBundle/views/homework/create.html.twig',
+            ['homework_form' => $form->createView()]
         );
     }
 }
