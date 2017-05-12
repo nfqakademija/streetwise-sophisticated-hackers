@@ -44,7 +44,8 @@ user:
     occupation: Occupation
     interests: Interests
     username: Username
-    edit: Edit User
+    editProfile: Edit Profile
+    changePassword: Change Password
 
 comment:
     new: Add comment

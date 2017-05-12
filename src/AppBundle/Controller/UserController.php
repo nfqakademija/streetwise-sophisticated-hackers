@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
+use FOS\UserBundle\Form\Type\ChangePasswordFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -59,7 +60,8 @@ class UserController extends Controller
     /**
      * Finds and displays a user entity.
      *
-     * @Route("/{id}", name="user_show")
+     * @Route("/{id}", name="user_show", requirements={"id": "\d+"})
+     * @ParamConverter("user", class="AppBundle:User", options={"id" = "id"})
      * @Method("GET")
      *
      * @param User $user
@@ -101,17 +103,15 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/edit/{user_id}", name="user_edit", requirements={"user_id": "\d+"})
-     * @ParamConverter("user", class="AppBundle:User", options={"id" = "user_id"})
+     * @Route("/edit/", name="user_edit")
      * @Method({"GET", "POST"})
      *
      * @param Request $request
-     * @param User $user
-     *
      * @return Response|RedirectResponse
      */
-    public function editUserAction(Request $request, $user)
+    public function editUserAction(Request $request)
     {
+        $user = $this->getUser();
         $this->denyAccessUnlessGranted('edit', $user);
         $editForm = $this->createForm(UserBigType::class, $user);
         $editForm->handleRequest($request);
@@ -136,6 +136,56 @@ class UserController extends Controller
 
         return $this->render(
             '@AppBundle/views/user/edit.html.twig',
+            [
+                'editForm' => $editForm->createView(),
+                'entity' => $user,
+            ]
+        );
+    }
+
+    /**
+     * @Route("/change/", name="user_change")
+     * @Method({"GET", "POST"})
+     *
+     * @param Request $request
+     * @return Response|RedirectResponse
+     */
+    public function changePassword(Request $request)
+    {
+        $user = $this->getUser();
+        $this->denyAccessUnlessGranted('edit', $user);
+
+        $editForm = $this->createForm(ChangePasswordFormType::class, $user);
+        $editForm->handleRequest($request);
+
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $user = $editForm->getData();
+
+            if ($user->getPlainPassword() != null) {
+                $encoder = $this->container->get('security.password_encoder');
+                $password = $encoder->encodePassword($user, $user->getPlainPassword());
+                $user->setPassword($password);
+                $user->eraseCredentials();
+            }
+
+            $em = $this->get('doctrine.orm.default_entity_manager');
+            $em->persist($user);
+            $em->flush();
+
+            $refererUrl = $request->query->get('referer', '');
+
+            return !empty($refererUrl)
+                ? $this->redirect(urldecode($refererUrl))
+                : $this->redirectToRoute(
+                    'user_show',
+                    [
+                        'id' => $user->getId()
+                    ]
+                );
+        }
+
+        return $this->render(
+            '@AppBundle/views/user/changePassword.html.twig',
             [
                 'editForm' => $editForm->createView(),
                 'entity' => $user,

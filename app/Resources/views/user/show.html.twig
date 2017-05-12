@@ -65,6 +65,8 @@
             {% if user == app.user %}
                 <a href="{{ path('user_edit', {'user_id': app.user.id}) }}">{{ 'user.edit'|trans }}</a>
                 <br>
+                <a href="{{ path('user_change') }}">Change Password</a>
+                <br>
             {% endif %}
             <a href="{{ path('user_index') }}"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> {{ 'message'|trans }}</a>
         </div>
