@@ -10,7 +10,6 @@ use JavierEguiluz\Bundle\EasyAdminBundle\Event\EasyAdminEvents;
 use AppBundle\Entity\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
  * Class UserController
@@ -73,8 +72,8 @@ class UserController extends BaseAdminController
 
         if ($this->getUser()->getId() == $id) {
             $editForm = $this->createForm(UserBigType::class, $entity);
-        } elseif ($this->getUser()->hasRole('ROLE_ADMIN') && $entity->hasRole('ROLE_ADMIN')) {
-            $editForm = $this->createForm(UserType::class, $entity);
+        } elseif ($this->getUser()->hasRole('ROLE_SUPER_ADMIN')) {
+            $editForm = $this->createEditForm($entity, $fields);
         } elseif ($this->getUser()->hasRole('ROLE_ADMIN')) {
             $editForm = $this->createForm(UserFullType::class, $entity);
         } else {
