@@ -4,7 +4,6 @@ namespace AppBundle\Form;
 
 use AppBundle\Entity\User;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -27,14 +26,15 @@ class UserType extends AbstractType
     {
         $builder
             ->add(
-                'email',
-                EmailType::class,
+                'name',
+                TextType::class,
                 [
                     'constraints' => [
                         new NotBlank(),
-                        new Length(array('max' => 180))
-                        // TODO: validate email as '<string>@<string>.<string>'
-                        // current form validation is different from entity validation
+                        new Length(array(
+                            'min' => 3,
+                            'max' => 100
+                        ))
                     ]
                 ]
             )

@@ -37,8 +37,7 @@ class UserFullType extends UserBigType
                     'choices' =>
                         [
                             'Student' => 'ROLE_USER',
-                            'Lector' => 'ROLE_LECTOR',
-                            'ADMIN' => 'ROLE_ADMIN'
+                            'Lector' => 'ROLE_LECTOR'
                         ],
                         'expanded' => true,
                         'multiple' => true,

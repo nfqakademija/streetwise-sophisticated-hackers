@@ -10,7 +10,10 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
-class LoadUserData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface, OrderedFixtureInterface
+class LoadSuperUserData extends AbstractFixture implements
+    FixtureInterface,
+    ContainerAwareInterface,
+    OrderedFixtureInterface
 {
     use ContainerAwareTrait;
 
@@ -32,23 +35,15 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, Containe
 
     public function load(ObjectManager $manager)
     {
-        $userAdmin = $this->createUser('admin', 'ADMIN');
+        $userAdmin = $this->createUser('super_admin', 'SUPER_ADMIN');
         $manager->persist($userAdmin);
-
-        $userLector = $this->createUser('lector', 'LECTOR');
-        $manager->persist($userLector);
-
-        $userStudent = $this->createUser('student', 'USER');
-        $manager->persist($userStudent);
-
         $manager->flush();
-        $this->addReference('lector-user', $userLector);
     }
 
     public function getOrder()
     {
         // the order in which fixtures will be loaded
         // the lower the number, the sooner that this fixture is loaded
-        return 2;
+        return 1;
     }
 }

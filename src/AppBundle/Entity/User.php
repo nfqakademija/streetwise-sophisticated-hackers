@@ -121,7 +121,9 @@ class User extends BaseUser implements ParticipantInterface, HasOwnerInterface
      */
     public function isStudent():bool
     {
-        return (!in_array('ROLE_ADMIN', $this->roles) && !in_array('ROLE_LECTOR', $this->roles));
+        return (!in_array('ROLE_SUPER_ADMIN', $this->roles)
+            && !in_array('ROLE_ADMIN', $this->roles)
+            && !in_array('ROLE_LECTOR', $this->roles));
     }
 
     /**
@@ -137,6 +139,10 @@ class User extends BaseUser implements ParticipantInterface, HasOwnerInterface
      */
     public function getRole()
     {
+        if (in_array('ROLE_SUPER_ADMIN', $this->roles)) {
+            return "Administrator";
+        }
+
         if (in_array('ROLE_ADMIN', $this->roles)) {
             return "Administrator";
         }
