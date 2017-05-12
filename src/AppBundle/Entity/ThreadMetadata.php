@@ -1,5 +1,4 @@
 <?php
-// src/AppBundle/Entity/ThreadMetadata.php
 
 namespace AppBundle\Entity;
 
