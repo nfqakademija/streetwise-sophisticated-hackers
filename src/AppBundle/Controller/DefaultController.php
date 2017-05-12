@@ -4,7 +4,6 @@ namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class DefaultController
@@ -13,9 +12,9 @@ use Symfony\Component\HttpFoundation\Request;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/default", name="homepage")
+     * @Route("/default", name="default")
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
         //TODO: add dashboard
 
@@ -25,10 +24,10 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/admin/")
+     * @Route("/", name="homepage")
      */
-    public function adminAction(Request $request)
+    public function adminAction()
     {
-        return $this->redirect('/');
+        return $this->redirect('/news');
     }
 }

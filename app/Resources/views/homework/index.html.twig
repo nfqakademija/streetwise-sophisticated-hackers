@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% trans_default_domain "app" %}
+
+{% block title %}{{ 'homework.homework'|trans }}{% endblock %}
+
+{% block body %}
+    <ol class="breadcrumb">
+        <li><a href="/">{{ 'home'|trans }}</a></li>
+        <li class="active">{{ 'homework.homework'|trans }}</li>
+    </ol>
+
+    <h1 class="content-title">{{ 'homework.homework'|trans }}</h1>
+
+    {# TODO: hardcoded role check, need to check voter permission #}
+    {% if not app.user.isStudent %}
+        <h4><a href="{{ path('homework_create') }}">{{ 'homework.new'|trans }}</a></h4>
+    {% endif %}
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>{{ 'title'|trans }}</th>
+            <th>{{ 'homework.due_date'|trans }}</th>
+            <th>{{ 'lecturer'|trans }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for homework in homeworks %}
+            <tr>
+                <td><a href="{{ path('homework_show', { 'id': homework.id }) }}">{{ homework.title }}</a></td>
+                <td>{% if homework.dueDate %}{{ homework.dueDate|date('Y-m-d H:i') }}{% endif %}</td>
+                <td><a href="{{ path('user_show', { 'id': homework.lecturer.id }) }}">{{ homework.lecturer }}</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+{% endblock %}

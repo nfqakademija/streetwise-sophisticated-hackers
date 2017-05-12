@@ -20,3 +20,4 @@
 !/app/Resources/uploads/files/lecture/slides/.gitkeep
 /app/Resources/uploads/files/homework/assignments/*
 !/app/Resources/uploads/files/homework/assignments/.gitkeep
+/web/assets/custom-bootstrap/node_modules/

@@ -74,7 +74,7 @@ class AssignmentController extends BaseAdminController
     }
 
     /**
-     * @Route("/admin/download/homework/{file}", name="homework_download")
+     * @Route("/download/homework/{file}", name="homework_download")
      *
      * @param string $file
      * @return Response

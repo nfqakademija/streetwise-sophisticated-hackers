@@ -16,7 +16,7 @@ fos_user_change_password:
 easy_admin_bundle:
     resource: "@EasyAdminBundle/Controller/"
     type:     annotation
-    prefix:   /
+    prefix:   /admin
 
 fos_message:
     resource: "@FOSMessageBundle/Resources/config/routing.xml"

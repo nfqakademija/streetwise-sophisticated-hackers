@@ -1,0 +1,118 @@
+{% extends 'base.html.twig' %}
+
+{% trans_default_domain "app" %}
+
+{% block title %}{{ user.name }}{% endblock %}
+
+{% block body %}
+    <ol class="breadcrumb">
+        <li><a href="/">{{ 'home'|trans }}</a></li>
+        <li><a href="{{ path('user_index') }}">{{ 'user.users'|trans }}</a></li>
+        <li class="active">{{ user.name }}</li>
+    </ol>
+    <div class="content-body">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="row">
+                    <div class="col-md-6">
+                        <img src="{{ gravatar_url }}{{ user.email|gravatar }}" />
+                    </div>
+                    <div class="col-md-6">
+                        <h1>{{ user.name }}</h1>
+                    </div>
+                </div>
+                <div class="row border-top">
+                    <div class="col-md-6">
+                        {{ 'user.username'|trans }}:
+                    </div>
+                    <div class="col-md-6">
+                        {{ user.username }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ 'user.email'|trans }}:
+                    </div>
+                    <div class="col-md-6">
+                        {{ user.email }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ 'user.role'|trans }}:
+                    </div>
+                    <div class="col-md-6">
+                        {{ user.role }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ 'user.occupation'|trans }}:
+                    </div>
+                    <div class="col-md-6">
+                        {{ user.occupation }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ 'user.interests'|trans }}:
+                    </div>
+                    <div class="col-md-6">
+                        {{ user.interests }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center content-link"><a href="{{ path('user_index') }}"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> {{ 'message'|trans }}</a></div>
+        <div class="content-link"><a href="{{ path('user_index') }}"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> {{ 'back_to_the_list'|trans }}</a></div>
+    </div>
+
+    {% if user.islector %}
+        <div class="border-top">
+            <h4>{{ 'lecture.lectures'|trans }}</h4>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th class="string">
+                        {{ 'title'|trans }}
+                    </th>
+                </tr>
+                </thead>
+                    {% for lecture in lectures %}
+                        <tr>
+                            <td class="string">
+                                <a class="" href="{{ path('lecture_show', { 'id': lecture.id }) }}">{{ lecture.title }}</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+            </table>
+        </div>
+    {% endif %}
+
+    {% if user.isStudent and user_has_access(user) %}
+        <div class="border-top">
+            <h4>{{ 'homework.homework'|trans }}</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="string">
+                            {{ 'homework.homework'|trans }}
+                        </th>
+                        <th class="string">
+                            {{ 'assignment.grade'|trans }}
+                        </th>
+                    </tr>
+                    </thead>
+                    {% for assignment in assignments %}
+                        <tr>
+                            <td class="string">
+                                <a class="" href="{{ path('assignment_show', { 'id': assignment.id }) }}">{{ assignment.homework.title }}</a>
+                            </td>
+                            <td class="string">
+                                {{ assignment.grade }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+        </div>
+    {% endif %}
+
+{% endblock %}

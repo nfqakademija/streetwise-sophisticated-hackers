@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
  * Assignment
  *
  * @ORM\Table(name="assignment")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\AssignmentRepository")
+ * @ORM\Entity
  * @Vich\Uploadable
  */
 class Assignment implements HasOwnerInterface
@@ -77,6 +77,11 @@ class Assignment implements HasOwnerInterface
      * @Vich\UploadableField(mapping="work_file", fileNameProperty="work")
      */
     private $workFile;
+
+    /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\CommentThread", cascade={"all"})
+     */
+    private $thread;
 
     /**
      * @return User
@@ -206,5 +211,34 @@ class Assignment implements HasOwnerInterface
     public function getOwner(): User
     {
         return $this->student;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return 'Assignment #' . $this->id;
+    }
+
+    /**
+     * Get thread
+     * @return \AppBundle\Entity\CommentThread
+     */
+    public function getThread()
+    {
+        return $this->thread;
+    }
+
+    /**
+     * Set thread
+     * @param \AppBundle\Entity\CommentThread $thread
+     * @return Assignment
+     */
+    public function setThread($thread)
+    {
+        $this->thread = $thread;
+
+        return $this;
     }
 }

@@ -1,0 +1,8 @@
+{% extends '@EasyAdmin/default/new.html.twig' %}
+
+{% block entity_form %}
+    {{ form_start(form) }}
+    {{ form_rest(form) }}
+    <button type="submit" class="btn btn-success"> Submit </button>
+    {{ form_end(form) }}
+{% endblock entity_form %}

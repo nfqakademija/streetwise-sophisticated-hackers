@@ -11,7 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Homework
  *
  * @ORM\Table(name="homework")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\HomeworkRepository")
+ * @ORM\Entity
  */
 class Homework implements HasOwnerInterface
 {
@@ -65,6 +65,11 @@ class Homework implements HasOwnerInterface
      * @ORM\OneToMany(targetEntity="Assignment", mappedBy="homework", cascade={"remove"})
      */
     private $assignments;
+
+    /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\CommentThread", cascade={"all"})
+     */
+    private $thread;
 
     /**
      * @return mixed
@@ -224,5 +229,26 @@ class Homework implements HasOwnerInterface
     public function removeAssignment(\AppBundle\Entity\Assignment $assignment)
     {
         $this->assignments->removeElement($assignment);
+    }
+
+    /**
+     * Get thread
+     * @return \AppBundle\Entity\CommentThread
+     */
+    public function getThread()
+    {
+        return $this->thread;
+    }
+
+    /**
+     * Set thread
+     * @param \AppBundle\Entity\CommentThread $thread
+     * @return Homework
+     */
+    public function setThread($thread)
+    {
+        $this->thread = $thread;
+
+        return $this;
     }
 }

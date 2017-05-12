@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% trans_default_domain "app" %}
+
+{% block title %}{{ 'homework.new'|trans }}{% endblock %}
+
+{% block body %}
+    <ol class="breadcrumb">
+        <li><a href="/">{{ 'home'|trans }}</a></li>
+        <li><a href="{{ path('homework_index') }}">{{ 'homework.homework'|trans }}</a></li>
+        <li class="active">{{ 'homework.new'|trans }}</li>
+    </ol>
+
+    <h1>{{ 'homework.new'|trans }}</h1>
+    {{ form_start(homework_form) }}
+    {{ form_widget(homework_form) }}
+    <button type="submit" class="btn btn-success"> Submit </button>
+    {{ form_end(homework_form) }}
+{% endblock %}

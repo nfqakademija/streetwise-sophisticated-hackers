@@ -1,0 +1,21 @@
+{% trans_default_domain "app" %}
+
+<div class="comments-block border-top">
+    <h4>{{ 'comment.new'|trans }}</h4>
+    <div class="form-horizontal">
+        {{ form_start(comment_form) }}
+        {{ form_widget(comment_form) }}
+        <button class="btn btn-default center-block" type="submit">Submit</button>
+        {{ form_end(comment_form) }}
+    </div>
+    {% for comment in comments %}
+        <div class="comment border-top">
+            <ul class="info-header">
+                <li>{{ 'author'|trans }}: <a href="{{ path('user_show', { 'id': comment.author.id }) }}">{{ comment.author }}</a></li>
+                <li>{{ 'comment.posted_on'|trans }}: {% if comment.date %}{{ comment.date|date('Y-m-d H:i') }}{% endif %}</li>
+            </ul>
+            {{ comment.content|nl2br }}
+        </div>
+    {% endfor %}
+    {{ knp_pagination_render(comments) }}
+</div>

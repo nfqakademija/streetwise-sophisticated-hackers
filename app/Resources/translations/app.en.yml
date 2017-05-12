@@ -1,0 +1,57 @@
+home: Home
+title: Title
+date: Date
+lecturer: Lecturer
+back_to_the_list: Back to the list
+show: Show
+student: Student
+action: Action
+author: Author
+message: Message
+
+lecture:
+    lectures: Lectures
+    lecture: Lecture
+    timetable: Lectures Timetable
+    slides: Slides
+    new: Create Lecture
+
+homework:
+    due_date: Due date
+    homework: Homework
+    new: Create Homework
+
+assignment:
+    my: My Assignment
+    grade: Grade
+    file: File
+    assignments: Assignments
+    new: Upload Assignment
+    submitted: Submitted
+    assignment: Assignment
+    back_to_homework: Back to homework
+
+news:
+    news: News
+    posted_on: Posted on
+    new: Create News
+
+user:
+    users: Users
+    name: Name
+    email: Email
+    role: Role
+    occupation: Occupation
+    interests: Interests
+    username: Username
+
+comment:
+    new: Add comment
+    posted_on: Posted on
+
+message:
+    messenger: Messenger
+    id: Id
+    sender: Sender
+    createdat: Created At
+    body: Body

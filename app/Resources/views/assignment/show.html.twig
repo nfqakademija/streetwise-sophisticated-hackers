@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% trans_default_domain "app" %}
+
+{% form_theme comment_form 'bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme grade_form 'bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block title %}{{ 'assignment.assignment'|trans }}{% endblock %}
+
+{% block body %}
+    <ol class="breadcrumb">
+        <li><a href="/">{{ 'home'|trans }}</a></li>
+        <li><a href="{{ path('homework_index') }}">{{ 'homework.homework'|trans }}</a></li>
+        <li><a href="{{ path('homework_show', { 'id': assignment.homework.id }) }}">{{ assignment.homework.title }}</a></li>
+        <li class="active">{{ 'assignment.assignment'|trans }}</li>
+    </ol>
+
+    <h1 class="content-title">{{ 'assignment.assignment'|trans }}</h1>
+
+    <div class="content-body border-top">
+        <ul class="info-header">
+            <li>{{ 'student'|trans }}: <a href="{{ path('user_show', { 'id': assignment.student.id }) }}">{{ assignment.student }}</a></li>
+            <li>{{ 'homework.due_date'|trans }}: {% if assignment.homework.dueDate %}{{ assignment.homework.dueDate|date('Y-m-d H:i') }}{% endif %}</li>
+            <li>{{ 'assignment.submitted'|trans }}: {% if assignment.date %}{{ assignment.date|date('Y-m-d H:i') }}{% endif %}</li>
+            <li>{{ 'assignment.file'|trans }}: <a href="{{ path('homework_download', { 'file': assignment.work }) }}">{{ assignment.work }}</a></li>
+            <li>{{ 'assignment.grade'|trans }}: {{ assignment.grade }}</li>
+        </ul>
+
+        <div class="content-link">
+            <a href="{{ path('homework_show', { 'id': assignment.homework.id }) }}">
+                <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>  {{ 'assignment.back_to_homework'|trans }}
+            </a>
+        </div>
+    </div>
+    {% if assignment.homework.lecturer == app.user %}
+        <div class="grade-block border-top">
+            <h4>{{ 'assignment.grade'|trans }}</h4>
+            <div class="form-horizontal">
+                {{ form_start(grade_form) }}
+                {{ form_widget(grade_form) }}
+                <button class="btn btn-default center-block" type="submit">Submit</button>
+                {{ form_end(grade_form) }}
+            </div>
+        </div>
+    {% endif %}
+
+    {{ include('@AppBundle/views/includes/comments.html.twig', with_context = true) }}
+{% endblock %}

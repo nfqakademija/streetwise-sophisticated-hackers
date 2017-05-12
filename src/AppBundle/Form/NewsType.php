@@ -6,9 +6,10 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use AppBundle\Entity\News;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Length;
 
 class NewsType extends AbstractType
 {
@@ -17,15 +18,22 @@ class NewsType extends AbstractType
         $builder
             ->add(
                 'title',
-                TextType::class
+                TextType::class,
+                [
+                    'constraints' => [
+                        new NotBlank(),
+                        new Length(array(
+                            'max' => 255
+                        ))
+                    ]
+                ]
             )
             ->add(
                 'description',
-                TextareaType::class
-            )
-            ->add(
-                'save',
-                SubmitType::class
+                TextareaType::class,
+                [
+                    'required' => false
+                ]
             )
         ;
     }

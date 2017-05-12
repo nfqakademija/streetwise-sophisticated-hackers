@@ -110,6 +110,13 @@ fos_message:
 easy_admin:
     site_name: '<img src="/assets/img/nfq.png" />'
     design:
+        menu:
+            - { label: 'Homepage', url: '/', icon: 'home' }
+            - { label: 'Messenger', url: '/messages', icon: 'users' }
+            - { entity: 'User', label: 'Users', icon: 'users' }
+            - { entity: 'Lecture', label: 'Lectures', icon: 'book', default: true }
+            - { entity: 'Homework', label: 'Homework', icon: 'laptop' }
+            - { entity: 'News', label: 'News', icon: 'bullhorn' }
         assets:
             css:
                 - 'https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css'
@@ -283,3 +290,14 @@ easy_admin:
                     - content
                     - author
                     - date
+
+knp_paginator:
+    page_range: 5
+    default_options:
+        page_name: page
+        sort_field_name: sort
+        sort_direction_name: direction
+        distinct: true
+    template:
+        pagination: 'KnpPaginatorBundle:Pagination:sliding.html.twig'
+        sortable: 'KnpPaginatorBundle:Pagination:sortable_link.html.twig'

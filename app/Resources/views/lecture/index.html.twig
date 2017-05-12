@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% trans_default_domain "app" %}
+
+{% block title %}{{ 'lecture.timetable'|trans }}{% endblock %}
+
+{% block body %}
+    <ol class="breadcrumb">
+        <li><a href="/">{{ 'home'|trans }}</a></li>
+        <li class="active">{{ 'lecture.lectures'|trans }}</li>
+    </ol>
+
+    <h1 class="content-title">{{ 'lecture.timetable'|trans }}</h1>
+
+    {# TODO: hardcoded role check, need to check voter permission #}
+    {% if is_granted('ROLE_ADMIN') %}
+        <h4><a href="{{ path('lecture_create') }}">{{ 'lecture.new'|trans }}</a></h4>
+    {% endif %}
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>{{ 'title'|trans }}</th>
+                <th>{{ 'date'|trans }}</th>
+                <th>{{ 'lecturer'|trans }}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for lecture in lectures %}
+            <tr>
+                <td><a href="{{ path('lecture_show', { 'id': lecture.id }) }}">{{ lecture.title }}</a></td>
+                <td>{% if lecture.date %}{{ lecture.date|date('Y-m-d') }}{% endif %}</td>
+                <td><a href="{{ path('user_show', { 'id': lecture.lecturer.id }) }}">{{ lecture.lecturer }}</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    
+{% endblock %}

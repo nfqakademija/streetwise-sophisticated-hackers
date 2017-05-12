@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% trans_default_domain "app" %}
+
+{% form_theme comment_form 'bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block title %}{{ lecture.title }}{% endblock %}
+
+{% block body %}
+    <ol class="breadcrumb">
+        <li><a href="/">{{ 'home'|trans }}</a></li>
+        <li><a href="{{ path('lecture_index') }}">{{ 'lecture.lectures'|trans }}</a></li>
+        <li class="active">{{ lecture.title }}</li>
+    </ol>
+
+    <h1 class="content-title">{{ lecture.title }} <br /><small>{{ 'lecture.lecture'|trans }}</small></h1>
+    <div class="content-body border-top">
+        <ul class="info-header">
+            <li>{{ 'date'|trans }}: {% if lecture.date %}{{ lecture.date|date('Y-m-d') }}{% endif %}</li>
+            <li>{{ 'lecturer'|trans }}: <a href="{{ path('user_show', { 'id': lecture.lecturer.id }) }}">{{ lecture.lecturer }}</a></li>
+            {% if(lecture.slides) %}
+                <li>{{ 'lecture.slides'|trans }}: <a href="{{ path('lecture_download', { 'file': lecture.slides }) }}">{{ lecture.slides }}</a></li>
+            {% endif %}
+        </ul>
+        <article>{{ lecture.description|nl2br }}</article>
+
+        <div class="content-link"><a href="{{ path('lecture_index') }}"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> {{ 'back_to_the_list'|trans }}</a></div>
+    </div>
+
+    {{ include('@AppBundle/views/includes/comments.html.twig', with_context = true) }}
+{% endblock %}
