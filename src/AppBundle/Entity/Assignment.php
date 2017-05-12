@@ -6,7 +6,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
 
 /**
  * Assignment
@@ -48,6 +47,8 @@ class Assignment implements HasOwnerInterface
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="datetime")
+     * @Assert\DateTime
+     * @Assert\NotBlank()
      */
     private $date;
 
@@ -55,6 +56,7 @@ class Assignment implements HasOwnerInterface
      * @var int
      *
      * @ORM\Column(name="grade", type="integer", nullable=true)
+     * @Assert\Type(type="integer")
      * @Assert\Range(
      *      min = 1,
      *      max = 10,
@@ -68,6 +70,8 @@ class Assignment implements HasOwnerInterface
      * @var string $work
      *
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Type("string")
+     * @Assert\Length(max=255)
      */
     private $work;
 

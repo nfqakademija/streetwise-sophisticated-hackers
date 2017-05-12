@@ -39,6 +39,7 @@ class Comment implements HasOwnerInterface
      *
      * @ORM\Column(type="datetime")
      * @Assert\DateTime
+     * @Assert\NotBlank()
      */
     private $date;
 

@@ -24,6 +24,8 @@ class News implements HasOwnerInterface
      * @var string $title
      *
      * @ORM\Column(name="title", type="string", length=255)
+     * @Assert\Type("string")
+     * @Assert\Length(max=255)
      * @Assert\NotBlank()
      */
     private $title;
@@ -38,7 +40,8 @@ class News implements HasOwnerInterface
     /**
      * @var \DateTime $date
      *
-     * @ORM\Column(name="date", type="date")
+     * @ORM\Column(name="date", type="datetime")
+     * @Assert\DateTime
      * @Assert\NotBlank()
      */
     private $date;

@@ -4,7 +4,6 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -28,6 +27,9 @@ class Homework implements HasOwnerInterface
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255)
+     * @Assert\Type("string")
+     * @Assert\Length(max=255)
+     * @Assert\NotBlank()
      */
     private $title;
 
@@ -42,11 +44,13 @@ class Homework implements HasOwnerInterface
      * @var \DateTime
      *
      * @ORM\Column(name="due_date", type="datetime")
+     * @Assert\DateTime
      * @Assert\Range(
      *     min = "now",
      *     max = "+2 years",
      *     groups="create"
      * )
+     * @Assert\NotBlank()
      */
     private $dueDate;
 

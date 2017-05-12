@@ -26,6 +26,7 @@ class User extends BaseUser implements ParticipantInterface, HasOwnerInterface
      * @var string $name
      *
      * @ORM\Column(type="string", length=255)
+     * @Assert\Type("string")
      * @Assert\Length(min=3, max=100)
      * @Assert\NotBlank()
      */
@@ -42,7 +43,7 @@ class User extends BaseUser implements ParticipantInterface, HasOwnerInterface
 
     /**
      * @var string $plainPassword
-     *
+     * @Assert\Type("string")
      * @Assert\Length(min=6,max=72)
      * @Assert\NotBlank(groups="registration")
      */
@@ -52,6 +53,8 @@ class User extends BaseUser implements ParticipantInterface, HasOwnerInterface
      * @var string $occupation
      *
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Type("string")
+     * @Assert\Length(max=255)
      */
     protected $occupation;
 
@@ -59,6 +62,8 @@ class User extends BaseUser implements ParticipantInterface, HasOwnerInterface
      * @var string $interests
      *
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Type("string")
+     * @Assert\Length(max=255)
      */
     protected $interests;
 

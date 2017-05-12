@@ -1,5 +1,4 @@
 <?php
-// src/AppBundle/Entity/Thread.php
 
 namespace AppBundle\Entity;
 

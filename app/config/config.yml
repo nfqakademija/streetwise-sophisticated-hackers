@@ -245,8 +245,6 @@ easy_admin:
                 fields:
                     - title
                     - description
-                    - date
-                    - author
             edit:
                 form_options: { validation_groups: ['Default'] }
             new:
@@ -260,6 +258,7 @@ easy_admin:
                     - author
             show:
                 fields:
+                    - title
                     - description
                     - date
                     - author
@@ -280,13 +279,11 @@ easy_admin:
                 sort: [ 'date', 'ASC' ]
                 actions: ['show']
                 fields:
-                    - newsId
                     - content
                     - author
                     - date
             show:
                 fields:
-                    - newsId
                     - content
                     - author
                     - date
