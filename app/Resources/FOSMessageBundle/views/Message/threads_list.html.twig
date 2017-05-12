@@ -1,11 +1,11 @@
 {% if threads %}
-<table>
+<table class="table table-hover">
     <thead>
         <tr>
             <th>{% trans from 'FOSMessageBundle' %}subject{% endtrans %}</th>
             <th>{% trans from 'FOSMessageBundle' %}startdate{% endtrans %}</th>
             <th>{% trans from 'FOSMessageBundle' %}starter{% endtrans %}</th>
-			<th> Participants </th>
+			<th>{% trans from 'FOSMessageBundle' %}participants{% endtrans %}</th>
             <th>{% trans from 'FOSMessageBundle' %}messages{% endtrans %}</th>
             <th>{% trans from 'FOSMessageBundle' %}last_message{% endtrans %}</th>
             <th>{% trans from 'FOSMessageBundle' %}actions{% endtrans %}</th>
@@ -23,11 +23,11 @@
                     {% endif %}
                 </td>
                 <td> {{ thread.createdAt|date }} </td>
-                <td> {{ thread.createdBy }} </td>
+                <td><a href="{{ path('user_show', { 'id': thread.createdBy.id }) }}">{{ thread.createdBy }}</a></td>
 				<td> 
 				{% for participant in thread.participants %}
                     {% if participant != thread.createdBy %}
-					    {{ participant.username }}
+                        <a href="{{ path('user_show', { 'id': participant.id }) }}">{{ participant.username }}</a>
                     {% endif %}
 				{% endfor %}
 				</td>
@@ -54,7 +54,7 @@
                             {% set submitValue %}{% trans from 'FOSMessageBundle' %}delete{% endtrans %}{% endset %}
                         {% endif %}
                         <form action="{{ formAction }}" method="post">
-                                <input type="submit" value="{{ submitValue }}" />
+                                <button type="submit" class="btn btn-default center-block">{{ submitValue }}</button>
                         </form>
                     {% endif %}
                 </td>

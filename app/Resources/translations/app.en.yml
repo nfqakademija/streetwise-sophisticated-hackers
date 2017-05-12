@@ -48,10 +48,3 @@ user:
 comment:
     new: Add comment
     posted_on: Posted on
-
-message:
-    messenger: Messenger
-    id: Id
-    sender: Sender
-    createdat: Created At
-    body: Body
