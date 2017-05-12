@@ -3,11 +3,14 @@
 namespace AppBundle\Controller\Admin;
 
 use AppBundle\Form\UserType;
+use AppBundle\Form\UserBigType;
+use AppBundle\Form\UserFullType;
 use JavierEguiluz\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
 use JavierEguiluz\Bundle\EasyAdminBundle\Event\EasyAdminEvents;
 use AppBundle\Entity\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
  * Class UserController
@@ -50,7 +53,7 @@ class UserController extends BaseAdminController
 
         $this->dispatch(EasyAdminEvents::PRE_EDIT);
 
-        $id = $this->request->query->get('id');
+        $id = $entity->getId();
 
         //TODO: updateEntityProperty is private
         /*if ($this->request->isXmlHttpRequest() && $property = $this->request->query->get('property')) {
@@ -68,11 +71,18 @@ class UserController extends BaseAdminController
 
         $fields = $this->entity['edit']['fields'];
 
-        if (!$this->getUser()->hasRole('ROLE_ADMIN') && $this->getUser()->getId() == $id) {
-            $editForm = $this->createForm(UserType::class, $entity);
+        if ($this->getUser()->hasRole('ROLE_ADMIN') && $this->getUser()->getId() != $id) {
+            $editForm = $this->createForm(UserFullType::class, $entity);
+        } elseif ($this->getUser()->hasRole('ROLE_ADMIN')) {
+            $editForm = $this->createForm(UserBigType::class, $entity);
         } else {
-            $editForm = $this->createEditForm($entity, $fields);
+            $editForm = $this->createForm(UserType::class, $entity);
         }
+        // TODO: move submit button from controller to template
+        $editForm->add('submit', SubmitType::class, array(
+            'label' => 'Save',
+            'attr'  => array('class' => 'btn btn-default pull-left')
+        ));
 
         $deleteForm = $this->createDeleteForm($this->entity['name'], $id);
 
@@ -88,6 +98,7 @@ class UserController extends BaseAdminController
                 $encoder = $this->container->get('security.password_encoder');
                 $password = $encoder->encodePassword($entity, $entity->getPlainPassword());
                 $entity->setPassword($password);
+                //$entity->eraseCredentials();
             }
 
             $this->dispatch(EasyAdminEvents::PRE_UPDATE, array('entity' => $entity));
@@ -116,7 +127,6 @@ class UserController extends BaseAdminController
         }
 
         $this->dispatch(EasyAdminEvents::POST_EDIT);
-
 
         return $this->render(
             $this->entity['templates']['edit'],
@@ -159,9 +169,9 @@ class UserController extends BaseAdminController
     {
         $this->dispatch(EasyAdminEvents::PRE_SHOW);
 
-        $id = $this->request->query->get('id');
         $easyadmin = $this->request->attributes->get('easyadmin');
         $entity = $easyadmin['item'];
+        $id = $entity->getId();
 
         $fields = $this->entity['show']['fields'];
         $deleteForm = $this->createDeleteForm($this->entity['name'], $id);
@@ -173,14 +183,14 @@ class UserController extends BaseAdminController
             $lectures = $this->em->getRepository('AppBundle:Lecture')
                 ->findBy(
                     [
-                        'lecturer' => $entity->getId()
+                        'lecturer' => $id
                     ]
                 );
         } elseif ($entity->isStudent()) {
             $assignments = $this->em->getRepository('AppBundle:Assignment')
                 ->findBy(
                     [
-                        'student' => $entity->getId()
+                        'student' => $id
                     ]
                 );
         }
