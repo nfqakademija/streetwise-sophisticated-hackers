@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% trans_default_domain "app" %}
+
+{% block title %}{{ 'user.edit'|trans }} (#{{ app.user.id }}){% endblock %}
+
+{% block body %}
+    <ol class="breadcrumb">
+        <li><a href="/">{{ 'home'|trans }}</a></li>
+        <li><a href="{{ path('user_index') }}">{{ 'user.users'|trans }}</a></li>
+        <li class="active">{{ 'user.edit'|trans }}</li>
+    </ol>
+
+    <h3>{{ 'user.edit'|trans }} (#{{ app.user.id }})</h3>
+    {{ form_start(editForm, {'attr': {'novalidate': 'novalidate'}} ) }}
+    {{ form_rest(editForm) }}
+    <button type="submit" class="btn btn-success"> Submit </button>
+    {{ form_end(editForm) }}
+
+
+{% endblock %}
+

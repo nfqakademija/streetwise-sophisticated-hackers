@@ -7,6 +7,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use AppBundle\Form\UserBigType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * User controller.
@@ -92,6 +96,49 @@ class UserController extends Controller
                 'user' => $user,
                 'lectures' => $lectures,
                 'assignments' => $assignments,
+            ]
+        );
+    }
+
+    /**
+     * @Route("/edit/{user_id}", name="user_edit", requirements={"user_id": "\d+"})
+     * @ParamConverter("user", class="AppBundle:User", options={"id" = "user_id"})
+     * @Method({"GET", "POST"})
+     *
+     * @param Request $request
+     * @param User $user
+     *
+     * @return Response|RedirectResponse
+     */
+    public function editUserAction(Request $request, $user)
+    {
+        $this->denyAccessUnlessGranted('edit', $user);
+        $editForm = $this->createForm(UserBigType::class, $user);
+        $editForm->handleRequest($request);
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $user = $editForm->getData();
+
+            $em = $this->get('doctrine.orm.default_entity_manager');
+            $em->persist($user);
+            $em->flush();
+
+            $refererUrl = $request->query->get('referer', '');
+
+            return !empty($refererUrl)
+                ? $this->redirect(urldecode($refererUrl))
+                : $this->redirectToRoute(
+                    'user_show',
+                    [
+                        'id' => $user->getId()
+                    ]
+                );
+        }
+
+        return $this->render(
+            '@AppBundle/views/user/edit.html.twig',
+            [
+                'editForm' => $editForm->createView(),
+                'entity' => $user,
             ]
         );
     }

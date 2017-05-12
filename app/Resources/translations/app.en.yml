@@ -44,6 +44,7 @@ user:
     occupation: Occupation
     interests: Interests
     username: Username
+    edit: Edit User
 
 comment:
     new: Add comment
