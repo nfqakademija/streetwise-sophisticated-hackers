@@ -139,7 +139,11 @@ class UserVoter extends Voter
     {
         return (
             $user == $subject->getOwner() ||
-            ($this->decisionManager->decide($token, ['ROLE_ADMIN']) && !in_array('ROLE_ADMIN', $subject->getRoles())) ||
+            (
+                $this->decisionManager->decide($token, ['ROLE_ADMIN']) &&
+                !in_array('ROLE_ADMIN', $subject->getRoles()) &&
+                !in_array('ROLE_SUPER_ADMIN', $subject->getRoles())
+            ) ||
             $this->decisionManager->decide($token, ['ROLE_SUPER_ADMIN'])
         );
     }

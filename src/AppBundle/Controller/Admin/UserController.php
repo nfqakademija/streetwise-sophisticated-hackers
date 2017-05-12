@@ -80,11 +80,6 @@ class UserController extends BaseAdminController
         } else {
             $editForm = $this->createForm(UserType::class, $entity);
         }
-        // TODO: move submit button from controller to template
-        $editForm->add('submit', SubmitType::class, array(
-            'label' => 'Save',
-            'attr'  => array('class' => 'btn btn-default pull-left')
-        ));
 
         $deleteForm = $this->createDeleteForm($this->entity['name'], $id);
 
