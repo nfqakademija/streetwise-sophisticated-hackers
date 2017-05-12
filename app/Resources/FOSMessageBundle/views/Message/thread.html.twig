@@ -11,7 +11,7 @@
         <li>{% trans from 'FOSMessageBundle' %} recipient {% endtrans %}:
             {% for participant in thread.participants %}
                 {% if participant != thread.createdBy %}
-                    <a href="{{ path('user_show', { 'id': participant.id }) }}">{{ participant.username }}</a>
+                    <a href="{{ path('user_show', { 'id': participant.id }) }}">{{ participant }}</a>
                 {% endif %}
             {% endfor %}
         </li>
