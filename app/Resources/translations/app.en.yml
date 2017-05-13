@@ -8,6 +8,7 @@ student: Student
 action: Action
 author: Author
 message: Message
+submit: Submit
 
 lecture:
     lectures: Lectures
