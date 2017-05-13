@@ -12,8 +12,7 @@
 
     <h1 class="content-title">{{ 'lecture.timetable'|trans }}</h1>
 
-    {# TODO: hardcoded role check, need to check voter permission #}
-    {% if is_granted('ROLE_ADMIN') %}
+    {% if is_granted('new', lecture) %}
         <h4><a href="{{ path('easyadmin', { 'action': 'new', 'entity': 'Lecture' }) }}">{{ 'lecture.new'|trans }}</a></h4>
     {% endif %}
 

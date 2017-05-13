@@ -12,8 +12,7 @@
 
     <h1 class="content-title">{{ 'homework.homework'|trans }}</h1>
 
-    {# TODO: hardcoded role check, need to check voter permission #}
-    {% if not app.user.isStudent %}
+    {% if is_granted('new', homework) %}
         <h4><a href="{{ path('easyadmin', { 'action': 'new', 'entity': 'Homework' }) }}">{{ 'homework.new'|trans }}</a></h4>
     {% endif %}
 
@@ -35,6 +34,5 @@
         {% endfor %}
         </tbody>
     </table>
-
 
 {% endblock %}

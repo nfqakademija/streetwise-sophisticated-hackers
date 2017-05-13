@@ -56,6 +56,7 @@ class NewsController extends Controller
             'news/index.html.twig',
             [
                 'pagination' => $pagination,
+                'news' => $news,
             ]
         );
     }

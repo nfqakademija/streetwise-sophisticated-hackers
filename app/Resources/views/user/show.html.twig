@@ -98,11 +98,9 @@
                     {% endfor %}
             </table>
         </div>
-    {% endif %}
-
-    {% if user.isStudent and user_has_access(user) %}
+    {% elseif user.isStudent and is_granted('show_assignments', user) %}
         <div class="border-top">
-            <h4>{{ 'homework.homework'|trans }}</h4>
+            <h4>{{ 'assignment.assignments'|trans }}</h4>
             <table class="table">
                 <thead>
                     <tr>

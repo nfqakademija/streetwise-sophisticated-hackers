@@ -12,8 +12,7 @@
 
     <h1 class="content-title">{{ 'news.news'|trans }}</h1>
 
-    {# TODO: hardcoded role check, need to check voter permission #}
-    {% if not app.user.isStudent %}
+    {% if is_granted('new', news) %}
         <h4><a href="{{ path('easyadmin', { 'action': 'new', 'entity': 'News' }) }}">{{ 'news.new'|trans }}</a></h4>
     {% endif %}
 
