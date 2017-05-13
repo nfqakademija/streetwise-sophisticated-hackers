@@ -14,7 +14,7 @@
 
     {# TODO: hardcoded role check, need to check voter permission #}
     {% if not app.user.isStudent %}
-        <h4><a href="{{ path('news_create') }}">{{ 'news.new'|trans }}</a></h4>
+        <h4><a href="{{ path('easyadmin', { 'action': 'new', 'entity': 'News' }) }}">{{ 'news.new'|trans }}</a></h4>
     {% endif %}
 
     {% for news in pagination %}
