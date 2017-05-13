@@ -97,8 +97,6 @@ class UserController extends BaseAdminController
                 //$entity->eraseCredentials();
             }
 
-            $this->dispatch(EasyAdminEvents::PRE_UPDATE, array('entity' => $entity));
-
             $this->preUpdateEntity($entity);
             $this->em->flush();
 

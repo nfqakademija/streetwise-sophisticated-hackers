@@ -95,6 +95,14 @@ class Lecture implements HasOwnerInterface
     private $thread;
 
     /**
+     * @ORM\ManyToOne(
+     *     targetEntity="AppBundle\Entity\StudentGroup",
+     *     inversedBy="lectures"
+     *     )
+     */
+    protected $studentGroup;
+
+    /**
      * @return \DateTime
      */
     public function getUpdatedAt()

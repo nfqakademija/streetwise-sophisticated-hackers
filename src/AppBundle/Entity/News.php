@@ -56,9 +56,22 @@ class News implements HasOwnerInterface
     private $author;
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\CommentThread", cascade={"all"})
+     * @ORM\OneToOne(
+     *     targetEntity="AppBundle\Entity\CommentThread",
+     *     cascade={"all"}
+     *     )
      */
     private $thread;
+
+    /**
+     * @var
+     *
+     * @ORM\ManyToOne(
+     *     targetEntity="AppBundle\Entity\StudentGroup",
+     *     inversedBy="news"
+     *     )
+     */
+    protected $studentGroup;
 
     /**
      * Get id

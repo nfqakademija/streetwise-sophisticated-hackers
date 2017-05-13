@@ -117,6 +117,7 @@ easy_admin:
             - { entity: 'Lecture', label: 'Lectures', icon: 'book', default: true }
             - { entity: 'Homework', label: 'Homework', icon: 'laptop' }
             - { entity: 'News', label: 'News', icon: 'bullhorn' }
+            - { entity: 'Group', label: 'Group', icon: 'bullhorn' }
         assets:
             css:
                 - 'https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css'
@@ -141,6 +142,7 @@ easy_admin:
                     - username
                     - name
                     - { property: 'email', type: 'email', label: 'Email' }
+                    - { property: 'studentGroup', type: 'choice', type_options: { multiple: true }}
                     - occupation
                     - { property: 'interests', label: 'Programming interests' }
                     - enabled
@@ -287,6 +289,28 @@ easy_admin:
                     - content
                     - author
                     - date
+        Group:
+            controller: AppBundle\Controller\Admin\StudentGroupController
+            class: AppBundle\Entity\StudentGroup
+            access_role: ROLE_LECTOR
+            form:
+                fields:
+                    - name
+                    - students
+                    - lectures
+                    - news
+            list:
+                actions: ['show']
+                fields:
+                    - id
+                    - name
+            show:
+                fields:
+                    - id
+                    - name
+                    - students
+                    - lectures
+                    - news
 
 knp_paginator:
     page_range: 5
