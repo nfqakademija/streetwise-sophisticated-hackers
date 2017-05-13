@@ -1,0 +1,8 @@
+{% extends '@EasyAdmin/default/edit.html.twig' %}
+
+{% block entity_form %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <input type="submit" value = 'Save' class = 'btn btn-default pull-left'/>
+    {{ form_end(form) }}
+{% endblock entity_form %}

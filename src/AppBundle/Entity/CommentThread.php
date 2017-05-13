@@ -20,7 +20,8 @@ class CommentThread
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min=3, max=100)
+     * @Assert\Type("string")
+     * @Assert\Length(max=255)
      * @Assert\NotBlank()
      */
     protected $ownerName;
@@ -109,5 +110,13 @@ class CommentThread
     public function getComments()
     {
         return $this->comments;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return "CommentThread #" . $this->id;
     }
 }

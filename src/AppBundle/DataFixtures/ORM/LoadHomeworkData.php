@@ -30,6 +30,6 @@ class LoadHomeworkData extends AbstractFixture implements FixtureInterface, Orde
 
     public function getOrder()
     {
-        return 3;
+        return 4;
     }
 }

@@ -2,7 +2,6 @@
 
 namespace AppBundle\Security;
 
-use AppBundle\Entity\HasOwnerInterface;
 use AppBundle\Entity\User;
 use JavierEguiluz\Bundle\EasyAdminBundle\Configuration\ConfigManager;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -10,10 +9,10 @@ use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 /**
- * Class AppVoter
+ * Class UserVoter
  * @package AppBundle\Security
  */
-class AppVoter extends Voter
+class UserVoter extends Voter
 {
     /**
      * @var string EDIT
@@ -60,7 +59,7 @@ class AppVoter extends Voter
      * {@inheritdoc}
      *
      * @param string $attribute
-     * @param HasOwnerInterface $subject
+     * @param User $subject
      *
      * @return bool
      */
@@ -81,7 +80,7 @@ class AppVoter extends Voter
         }
 
         // only vote on HasOwnerInterface objects inside this voter
-        if (!$subject instanceof HasOwnerInterface) {
+        if (!$subject instanceof User) {
             return false;
         }
 
@@ -93,7 +92,7 @@ class AppVoter extends Voter
      * {@inheritdoc}
      *
      * @param string $attribute
-     * @param HasOwnerInterface $subject
+     * @param User $subject
      * @param TokenInterface $token
      *
      * @return bool
@@ -130,27 +129,34 @@ class AppVoter extends Voter
     /**
      * Grants access to administrators or profile owners
      *
-     * @param HasOwnerInterface $subject
+     * @param User $subject
      * @param User $user
      * @param TokenInterface $token
      *
      * @return bool
      */
-    private function canEditOrDelete(HasOwnerInterface $subject, User $user, TokenInterface $token)
+    private function canEditOrDelete(User $subject, User $user, TokenInterface $token)
     {
-        return ($user == $subject->getOwner() ||
-            $this->decisionManager->decide($token, ['ROLE_ADMIN']));
+        return (
+            $user == $subject->getOwner() ||
+            (
+                $this->decisionManager->decide($token, ['ROLE_ADMIN']) &&
+                !in_array('ROLE_ADMIN', $subject->getRoles()) &&
+                !in_array('ROLE_SUPER_ADMIN', $subject->getRoles())
+            ) ||
+            $this->decisionManager->decide($token, ['ROLE_SUPER_ADMIN'])
+        );
     }
 
     /**
      * Grants access to administrators
      *
-     * @param HasOwnerInterface $subject
+     * @param User $subject
      * @param TokenInterface $token
      *
      * @return bool
      */
-    private function canCreate(HasOwnerInterface $subject, TokenInterface $token)
+    private function canCreate(User $subject, TokenInterface $token)
     {
         $reflect = new \ReflectionClass($subject);
         $entityName = $reflect->getShortName();

@@ -1,5 +1,4 @@
 <?php
-// src/AppBundle/Entity/MessageMetadata.php
 
 namespace AppBundle\Entity;
 

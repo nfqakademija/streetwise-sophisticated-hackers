@@ -10,7 +10,6 @@ use JavierEguiluz\Bundle\EasyAdminBundle\Event\EasyAdminEvents;
 use AppBundle\Entity\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
  * Class UserController
@@ -71,18 +70,15 @@ class UserController extends BaseAdminController
 
         $fields = $this->entity['edit']['fields'];
 
-        if ($this->getUser()->hasRole('ROLE_ADMIN') && $this->getUser()->getId() != $id) {
-            $editForm = $this->createForm(UserFullType::class, $entity);
-        } elseif ($this->getUser()->hasRole('ROLE_ADMIN')) {
+        if ($this->getUser()->getId() == $id) {
             $editForm = $this->createForm(UserBigType::class, $entity);
+        } elseif ($this->getUser()->hasRole('ROLE_SUPER_ADMIN')) {
+            $editForm = $this->createEditForm($entity, $fields);
+        } elseif ($this->getUser()->hasRole('ROLE_ADMIN')) {
+            $editForm = $this->createForm(UserFullType::class, $entity);
         } else {
             $editForm = $this->createForm(UserType::class, $entity);
         }
-        // TODO: move submit button from controller to template
-        $editForm->add('submit', SubmitType::class, array(
-            'label' => 'Save',
-            'attr'  => array('class' => 'btn btn-default pull-left')
-        ));
 
         $deleteForm = $this->createDeleteForm($this->entity['name'], $id);
 

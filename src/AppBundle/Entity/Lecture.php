@@ -6,7 +6,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
 
 /**
  * Lecture
@@ -30,6 +29,8 @@ class Lecture implements HasOwnerInterface
      * @var string $title
      *
      * @ORM\Column(name="title", type="string", length=255)
+     * @Assert\Type("string")
+     * @Assert\Length(max=255)
      * @Assert\NotBlank()
      */
     private $title;
@@ -45,6 +46,7 @@ class Lecture implements HasOwnerInterface
      * @var \DateTime $date
      *
      * @ORM\Column(name="date", type="date")
+     * @Assert\DateTime
      * @Assert\NotBlank()
      * @Assert\Range(
      *     min = "now",
@@ -67,6 +69,8 @@ class Lecture implements HasOwnerInterface
      * @var string $slides
      *
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Type("string")
+     * @Assert\Length(max=255)
      */
     private $slides;
 
@@ -81,7 +85,7 @@ class Lecture implements HasOwnerInterface
      * @var \DateTime $updatedAt
      *
      * @ORM\Column(type="datetime", nullable=true)
-     *
+     * @Assert\DateTime
      */
     private $updatedAt;
 
