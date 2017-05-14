@@ -112,11 +112,10 @@ easy_admin:
     design:
         menu:
             - { label: 'Homepage', url: '/', icon: 'home' }
-            - { label: 'Messenger', url: '/messages', icon: 'users' }
-            - { entity: 'User', label: 'Users', icon: 'users' }
-            - { entity: 'Lecture', label: 'Lectures', icon: 'book', default: true }
+            - { entity: 'News', label: 'News', icon: 'bullhorn', default: true }
+            - { entity: 'Lecture', label: 'Lectures', icon: 'book' }
             - { entity: 'Homework', label: 'Homework', icon: 'laptop' }
-            - { entity: 'News', label: 'News', icon: 'bullhorn' }
+            - { entity: 'User', label: 'Users', icon: 'users' }
         assets:
             css:
                 - 'https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css'
