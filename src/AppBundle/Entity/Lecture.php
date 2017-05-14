@@ -14,7 +14,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @Vich\Uploadable
  */
-class Lecture implements HasOwnerInterface
+class Lecture implements
+    HasOwnerInterface,
+    HasStudentGroupInterface
 {
     /**
      * @var int $id

@@ -46,7 +46,8 @@ class StudentGroup
      *
      * @ORM\OneToMany(
      *     targetEntity="AppBundle\Entity\News",
-     *     mappedBy="studentgroup"
+     *     mappedBy="studentgroup",
+     *     cascade={"remove"}
      * )
      */
     protected $news;
@@ -56,10 +57,22 @@ class StudentGroup
      *
      * @ORM\OneToMany(
      *     targetEntity="AppBundle\Entity\Lecture",
-     *     mappedBy="studentgroup"
+     *     mappedBy="studentgroup",
+     *     cascade={"remove"}
      * )
      */
     protected $lectures;
+
+    /**
+     * @var Homework[]|ArrayCollection
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="AppBundle\Entity\Homework",
+     *     mappedBy="studentgroup",
+     *     cascade={"remove"}
+     * )
+     */
+    protected $homeworks;
 
     /**
      * Get id
@@ -209,5 +222,39 @@ class StudentGroup
     public function getLectures()
     {
         return $this->lectures;
+    }
+
+    /**
+     * Add homework
+     *
+     * @param \AppBundle\Entity\Homework $homework
+     *
+     * @return StudentGroup
+     */
+    public function addHomework(\AppBundle\Entity\Homework $homework)
+    {
+        $this->homeworks[] = $homework;
+
+        return $this;
+    }
+
+    /**
+     * Remove homework
+     *
+     * @param \AppBundle\Entity\Homework $homework
+     */
+    public function removeHomework(\AppBundle\Entity\Homework $homework)
+    {
+        $this->homeworks->removeElement($homework);
+    }
+
+    /**
+     * Get homeworks
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getHomeworks()
+    {
+        return $this->homeworks;
     }
 }

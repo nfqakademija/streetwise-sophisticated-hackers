@@ -215,6 +215,7 @@ easy_admin:
                     - description
                     - { property: 'dueDate', type: 'AppBundle\Form\DateTimePickerType' }
                     - lecturer
+                    - studentgroup
             edit:
                 form_options: { validation_groups: ['Default'] }
             new:
@@ -231,6 +232,7 @@ easy_admin:
                     - description
                     - dueDate
                     - lecturer
+                    - studentgroup
         Assignment:
             controller: AppBundle\Controller\Admin\AssignmentController
             class: AppBundle\Entity\Assignment
@@ -298,7 +300,7 @@ easy_admin:
         StudentGroup:
             controller: AppBundle\Controller\Admin\StudentGroupController
             class: AppBundle\Entity\StudentGroup
-            access_role: ROLE_LECTOR
+            access_role: ROLE_ADMIN
             form:
                 fields:
                     - name
@@ -314,6 +316,7 @@ easy_admin:
                     - students
                     - lectures
                     - news
+                    - homeworks
 
 knp_paginator:
     page_range: 5

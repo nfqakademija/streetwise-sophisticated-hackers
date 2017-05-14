@@ -9,7 +9,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity()
  * @ORM\Table(name="news")
  */
-class News implements HasOwnerInterface
+class News implements
+    HasOwnerInterface,
+    HasStudentGroupInterface
 {
     /**
      * @var int $id
