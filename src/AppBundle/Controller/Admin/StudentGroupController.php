@@ -14,37 +14,31 @@ class StudentGroupController extends BaseAdminController
     {
         $easyadmin = $this->request->attributes->get('easyadmin');
         $entity = $easyadmin['item'];
-        $this->denyAccessUnlessGranted('edit', $entity);
+        // TODO: create Voter for StudentGroup
+        //$this->denyAccessUnlessGranted('edit', $entity);
+
+        $this->dispatch(EasyAdminEvents::PRE_EDIT);
 
         $id = $entity->getId();
+
         $fields = $this->entity['edit']['fields'];
         $editForm = $this->createEditForm($entity, $fields);
         $deleteForm = $this->createDeleteForm($this->entity['name'], $id);
 
         $editForm->handleRequest($this->request);
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->dispatch(
-                EasyAdminEvents::PRE_UPDATE,
-                [
-                    'entity' => $entity
-                ]
-            );
+            $this->dispatch(EasyAdminEvents::PRE_UPDATE, ['entity' => $entity]);
 
             $this->preUpdateEntity($entity);
             $this->em->flush();
 
-            $this->dispatch(
-                EasyAdminEvents::POST_UPDATE,
-                [
-                    'entity' => $entity
-                ]
-            );
+            $this->dispatch(EasyAdminEvents::POST_UPDATE, ['entity' => $entity]);
 
             return $this->redirectToRoute(
                 'easyadmin',
                 [
                     'action' => 'show',
-                    'entity' => 'group',
+                    'entity' => 'StudentGroup',
                     'id' => $id
                 ]
             );

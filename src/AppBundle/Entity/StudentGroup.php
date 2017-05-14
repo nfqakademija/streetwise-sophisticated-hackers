@@ -36,8 +36,7 @@ class StudentGroup
      *
      * @ORM\OneToMany(
      *     targetEntity="User",
-     *     mappedBy="studentGroup",
-     *     cascade={"all"}
+     *     mappedBy="studentgroup"
      * )
      */
     protected $students;
@@ -47,8 +46,7 @@ class StudentGroup
      *
      * @ORM\OneToMany(
      *     targetEntity="AppBundle\Entity\News",
-     *     mappedBy="studentGroup",
-     *     cascade={"all"}
+     *     mappedBy="studentgroup"
      * )
      */
     protected $news;
@@ -58,19 +56,10 @@ class StudentGroup
      *
      * @ORM\OneToMany(
      *     targetEntity="AppBundle\Entity\Lecture",
-     *     mappedBy="studentGroup",
-     *     cascade={"all"}
+     *     mappedBy="studentgroup"
      * )
      */
     protected $lectures;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->students = new ArrayCollection();
-    }
 
     /**
      * Get id
@@ -93,16 +82,6 @@ class StudentGroup
     }
 
     /**
-     * Get students
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getStudents()
-    {
-        return $this->students;
-    }
-
-    /**
      * Set name
      *
      * @param string $name
@@ -114,6 +93,20 @@ class StudentGroup
         $this->name = $name;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return "StudentGroup #" . $this->id;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->students = new ArrayCollection();
+        $this->news = new ArrayCollection();
+        $this->lectures = new ArrayCollection();
     }
 
     /**
@@ -140,9 +133,14 @@ class StudentGroup
         $this->students->removeElement($student);
     }
 
-    public function __toString()
+    /**
+     * Get students
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getStudents()
     {
-        return "StudentGroup #" . $this->id;
+        return $this->students;
     }
 
     /**

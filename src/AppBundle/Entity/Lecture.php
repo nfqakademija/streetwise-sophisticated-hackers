@@ -95,12 +95,13 @@ class Lecture implements HasOwnerInterface
     private $thread;
 
     /**
+     * @var
      * @ORM\ManyToOne(
      *     targetEntity="AppBundle\Entity\StudentGroup",
      *     inversedBy="lectures"
-     *     )
+     * )
      */
-    protected $studentGroup;
+    protected $studentgroup;
 
     /**
      * @return \DateTime
@@ -290,5 +291,29 @@ class Lecture implements HasOwnerInterface
         $this->thread = $thread;
 
         return $this;
+    }
+
+    /**
+     * Set studentgroup
+     *
+     * @param \AppBundle\Entity\StudentGroup $studentgroup
+     *
+     * @return Lecture
+     */
+    public function setStudentgroup(StudentGroup $studentgroup = null)
+    {
+        $this->studentgroup = $studentgroup;
+
+        return $this;
+    }
+
+    /**
+     * Get studentgroup
+     *
+     * @return \AppBundle\Entity\StudentGroup
+     */
+    public function getStudentgroup()
+    {
+        return $this->studentgroup;
     }
 }

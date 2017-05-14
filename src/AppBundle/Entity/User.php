@@ -68,14 +68,13 @@ class User extends BaseUser implements ParticipantInterface, HasOwnerInterface
     protected $interests;
 
     /**
-     * @var StudentGroup $studentGroup
-     *
+     * @var
      * @ORM\ManyToOne(
      *     targetEntity="AppBundle\Entity\StudentGroup",
      *     inversedBy="students"
      * )
      */
-    protected $studentGroup;
+    protected $studentgroup;
 
     public function __construct()
     {
@@ -194,26 +193,26 @@ class User extends BaseUser implements ParticipantInterface, HasOwnerInterface
     }
 
     /**
-     * Set studentGroup
+     * Set studentgroup
      *
-     * @param \AppBundle\Entity\StudentGroup $studentGroup
+     * @param \AppBundle\Entity\StudentGroup $studentgroup
      *
      * @return User
      */
-    public function setStudentGroup(StudentGroup $studentGroup = null)
+    public function setStudentgroup(\AppBundle\Entity\StudentGroup $studentgroup = null)
     {
-        $this->studentGroup = $studentGroup;
+        $this->studentgroup = $studentgroup;
 
         return $this;
     }
 
     /**
-     * Get studentGroup
+     * Get studentgroup
      *
      * @return \AppBundle\Entity\StudentGroup
      */
-    public function getStudentGroup()
+    public function getStudentgroup()
     {
-        return $this->studentGroup;
+        return $this->studentgroup;
     }
 }

@@ -65,13 +65,12 @@ class News implements HasOwnerInterface
 
     /**
      * @var
-     *
      * @ORM\ManyToOne(
      *     targetEntity="AppBundle\Entity\StudentGroup",
      *     inversedBy="news"
-     *     )
+     * )
      */
-    protected $studentGroup;
+    protected $studentgroup;
 
     /**
      * Get id
@@ -202,5 +201,29 @@ class News implements HasOwnerInterface
     public function getThread()
     {
         return $this->thread;
+    }
+
+    /**
+     * Set studentgroup
+     *
+     * @param \AppBundle\Entity\StudentGroup $studentgroup
+     *
+     * @return News
+     */
+    public function setStudentgroup(\AppBundle\Entity\StudentGroup $studentgroup = null)
+    {
+        $this->studentgroup = $studentgroup;
+
+        return $this;
+    }
+
+    /**
+     * Get studentgroup
+     *
+     * @return \AppBundle\Entity\StudentGroup
+     */
+    public function getStudentgroup()
+    {
+        return $this->studentgroup;
     }
 }
