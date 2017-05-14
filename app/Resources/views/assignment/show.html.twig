@@ -32,7 +32,7 @@
             </a>
         </div>
     </div>
-    {% if assignment.homework.lecturer == app.user %}
+    {% if is_granted('grade', assignment) %}
         <div class="grade-block border-top">
             <h4>{{ 'assignment.grade'|trans }}</h4>
             <div class="form-horizontal">

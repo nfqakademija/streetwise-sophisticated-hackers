@@ -61,15 +61,20 @@
                 </div>
             </div>
         </div>
+
         <div class="text-center content-link">
             {% if user == app.user %}
                 <a href="{{ path('user_edit') }}">{{ 'user.editProfile'|trans }}</a>
                 <br>
                 <a href="{{ path('user_change') }}">{{ 'user.changePassword'|trans }}</a>
                 <br>
+            {% else %}
+                <a href="{{ path('user_message', { 'id': user.id }) }}">
+                    <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> {{ 'message'|trans }}
+                </a>
             {% endif %}
-            <a href="{{ path('user_index') }}"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> {{ 'message'|trans }}</a>
         </div>
+
         <div class="content-link"><a href="{{ path('user_index') }}"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> {{ 'back_to_the_list'|trans }}</a></div>
     </div>
 
@@ -93,11 +98,9 @@
                     {% endfor %}
             </table>
         </div>
-    {% endif %}
-
-    {% if user.isStudent and user_has_access(user) %}
+    {% elseif user.isStudent and is_granted('show_assignments', user) %}
         <div class="border-top">
-            <h4>{{ 'homework.homework'|trans }}</h4>
+            <h4>{{ 'assignment.assignments'|trans }}</h4>
             <table class="table">
                 <thead>
                     <tr>

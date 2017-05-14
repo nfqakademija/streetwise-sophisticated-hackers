@@ -1,17 +1,34 @@
 {% extends '@AppBundle/views/base.html.twig' %}
 
-{% trans_default_domain "app" %}
-
 {% block title %}
-    {% trans from 'app' %} message.messenger {% endtrans %}
+    {% trans from 'FOSMessageBundle' %} messenger {% endtrans %}
 {% endblock %}
 
 {% block body %}
-    <ul>
-        <li><a href="{{ url('fos_message_thread_new') }}">{% trans from 'FOSMessageBundle' %}send_new{% endtrans %} </a></li>
-        <li><a href="{{ url('fos_message_inbox') }}">{% trans from 'FOSMessageBundle' %}inbox{% endtrans %} </a> - You have {{ fos_message_nb_unread() }} new messages </li>
-        <li><a href="{{ url('fos_message_sent') }}">{% trans from 'FOSMessageBundle' %}sent{% endtrans %}</a></li>
-        <li><a href="{{ url('fos_message_deleted') }}">{% trans from 'FOSMessageBundle' %}deleted{% endtrans %}</a></li>
-    </ul>
-    {% block fos_message_content %}{% endblock %}
+    <ol class="breadcrumb">
+        <li><a href="/">{% trans from 'FOSMessageBundle' %} home {% endtrans %}</a></li>
+        <li class="active">{% trans from 'FOSMessageBundle' %} messenger {% endtrans %}</li>
+    </ol>
+
+    <h1 class="content-title">{% trans from 'FOSMessageBundle' %} messenger {% endtrans %}</h1>
+    <div class="content-body border-top">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="list-group">
+                    <a href="{{ url('fos_message_thread_new') }}" class="list-group-item">{% trans from 'FOSMessageBundle' %}send_new{% endtrans %}</a>
+                    <a href="{{ url('fos_message_inbox') }}" class="list-group-item">
+                        {% trans from 'FOSMessageBundle' %}inbox{% endtrans %}
+                        {% if fos_message_nb_unread() > 0 %}
+                            <span class="badge">{{ fos_message_nb_unread() }}</span>
+                        {% endif %}
+                    </a>
+                    <a href="{{ url('fos_message_sent') }}" class="list-group-item">{% trans from 'FOSMessageBundle' %}sent{% endtrans %}</a>
+                    <a href="{{ url('fos_message_deleted') }}" class="list-group-item">{% trans from 'FOSMessageBundle' %}deleted{% endtrans %}</a>
+                </div>
+            </div>
+            <div class="col-md-10">
+                {% block fos_message_content %}{% endblock %}
+            </div>
+        </div>
+    </div>
 {% endblock body %}

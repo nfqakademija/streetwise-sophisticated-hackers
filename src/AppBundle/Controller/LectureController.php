@@ -49,6 +49,7 @@ class LectureController extends Controller
             'lecture/index.html.twig',
             [
                 'lectures' => $lectures,
+                'lecture' => $lecture,
             ]
         );
     }

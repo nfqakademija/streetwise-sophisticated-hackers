@@ -3,14 +3,15 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
+use AppBundle\Form\MessageType;
 use FOS\UserBundle\Form\Type\ChangePasswordFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use AppBundle\Form\UserBigType;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -98,6 +99,56 @@ class UserController extends Controller
                 'user' => $user,
                 'lectures' => $lectures,
                 'assignments' => $assignments,
+            ]
+        );
+    }
+
+    /**
+     * Send a message to particular user
+     *
+     * @Route("/message/{id}", name="user_message")
+     * @Method({"GET", "POST"})
+     *
+     * @param User $user, Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function messageAction(User $user, Request $request)
+    {
+        if ($user == $this->getUser()) {
+            return $this->redirectToRoute('fos_message_thread_new');
+        }
+
+        $form = $this->createForm(MessageType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+
+            $threadBuilder = $this->get('fos_message.composer')->newThread();
+            $threadBuilder
+                ->addRecipient($user)
+                ->setSender($this->getUser())
+                ->setSubject($data['subject'])
+                ->setBody($data['body']);
+
+            $sender = $this->get('fos_message.sender');
+            $message = $threadBuilder->getMessage();
+            $sender->send($message);
+
+            return $this->redirectToRoute(
+                'fos_message_thread_view',
+                [
+                    'threadId' => $message->getThread()->getId(),
+                ]
+            );
+        }
+
+        return $this->render(
+            'FOSMessageBundle:Message:newThread.html.twig',
+            [
+                'form' => $form->createView(),
+                'data' => $form->getData(),
+                'recipient' => $user,
             ]
         );
     }
