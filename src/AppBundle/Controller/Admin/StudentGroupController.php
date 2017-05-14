@@ -14,8 +14,7 @@ class StudentGroupController extends BaseAdminController
     {
         $easyadmin = $this->request->attributes->get('easyadmin');
         $entity = $easyadmin['item'];
-        // TODO: create Voter for StudentGroup
-        //$this->denyAccessUnlessGranted('edit', $entity);
+        $this->denyAccessUnlessGranted('edit', $entity);
 
         $this->dispatch(EasyAdminEvents::PRE_EDIT);
 

@@ -36,3 +36,11 @@ services:
             - { name: security.voter }
         # small performance boost
         public: false
+
+    app.studentgroup_voter:
+        class: AppBundle\Security\StudentGroupVoter
+        arguments: ['@easyadmin.config.manager', '@security.access.decision_manager']
+        tags:
+            - { name: security.voter }
+        # small performance boost
+        public: false
