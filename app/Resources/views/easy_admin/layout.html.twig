@@ -2,6 +2,14 @@
 
 {% block user_menu_dropdown %}
     <li>
+        <a href="{{ path('fos_message_inbox') }}">
+            <i class="fa fa-envelope"></i> {{ 'messages'|trans(domain = 'EasyAdminBundle') }}
+            {% if fos_message_nb_unread() > 0 %}
+                <span class="badge">{{ fos_message_nb_unread() }}</span>
+            {% endif %}
+        </a>
+    </li>
+    <li>
         <a href="{{ path('easyadmin', { action: 'show', entity: 'User', id: app.user.id })|raw }}"><i class="fa fa-user"></i> {{ 'user.profile'|trans(domain = 'EasyAdminBundle') }}</a>
     </li>
     <li>

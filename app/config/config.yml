@@ -112,11 +112,10 @@ easy_admin:
     design:
         menu:
             - { label: 'Homepage', url: '/', icon: 'home' }
-            - { label: 'Messenger', url: '/messages', icon: 'users' }
-            - { entity: 'User', label: 'Users', icon: 'users' }
-            - { entity: 'Lecture', label: 'Lectures', icon: 'book', default: true }
+            - { entity: 'News', label: 'News', icon: 'bullhorn', default: true }
+            - { entity: 'Lecture', label: 'Lectures', icon: 'book' }
             - { entity: 'Homework', label: 'Homework', icon: 'laptop' }
-            - { entity: 'News', label: 'News', icon: 'bullhorn' }
+            - { entity: 'User', label: 'Users', icon: 'users' }
         assets:
             css:
                 - 'https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css'
@@ -198,7 +197,7 @@ easy_admin:
                     - description
                     - date
                     - lecturer
-                    - { property: 'slides', template: 'slides.html.twig', base_path: "/admin/download/lecture" }
+                    - { property: 'slides', template: 'slides.html.twig', base_path: "/download/lecture" }
         Homework:
             controller: AppBundle\Controller\Admin\HomeworkController
             class: AppBundle\Entity\Homework
@@ -235,7 +234,7 @@ easy_admin:
                     - homework
                     - student
                     - date
-                    - { property: 'work', template: 'work.html.twig', base_path: "/admin/download/homework" }
+                    - { property: 'work', template: 'work.html.twig', base_path: "/download/homework" }
                     - grade
         News:
             controller: AppBundle\Controller\Admin\NewsController
