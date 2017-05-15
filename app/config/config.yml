@@ -272,30 +272,9 @@ easy_admin:
                     - author
                     - studentgroup
         Comment:
-            controller: AppBundle\Controller\Admin\CommentController
             class: AppBundle\Entity\Comment
             access_role: ROLE_USER
-            form:
-                fields:
-                    - content
-                    - date
-                    - author
-            edit:
-                form_options: { validation_groups: ['Default'] }
-            new:
-                form_options: { validation_groups: ['registration'] }
-            list:
-                sort: [ 'date', 'ASC' ]
-                actions: ['show']
-                fields:
-                    - content
-                    - author
-                    - date
-            show:
-                fields:
-                    - content
-                    - author
-                    - date
+            disabled_actions: ['list', 'show', 'new', 'edit', 'delete']
         StudentGroup:
             controller: AppBundle\Controller\Admin\StudentGroupController
             class: AppBundle\Entity\StudentGroup
