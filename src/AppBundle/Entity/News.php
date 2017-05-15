@@ -181,7 +181,7 @@ class News implements
      */
     public function __toString()
     {
-        return 'News #' . $this->id;
+        return $this->title;
     }
 
     /**

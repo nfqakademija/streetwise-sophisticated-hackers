@@ -110,7 +110,7 @@ class StudentGroup
 
     public function __toString()
     {
-        return "StudentGroup #" . $this->id;
+        return $this->name;
     }
     /**
      * Constructor
@@ -231,7 +231,7 @@ class StudentGroup
      *
      * @return StudentGroup
      */
-    public function addHomework(\AppBundle\Entity\Homework $homework)
+    public function addHomework(Homework $homework)
     {
         $this->homeworks[] = $homework;
 
@@ -243,7 +243,7 @@ class StudentGroup
      *
      * @param \AppBundle\Entity\Homework $homework
      */
-    public function removeHomework(\AppBundle\Entity\Homework $homework)
+    public function removeHomework(Homework $homework)
     {
         $this->homeworks->removeElement($homework);
     }

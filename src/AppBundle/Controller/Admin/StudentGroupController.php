@@ -7,6 +7,47 @@ use JavierEguiluz\Bundle\EasyAdminBundle\Event\EasyAdminEvents;
 
 class StudentGroupController extends BaseAdminController
 {
+    public function showStudentGroupAction()
+    {
+        $this->dispatch(EasyAdminEvents::PRE_SHOW);
+
+        $easyadmin = $this->request->attributes->get('easyadmin');
+        $entity = $easyadmin['item'];
+
+        $this->denyAccessUnlessGranted('show', $entity);
+
+
+        $students = $entity->getStudents();
+        $lectures = $entity->getLectures();
+        $homeworks = $entity->getHomeworks();
+        $news = $entity->getNews();
+
+        $fields = $this->entity['show']['fields'];
+        $deleteForm = $this->createDeleteForm($this->entity['name'], $entity->getId());
+
+        $this->dispatch(
+            EasyAdminEvents::POST_SHOW,
+            [
+                'deleteForm' => $deleteForm,
+                'fields' => $fields,
+                'entity' => $entity,
+            ]
+        );
+
+        return $this->render(
+            $this->entity['templates']['show'],
+            [
+                'entity' => $entity,
+                'fields' => $fields,
+                'delete_form' => $deleteForm->createView(),
+                'students' => $students,
+                'lectures' => $lectures,
+                'homeworks' => $homeworks,
+                'news' => $news
+            ]
+        );
+    }
+
     /**
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */

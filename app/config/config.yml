@@ -165,6 +165,7 @@ easy_admin:
                     - name
                     - email
                     - role
+                    - studentgroup
             show:
                 fields:
                     - email
@@ -306,16 +307,10 @@ easy_admin:
             list:
                 actions: ['show']
                 fields:
-                    - id
                     - name
             show:
                 fields:
-                    - id
                     - name
-                    - students
-                    - lectures
-                    - news
-                    - homeworks
 
 knp_paginator:
     page_range: 5
