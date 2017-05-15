@@ -8,6 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity()
  * @ORM\Table(name="news")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\NewsRepository")
  */
 class News implements
     HasOwnerInterface,

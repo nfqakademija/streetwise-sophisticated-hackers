@@ -83,6 +83,7 @@ class Homework implements
      *     targetEntity="AppBundle\Entity\StudentGroup",
      *     inversedBy="homeworks"
      * )
+     * @Assert\NotBlank()
      */
     protected $studentgroup;
 

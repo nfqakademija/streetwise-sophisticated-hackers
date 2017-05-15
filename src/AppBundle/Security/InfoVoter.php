@@ -9,6 +9,10 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
+/**
+ * Class InfoVoter
+ * @package AppBundle\Security
+ */
 class InfoVoter extends Voter
 {
     /**
@@ -89,12 +93,20 @@ class InfoVoter extends Voter
         }
     }
 
+    /**
+     * @param HasStudentGroupInterface $subject
+     * @param User $user
+     * @param TokenInterface $token
+     * @return bool
+     */
     private function canShow(HasStudentGroupInterface $subject, User $user, TokenInterface $token)
     {
-        /* Grants access to lectors, administrators, superadmin (role hierarchy) OR
+        /*
+         * Grants access to lectors, administrators, superadmin (role hierarchy) OR
          * for student from the same group as entity
          */
         return $this->decisionManager->decide($token, ['ROLE_LECTOR']) ||
+            $subject->getStudentGroup() == null ||
             ($user->getStudentgroup() !== null &&
                 $subject->getStudentGroup() == $user->getStudentgroup());
     }

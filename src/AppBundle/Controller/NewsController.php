@@ -46,10 +46,7 @@ class NewsController extends Controller
             $groupNews =
                 $em
                     ->getRepository('AppBundle:News')
-                    ->findBy(
-                        ['studentgroup' => $userGroup],
-                        ['date' => 'DESC']
-                    );
+                    ->findGroupAndPublic($userGroup->getId());
         } elseif (!$user->isStudent()) {
             $groupNews =
                 $em
@@ -59,7 +56,10 @@ class NewsController extends Controller
                         ['date' => 'DESC']
                     );
         } else {
-            $groupNews = [];
+            $groupNews =
+                $em
+                    ->getRepository('AppBundle:News')
+                    ->findPublic();
         }
 
         $paginator  = $this->get('knp_paginator');

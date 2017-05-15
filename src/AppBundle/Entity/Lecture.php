@@ -111,6 +111,7 @@ class Lecture implements
      *     targetEntity="AppBundle\Entity\StudentGroup",
      *     inversedBy="lectures"
      * )
+     * @Assert\NotBlank()
      */
     protected $studentgroup;
 
