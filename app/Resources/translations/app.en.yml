@@ -47,6 +47,7 @@ user:
     username: Username
     editProfile: Edit Profile
     changePassword: Change Password
+    studentgroup: Student group
 
 comment:
     new: Add comment
