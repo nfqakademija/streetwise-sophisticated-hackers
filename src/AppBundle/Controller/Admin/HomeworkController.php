@@ -66,40 +66,6 @@ class HomeworkController extends BaseAdminController
 
         $assignments = $entity->getAssignments();
 
-        $em = $this->getDoctrine()->getManager();
-
-        $myAssignment = $em->getRepository('AppBundle:Assignment')
-            ->findOneBy(
-                [
-                    'student' => $this->getUser()->getId(),
-                    'homework' => $entity->getId()
-                ]
-            );
-
-        $assignment = new Assignment();
-        $assignment->setDate(new \DateTime());
-        $assignment->setHomework($entity);
-        $assignment->setStudent($this->getUser());
-
-        $assignmentForm = $this->createForm(AssignmentType::class, $assignment);
-
-        $assignmentForm->handleRequest($this->request);
-
-        if ($assignmentForm->isSubmitted() && $assignmentForm->isValid() && $myAssignment == null) {
-            $this->denyAccessUnlessGranted('new', $assignment);
-            $assignment = $assignmentForm->getData();
-            $assignment->setDate(new \DateTime());
-
-            $em->persist($assignment);
-            $em->flush();
-
-            return $this->redirectToRoute('easyadmin', [
-                'action' => 'show',
-                'entity' => 'Homework',
-                'id' => $entity->getId(),
-            ]);
-        }
-
         $fields = $this->entity['show']['fields'];
         $deleteForm = $this->createDeleteForm($this->entity['name'], $id);
 
@@ -112,16 +78,13 @@ class HomeworkController extends BaseAdminController
             ]
         );
 
-
         return $this->render(
             $this->entity['templates']['show'],
             [
                 'entity' => $entity,
                 'fields' => $fields,
                 'delete_form' => $deleteForm->createView(),
-                'assignment_form' => $assignmentForm->createView(),
                 'assignments' => $assignments,
-                'my_assignment' => $myAssignment,
             ]
         );
     }

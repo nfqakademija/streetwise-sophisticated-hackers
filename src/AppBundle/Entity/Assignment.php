@@ -79,6 +79,7 @@ class Assignment implements HasOwnerInterface
      * @var File $workFile
      *
      * @Vich\UploadableField(mapping="work_file", fileNameProperty="work")
+     * @Assert\File(maxSize="1M", mimeTypes={"application/octet-stream", "application/zip", "application/gzip"})
      */
     private $workFile;
 

@@ -67,6 +67,14 @@
                 <source>submitted.homework</source>
                 <target>Submitted homework</target>
             </trans-unit>
+            <trans-unit id="submit">
+                <source>submit</source>
+                <target>Submit</target>
+            </trans-unit>
+            <trans-unit id="messages">
+                <source>messages</source>
+                <target>Messages</target>
+            </trans-unit>
             <trans-unit id="new.page_title">
                 <source>new.page_title</source>
                 <target>Create %entity_name%</target>
@@ -87,7 +95,6 @@
                 <source>search.page_title</source>
                 <target><![CDATA[{0} No results found|{1} <strong>1</strong> result found|]1,Inf] <strong>%count%</strong> results found]]></target>
             </trans-unit>
-
             <trans-unit id="author">
                 <source>author</source>
                 <target>Author</target>

@@ -80,6 +80,15 @@ class Lecture implements
      * @var File $slidesFile
      *
      * @Vich\UploadableField(mapping="lecture_slides", fileNameProperty="slides")
+     * @Assert\File(
+     *     maxSize="2M",
+     *     mimeTypes=
+     *     {
+     *          "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+     *          "application/vnd.ms-powerpoint",
+     *          "application/pdf",
+     *          "application/vnd.oasis.opendocument.presentation"
+     *      })
      */
     private $slidesFile;
 
