@@ -5,7 +5,8 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Comment;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Comment controller.
@@ -14,33 +15,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component
  */
 class CommentController extends Controller
 {
-    /**
-     * Displays a form to edit an existing comment entity.
-     *
-     * @Route("/{id}/edit", name="comment_edit")
-     * @Method({"GET", "POST"})
-     */
-    public function editAction(Request $request, Comment $comment)
-    {
-        $this->denyAccessUnlessGranted('edit', $comment);
-
-        $deleteForm = $this->createDeleteForm($comment);
-        $editForm = $this->createForm('AppBundle\Form\CommentType', $comment);
-        $editForm->handleRequest($request);
-
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('comment_edit', array('id' => $comment->getId()));
-        }
-
-        return $this->render('comment/edit.html.twig', array(
-            'comment' => $comment,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
-    }
-
     /**
      * Deletes a comment entity.
      *
@@ -63,9 +37,12 @@ class CommentController extends Controller
             return $this->redirect($referer);
         }
 
-        return $this->render('comment/delete.html.twig', array(
-            'form' => $form->createView(),
-        ));
+        return $this->render(
+            'comment/delete.html.twig',
+            [
+                'form' => $form->createView(),
+            ]
+        );
     }
 
     /**
@@ -78,7 +55,12 @@ class CommentController extends Controller
     private function createDeleteForm(Comment $comment)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('comment_delete', array('id' => $comment->getId())))
+            ->setAction($this->generateUrl(
+                'comment_delete',
+                [
+                    'id' => $comment->getId()
+                ]
+            ))
             ->setMethod('DELETE')
             ->getForm()
         ;
