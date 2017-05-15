@@ -201,7 +201,7 @@ class Homework implements
      *
      * @return User
      */
-    public function getLecturer(): User
+    public function getLecturer()
     {
         return $this->lecturer;
     }
