@@ -20,24 +20,9 @@ class UserVoter extends Voter
     const EDIT = 'edit';
 
     /**
-     * @var string LIST_ITEM
-     */
-    const LIST_ITEM = 'list';
-
-    /**
-     * @var string SHOW
-     */
-    const SHOW = 'show';
-
-    /**
      * @var string DELETE
      */
     const DELETE = 'delete';
-
-    /**
-     * @var string NEW_ITEM
-     */
-    const NEW_ITEM = 'new';
 
     /**
      * @var AccessDecisionManagerInterface $decisionManager
@@ -70,10 +55,7 @@ class UserVoter extends Voter
             $attribute,
             [
                 self::EDIT,
-                self::LIST_ITEM,
-                self::SHOW,
                 self::DELETE,
-                self::NEW_ITEM,
             ]
         )) {
             return false;
@@ -83,7 +65,6 @@ class UserVoter extends Voter
         if (!$subject instanceof User) {
             return false;
         }
-
 
         return true;
     }
@@ -106,20 +87,12 @@ class UserVoter extends Voter
             return false;
         }
 
-
         // you know $subject is a User object, thanks to supports
         /** @var User $subject */
         switch ($attribute) {
-            case self::LIST_ITEM:
-            case self::SHOW:
-                return true;
-                break;
             case self::EDIT:
             case self::DELETE:
                 return $this->canEditOrDelete($subject, $user, $token);
-                break;
-            case self::NEW_ITEM:
-                return $this->canCreate($subject, $token);
                 break;
             default:
                 return false;
@@ -146,36 +119,5 @@ class UserVoter extends Voter
             ) ||
             $this->decisionManager->decide($token, ['ROLE_SUPER_ADMIN'])
         );
-    }
-
-    /**
-     * Grants access to administrators
-     *
-     * @param User $subject
-     * @param TokenInterface $token
-     *
-     * @return bool
-     */
-    private function canCreate(User $subject, TokenInterface $token)
-    {
-        $reflect = new \ReflectionClass($subject);
-        $entityName = $reflect->getShortName();
-        $accessRole = $this->getAccessRole($entityName);
-
-        return $this->decisionManager->decide($token, [$accessRole]);
-    }
-
-    /**
-     * @param string $entityName
-     *
-     * @return string
-     */
-    private function getAccessRole(string $entityName)
-    {
-        if (isset($this->configManager->getEntityConfig($entityName)['access_role'])) {
-            return $this->configManager->getEntityConfig($entityName)['access_role'];
-        }
-
-        return 'ROLE_ADMIN';
     }
 }

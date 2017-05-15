@@ -12,29 +12,9 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 class InfoVoter extends Voter
 {
     /**
-     * @var string EDIT
-     */
-    const EDIT = 'edit';
-
-    /**
-     * @var string LIST_ITEM
-     */
-    const LIST_ITEM = 'list';
-
-    /**
      * @var string SHOW
      */
     const SHOW = 'show';
-
-    /**
-     * @var string DELETE
-     */
-    const DELETE = 'delete';
-
-    /**
-     * @var string NEW_ITEM
-     */
-    const NEW_ITEM = 'new';
 
     /**
      * @var AccessDecisionManagerInterface $decisionManager
@@ -66,11 +46,7 @@ class InfoVoter extends Voter
         if (!in_array(
             $attribute,
             [
-                self::EDIT,
-                self::LIST_ITEM,
                 self::SHOW,
-                self::DELETE,
-                self::NEW_ITEM,
             ]
         )) {
             return false;
@@ -103,20 +79,10 @@ class InfoVoter extends Voter
         }
 
         // you know $subject is a HasStudentGroupInterface object, thanks to supports
-        /** @var User $subject */
+        /** @var HasStudentGroupInterface $subject */
         switch ($attribute) {
-            case self::LIST_ITEM:
-                return true;
-                break;
             case self::SHOW:
                 return $this->canShow($subject, $user, $token);
-                break;
-            case self::EDIT:
-            case self::DELETE:
-                return $this->canEditOrDelete($subject, $user, $token);
-                break;
-            case self::NEW_ITEM:
-                return $this->canCreate($subject, $token);
                 break;
             default:
                 return false;
@@ -142,51 +108,5 @@ class InfoVoter extends Voter
             }
         }
         return false;
-    }
-
-    /**
-     * Grants access to administrators or profile owners
-     *
-     * @param HasStudentGroupInterface $subject
-     * @param User $user
-     * @param TokenInterface $token
-     *
-     * @return bool
-     */
-    private function canEditOrDelete(HasStudentGroupInterface $subject, User $user, TokenInterface $token)
-    {
-        return ($user === $subject->getOwner() ||
-            $this->decisionManager->decide($token, ['ROLE_ADMIN']));
-    }
-
-    /**
-     * Grants access to administrators
-     *
-     * @param HasStudentGroupInterface $subject
-     * @param TokenInterface $token
-     *
-     * @return bool
-     */
-    private function canCreate(HasStudentGroupInterface $subject, TokenInterface $token)
-    {
-        $reflect = new \ReflectionClass($subject);
-        $entityName = $reflect->getShortName();
-        $accessRole = $this->getAccessRole($entityName);
-
-        return $this->decisionManager->decide($token, [$accessRole]);
-    }
-
-    /**
-     * @param string $entityName
-     *
-     * @return string
-     */
-    private function getAccessRole(string $entityName)
-    {
-        if (isset($this->configManager->getEntityConfig($entityName)['access_role'])) {
-            return $this->configManager->getEntityConfig($entityName)['access_role'];
-        }
-
-        return 'ROLE_ADMIN';
     }
 }

@@ -42,8 +42,8 @@ class UserFullType extends UserBigType
                             'Student' => 'ROLE_USER',
                             'Lector' => 'ROLE_LECTOR'
                         ],
-                    'expanded' => true,
-                    'multiple' => true,
+                        'expanded' => true,
+                        'multiple' => true,
                 ]
             )
             ->add(
