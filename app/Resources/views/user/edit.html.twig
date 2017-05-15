@@ -2,6 +2,8 @@
 
 {% trans_default_domain "app" %}
 
+{% form_theme editForm 'bootstrap_3_horizontal_layout.html.twig' %}
+
 {% block title %}{{ 'user.editProfile'|trans }}{% endblock %}
 
 {% block body %}
@@ -11,12 +13,13 @@
         <li class="active">{{ 'user.editProfile'|trans }}</li>
     </ol>
 
-    <h3>{{ 'user.editProfile'|trans }}</h3>
-    {{ form_start(editForm, {'attr': {'novalidate': 'novalidate'}} ) }}
-    {{ form_widget(editForm) }}
-    <button type="submit" class="btn btn-success"> Submit </button>
-    {{ form_end(editForm) }}
-
+    <h1 class="content-title">{{ 'user.editProfile'|trans }}</h1>
+    <div class="content-body border-top">
+        {{ form_start(editForm, {'attr': {'novalidate': 'novalidate'}} ) }}
+        {{ form_widget(editForm) }}
+        <button type="submit" class="btn btn-default center-block"> {{ 'submit'|trans }} </button>
+        {{ form_end(editForm) }}
+    </div>
 
 {% endblock %}
 

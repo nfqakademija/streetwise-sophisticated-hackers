@@ -25,6 +25,11 @@ class UserVoter extends Voter
     const DELETE = 'delete';
 
     /**
+     * @var string SHOW_ASSIGNMENTS
+     */
+    const SHOW_ASSIGNMENTS = 'show_assignments';
+
+    /**
      * @var AccessDecisionManagerInterface $decisionManager
      */
     private $decisionManager;
@@ -56,6 +61,7 @@ class UserVoter extends Voter
             [
                 self::EDIT,
                 self::DELETE,
+                self::SHOW_ASSIGNMENTS,
             ]
         )) {
             return false;
@@ -92,6 +98,7 @@ class UserVoter extends Voter
         switch ($attribute) {
             case self::EDIT:
             case self::DELETE:
+            case self::SHOW_ASSIGNMENTS:
                 return $this->canEditOrDelete($subject, $user, $token);
                 break;
             default:

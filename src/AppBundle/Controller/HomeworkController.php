@@ -47,10 +47,14 @@ class HomeworkController extends Controller
                     ['dueDate' => 'ASC']
                 );
 
+        // Empty Homework object for security check
+        $homework = new Homework();
+
         return $this->render(
             'homework/index.html.twig',
             [
                 'homeworks' => $homeworks,
+                'homework' => $homework,
             ]
         );
     }
@@ -147,6 +151,7 @@ class HomeworkController extends Controller
                 'assignments' => $assignments,
                 'comment_form' => $commentForm->createView(),
                 'comments' => $comments,
+                'assignment'=> $assignment,
             ]
         );
     }

@@ -23,47 +23,64 @@
         <article>{{ homework.description|nl2br }}</article>
 
         <div class="content-link"><a href="{{ path('homework_index') }}"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> {{ 'back_to_the_list'|trans }}</a></div>
-    </div>
 
-    <div class="assignment-block border-top">
-        {% if my_assignment is not null %}
-            <h3>{{ 'assignment.my'|trans }}</h3>
-            <p>{{ 'assignment.grade'|trans }}: {{ my_assignment.grade }}</p>
-            <p>{{ 'assignment.file'|trans }}: <a href="{{ path('homework_download', { 'file': my_assignment.work }) }}">{{ my_assignment.work }}</a></p>
-            <p><a class="btn btn-default" role="button" href="{{ path('assignment_show', { 'id': my_assignment.id }) }}">{{ 'show'|trans }}</a></p>
-        {% elseif app.user.isStudent %}
-            {% form_theme assignment_form 'bootstrap_3_horizontal_layout.html.twig' %}
+        <div class="assignment-block border-top">
+            {% if my_assignment is not null %}
+                <h3>{{ 'assignment.my'|trans }}</h3>
+                <div class="row">
+                    <div class="col-md-4 col-md-offset-4">
+                        <div class="row">
+                            <div class="col-md-6">
+                                {{ 'assignment.grade'|trans }}:
+                            </div>
+                            <div class="col-md-6">
+                                {{ my_assignment.grade }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                {{ 'assignment.file'|trans }}:
+                            </div>
+                            <div class="col-md-6">
+                                <a href="{{ path('homework_download', { 'file': my_assignment.work }) }}">{{ my_assignment.work }}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-link text-center"><a href="{{ path('assignment_show', { 'id': my_assignment.id }) }}">{{ 'show'|trans }}</a></div>
+            {% elseif is_granted('new', assignment) %}
+                {% form_theme assignment_form 'bootstrap_3_horizontal_layout.html.twig' %}
 
-            <h3>{{ 'assignment.new'|trans }}</h3>
-            <div class="">
+                <h3>{{ 'assignment.new'|trans }}</h3>
                 {{ form_start(assignment_form) }}
                 {{ form_widget(assignment_form) }}
-                <button type="submit" class="btn btn-success"> Upload </button>
+                <button type="submit" class="btn btn-default center-block"> {{ 'submit'|trans }} </button>
                 {{ form_end(assignment_form) }}
-            </div>
-        {% else %}
-            <h3>{{ 'assignment.assignments'|trans }}</h3>
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>{{ 'student'|trans }}</th>
-                        <th>{{ 'assignment.file'|trans }}</th>
-                        <th>{{ 'assignment.grade'|trans }}</th>
-                        <th>{{ 'action'|trans }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for assignment in assignments %}
+
+            {% elseif is_granted('list', assignment) %}
+                <h3>{{ 'assignment.assignments'|trans }}</h3>
+                <table class="table table-hover">
+                    <thead>
                         <tr>
-                            <td><a href="{{ path('user_show', { 'id': assignment.student.id }) }}">{{ assignment.student }}</a></td>
-                            <td><a href="{{ path('homework_download', { 'file': assignment.work }) }}">{{ assignment.work }}</a></td>
-                            <td>{{ assignment.grade }}</td>
-                            <td><a href="{{ path('assignment_show', { 'id': assignment.id }) }}">{{ 'show'|trans }}</a></td>
+                            <th>{{ 'student'|trans }}</th>
+                            <th>{{ 'assignment.file'|trans }}</th>
+                            <th>{{ 'assignment.grade'|trans }}</th>
+                            <th>{{ 'action'|trans }}</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% endif %}
+                    </thead>
+                    <tbody>
+                        {% for assignment in assignments %}
+                            <tr>
+                                <td><a href="{{ path('user_show', { 'id': assignment.student.id }) }}">{{ assignment.student }}</a></td>
+                                <td><a href="{{ path('homework_download', { 'file': assignment.work }) }}">{{ assignment.work }}</a></td>
+                                <td>{{ assignment.grade }}</td>
+                                <td><a href="{{ path('assignment_show', { 'id': assignment.id }) }}">{{ 'show'|trans }}</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
     </div>
 
     {{ include('@AppBundle/views/includes/comments.html.twig', with_context = true) }}

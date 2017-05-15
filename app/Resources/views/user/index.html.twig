@@ -29,7 +29,13 @@
                 <td><a href="{{ path('user_show', { 'id': user.id }) }}">{{ user.name }}</a></td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.role }}</td>
-                <td><a href="{{ path('user_index') }}"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> {{ 'message'|trans }}</a></td>
+                <td>
+                    {% if user != app.user %}
+                        <a href="{{ path('user_message', { 'id': user.id }) }}">
+                            <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> {{ 'message'|trans }}
+                        </a>
+                    {% endif %}
+                </td>
             </tr>
         {% endfor %}
         </tbody>

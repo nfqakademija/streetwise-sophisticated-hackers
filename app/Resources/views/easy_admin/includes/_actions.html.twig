@@ -1,4 +1,5 @@
 {% for action in actions %}
+  {% if is_granted(action.name, item) %}
     {% if 'list' == action.name %}
         {% set action_href = request_parameters.referer|default('') ? request_parameters.referer|easyadmin_urldecode : path('easyadmin', request_parameters|merge({ action: 'list' })) %}
     {% elseif 'method' == action.type %}
@@ -13,4 +14,5 @@
             {{ action.label|trans(arguments = trans_parameters|merge({ '%entity_id%': item_id }), domain = translation_domain) }}
         {%- endif -%}
     </a>
+  {% endif %}
 {% endfor %}

@@ -93,7 +93,7 @@ class AssignmentVoter extends Voter
         /** @var Assignment $subject */
         switch ($attribute) {
             case self::LIST_ITEM:
-                return false;
+                return $this->canViewList($user);
             case self::SHOW:
                 return $this->canView($subject, $user);
             case self::GRADE:
@@ -136,5 +136,14 @@ class AssignmentVoter extends Voter
     public function canGrade(Assignment $subject, User $user): bool
     {
         return $user->getId() == $subject->getHomework()->getOwner()->getId();
+    }
+
+    /**
+     * @param User $user
+     * @return bool
+     */
+    public function canViewList(User $user)
+    {
+        return !$user->isStudent();
     }
 }
