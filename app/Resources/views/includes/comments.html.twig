@@ -10,6 +10,9 @@
     </div>
     {% for comment in comments %}
         <div class="comment border-top">
+            {% if is_granted('delete', comment) %}
+                {{ render(controller('AppBundle:Comment:delete', {'id': comment.id})) }}
+            {% endif %}
             <ul class="info-header">
                 <li>{{ 'author'|trans }}: <a href="{{ path('user_show', { 'id': comment.author.id }) }}">{{ comment.author }}</a></li>
                 <li>{{ 'comment.posted_on'|trans }}: {% if comment.date %}{{ comment.date|date('Y-m-d H:i') }}{% endif %}</li>
