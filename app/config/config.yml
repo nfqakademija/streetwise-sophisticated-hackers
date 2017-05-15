@@ -197,7 +197,7 @@ easy_admin:
                     - description
                     - date
                     - lecturer
-                    - { property: 'slides', template: 'slides.html.twig', base_path: "/admin/download/lecture" }
+                    - { property: 'slides', template: 'slides.html.twig', base_path: "/download/lecture" }
         Homework:
             controller: AppBundle\Controller\Admin\HomeworkController
             class: AppBundle\Entity\Homework
@@ -234,7 +234,7 @@ easy_admin:
                     - homework
                     - student
                     - date
-                    - { property: 'work', template: 'work.html.twig', base_path: "/admin/download/homework" }
+                    - { property: 'work', template: 'work.html.twig', base_path: "/download/homework" }
                     - grade
         News:
             controller: AppBundle\Controller\Admin\NewsController
