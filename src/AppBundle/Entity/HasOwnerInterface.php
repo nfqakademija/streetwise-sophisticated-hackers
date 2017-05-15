@@ -12,5 +12,5 @@ interface HasOwnerInterface
      * Returns Entity owner (eg. User - itself, Lecture - lecturer, News - author
      * @return User
      */
-    public function getOwner(): User;
+    public function getOwner();
 }

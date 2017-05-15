@@ -13,7 +13,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Entity
  */
 class Homework implements
-    HasOwnerInterface
+    HasOwnerInterface,
+    HasStudentGroupInterface
 {
     /**
      * @var int
@@ -200,7 +201,7 @@ class Homework implements
      *
      * @return User
      */
-    public function getLecturer()
+    public function getLecturer(): User
     {
         return $this->lecturer;
     }
@@ -208,7 +209,7 @@ class Homework implements
     /**
      * {@inheritdoc}
      */
-    public function getOwner(): User
+    public function getOwner()
     {
         return $this->lecturer;
     }

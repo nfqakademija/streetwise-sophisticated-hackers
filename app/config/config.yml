@@ -142,10 +142,9 @@ easy_admin:
                     - username
                     - name
                     - { property: 'email', type: 'email', label: 'Email' }
-                    - { property: 'studentGroup', type: 'choice', type_options: { multiple: true }}
+                    - studentgroup
                     - occupation
                     - { property: 'interests', label: 'Programming interests' }
-                    - studentgroup
                     - enabled
                     - { property: 'roles', type: 'choice', type_options: { multiple: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_LECTOR': 'ROLE_LECTOR', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
             edit:

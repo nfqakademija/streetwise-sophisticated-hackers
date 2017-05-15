@@ -163,7 +163,7 @@ class News implements
     /**
      * @return User
      */
-    public function getAuthor()
+    public function getAuthor(): User
     {
         return $this->author;
     }
@@ -171,7 +171,7 @@ class News implements
     /**
      * {@inheritdoc}
      */
-    public function getOwner(): User
+    public function getOwner()
     {
         return $this->author;
     }
@@ -212,7 +212,7 @@ class News implements
      *
      * @return News
      */
-    public function setStudentgroup(\AppBundle\Entity\StudentGroup $studentgroup = null)
+    public function setStudentgroup(StudentGroup $studentgroup = null)
     {
         $this->studentgroup = $studentgroup;
 

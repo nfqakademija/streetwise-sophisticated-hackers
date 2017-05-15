@@ -36,7 +36,7 @@ class NewsController extends Controller
     public function indexAction(Request $request)
     {
         $news = new News();
-        $this->denyAccessUnlessGranted('show', $news);
+        $this->denyAccessUnlessGranted('list', $news);
         $em = $this->get('doctrine.orm.default_entity_manager');
         $query = $em
             ->getRepository('AppBundle:News')

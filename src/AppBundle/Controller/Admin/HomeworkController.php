@@ -62,6 +62,8 @@ class HomeworkController extends BaseAdminController
         $easyadmin = $this->request->attributes->get('easyadmin');
         $entity = $easyadmin['item'];
 
+        $this->denyAccessUnlessGranted('show', $entity);
+
         $assignments = $entity->getAssignments();
 
         $em = $this->getDoctrine()->getManager();

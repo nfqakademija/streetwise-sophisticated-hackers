@@ -44,3 +44,11 @@ services:
             - { name: security.voter }
         # small performance boost
         public: false
+
+    app.info_voter:
+        class: AppBundle\Security\InfoVoter
+        arguments: ['@easyadmin.config.manager', '@security.access.decision_manager']
+        tags:
+            - { name: security.voter }
+        # small performance boost
+        public: false

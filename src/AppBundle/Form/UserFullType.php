@@ -2,6 +2,9 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\StudentGroup;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -39,8 +42,8 @@ class UserFullType extends UserBigType
                             'Student' => 'ROLE_USER',
                             'Lector' => 'ROLE_LECTOR'
                         ],
-                        'expanded' => true,
-                        'multiple' => true,
+                    'expanded' => true,
+                    'multiple' => true,
                 ]
             )
             ->add(
@@ -62,6 +65,17 @@ class UserFullType extends UserBigType
                     'first_options' => array('label' => 'New Password'),
                     'second_options' => array('label' => 'Confirm Password'),
                     'invalid_message' => 'fos_user.password.mismatch',
+                ]
+            )
+            ->add(
+                'studentgroup',
+                EntityType::class,
+                [
+                    'required' => false,
+                    'class' => StudentGroup::class,
+                    'query_builder' => function (EntityRepository $repo) {
+                        return $repo->createQueryBuilder('cat')->orderBy('cat.name', 'ASC');
+                    }
                 ]
             )
         ;

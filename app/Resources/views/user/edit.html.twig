@@ -13,7 +13,7 @@
 
     <h3>{{ 'user.editProfile'|trans }}</h3>
     {{ form_start(editForm, {'attr': {'novalidate': 'novalidate'}} ) }}
-    {{ form_rest(editForm) }}
+    {{ form_widget(editForm) }}
     <button type="submit" class="btn btn-success"> Submit </button>
     {{ form_end(editForm) }}
 

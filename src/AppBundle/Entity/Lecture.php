@@ -213,7 +213,7 @@ class Lecture implements
      *
      * @return User
      */
-    public function getLecturer()
+    public function getLecturer(): User
     {
         return $this->lecturer;
     }
@@ -269,7 +269,7 @@ class Lecture implements
     /**
      * {@inheritdoc}
      */
-    public function getOwner(): User
+    public function getOwner()
     {
         return $this->lecturer;
     }

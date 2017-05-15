@@ -89,6 +89,8 @@ class NewsController extends BaseAdminController
         $easyadmin = $this->request->attributes->get('easyadmin');
         $entity = $easyadmin['item'];
 
+        $this->denyAccessUnlessGranted('show', $entity);
+
         $comments = $this->getEntityComments($entity);
 
         $comment = new Comment();
