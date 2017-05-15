@@ -3,16 +3,13 @@
 namespace AppBundle\Security;
 
 use AppBundle\Entity\User;
+use AppBundle\Entity\StudentGroup;
 use JavierEguiluz\Bundle\EasyAdminBundle\Configuration\ConfigManager;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-/**
- * Class UserVoter
- * @package AppBundle\Security
- */
-class UserVoter extends Voter
+class StudentGroupVoter extends Voter
 {
     /**
      * @var string EDIT
@@ -20,14 +17,24 @@ class UserVoter extends Voter
     const EDIT = 'edit';
 
     /**
+     * @var string LIST_ITEM
+     */
+    const LIST_ITEM = 'list';
+
+    /**
+     * @var string SHOW
+     */
+    const SHOW = 'show';
+
+    /**
      * @var string DELETE
      */
     const DELETE = 'delete';
 
     /**
-     * @var string SHOW_ASSIGNMENTS
+     * @var string NEW_ITEM
      */
-    const SHOW_ASSIGNMENTS = 'show_assignments';
+    const NEW_ITEM = 'new';
 
     /**
      * @var AccessDecisionManagerInterface $decisionManager
@@ -49,7 +56,7 @@ class UserVoter extends Voter
      * {@inheritdoc}
      *
      * @param string $attribute
-     * @param User $subject
+     * @param StudentGroup $subject
      *
      * @return bool
      */
@@ -60,15 +67,17 @@ class UserVoter extends Voter
             $attribute,
             [
                 self::EDIT,
+                self::LIST_ITEM,
+                self::SHOW,
                 self::DELETE,
-                self::SHOW_ASSIGNMENTS,
+                self::NEW_ITEM,
             ]
         )) {
             return false;
         }
 
-        // only vote on HasOwnerInterface objects inside this voter
-        if (!$subject instanceof User) {
+        // only vote on StudentGroup objects inside this voter
+        if (!$subject instanceof StudentGroup) {
             return false;
         }
 
@@ -79,7 +88,7 @@ class UserVoter extends Voter
      * {@inheritdoc}
      *
      * @param string $attribute
-     * @param User $subject
+     * @param StudentGroup $subject
      * @param TokenInterface $token
      *
      * @return bool
@@ -93,13 +102,17 @@ class UserVoter extends Voter
             return false;
         }
 
-        // you know $subject is a User object, thanks to supports
-        /** @var User $subject */
+        // you know $subject is a StudentGroup object, thanks to supports
+        /** @var StudentGroup $subject */
         switch ($attribute) {
+            case self::LIST_ITEM:
+            case self::SHOW:
+                return true;
+                break;
             case self::EDIT:
             case self::DELETE:
-            case self::SHOW_ASSIGNMENTS:
-                return $this->canEditOrDelete($subject, $user, $token);
+            case self::NEW_ITEM:
+                return $this->canCreate($subject, $token);
                 break;
             default:
                 return false;
@@ -107,24 +120,31 @@ class UserVoter extends Voter
     }
 
     /**
-     * Grants access to administrators or profile owners
-     *
-     * @param User $subject
-     * @param User $user
+     * @param StudentGroup $subject
      * @param TokenInterface $token
      *
      * @return bool
      */
-    private function canEditOrDelete(User $subject, User $user, TokenInterface $token)
+    private function canCreate(StudentGroup $subject, TokenInterface $token)
     {
-        return (
-            $user == $subject->getOwner() ||
-            (
-                $this->decisionManager->decide($token, ['ROLE_ADMIN']) &&
-                !in_array('ROLE_ADMIN', $subject->getRoles()) &&
-                !in_array('ROLE_SUPER_ADMIN', $subject->getRoles())
-            ) ||
-            $this->decisionManager->decide($token, ['ROLE_SUPER_ADMIN'])
-        );
+        $reflect = new \ReflectionClass($subject);
+        $entityName = $reflect->getShortName();
+        $accessRole = $this->getAccessRole($entityName);
+
+        return $this->decisionManager->decide($token, [$accessRole]);
+    }
+
+    /**
+     * @param string $entityName
+     *
+     * @return string
+     */
+    private function getAccessRole(string $entityName)
+    {
+        if (isset($this->configManager->getEntityConfig($entityName)['access_role'])) {
+            return $this->configManager->getEntityConfig($entityName)['access_role'];
+        }
+
+        return 'ROLE_ADMIN';
     }
 }

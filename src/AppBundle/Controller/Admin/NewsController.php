@@ -89,6 +89,8 @@ class NewsController extends BaseAdminController
         $easyadmin = $this->request->attributes->get('easyadmin');
         $entity = $easyadmin['item'];
 
+        $this->denyAccessUnlessGranted('show', $entity);
+
         $fields = $this->entity['show']['fields'];
         $deleteForm = $this->createDeleteForm($this->entity['name'], $id);
 

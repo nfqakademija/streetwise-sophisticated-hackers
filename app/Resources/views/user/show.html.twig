@@ -59,6 +59,16 @@
                         {{ user.interests }}
                     </div>
                 </div>
+                {% if user.isStudent %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ 'user.studentgroup'|trans }}:
+                        </div>
+                        <div class="col-md-6">
+                            {{ user.studentgroup }}
+                        </div>
+                    </div>
+                {% endif %}
             </div>
         </div>
 

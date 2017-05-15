@@ -213,7 +213,7 @@ class Assignment implements HasOwnerInterface
     /**
      * @inheritDoc
      */
-    public function getOwner(): User
+    public function getOwner()
     {
         return $this->student;
     }

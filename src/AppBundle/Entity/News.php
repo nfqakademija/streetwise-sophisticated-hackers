@@ -8,8 +8,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity()
  * @ORM\Table(name="news")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\NewsRepository")
  */
-class News implements HasOwnerInterface
+class News implements
+    HasOwnerInterface,
+    HasStudentGroupInterface
 {
     /**
      * @var int $id
@@ -56,9 +59,21 @@ class News implements HasOwnerInterface
     private $author;
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\CommentThread", cascade={"all"})
+     * @ORM\OneToOne(
+     *     targetEntity="AppBundle\Entity\CommentThread",
+     *     cascade={"all"}
+     *     )
      */
     private $thread;
+
+    /**
+     * @var
+     * @ORM\ManyToOne(
+     *     targetEntity="AppBundle\Entity\StudentGroup",
+     *     inversedBy="news"
+     * )
+     */
+    protected $studentgroup;
 
     /**
      * Get id
@@ -157,7 +172,7 @@ class News implements HasOwnerInterface
     /**
      * {@inheritdoc}
      */
-    public function getOwner(): User
+    public function getOwner()
     {
         return $this->author;
     }
@@ -167,7 +182,7 @@ class News implements HasOwnerInterface
      */
     public function __toString()
     {
-        return 'News #' . $this->id;
+        return $this->title;
     }
 
     /**
@@ -189,5 +204,29 @@ class News implements HasOwnerInterface
     public function getThread()
     {
         return $this->thread;
+    }
+
+    /**
+     * Set studentgroup
+     *
+     * @param \AppBundle\Entity\StudentGroup $studentgroup
+     *
+     * @return News
+     */
+    public function setStudentgroup(StudentGroup $studentgroup = null)
+    {
+        $this->studentgroup = $studentgroup;
+
+        return $this;
+    }
+
+    /**
+     * Get studentgroup
+     *
+     * @return \AppBundle\Entity\StudentGroup
+     */
+    public function getStudentgroup()
+    {
+        return $this->studentgroup;
     }
 }

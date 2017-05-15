@@ -2,6 +2,7 @@
 
 namespace AppBundle\Security;
 
+use AppBundle\Entity\HasStudentGroupInterface;
 use AppBundle\Entity\User;
 use JavierEguiluz\Bundle\EasyAdminBundle\Configuration\ConfigManager;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -9,25 +10,15 @@ use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 /**
- * Class UserVoter
+ * Class InfoVoter
  * @package AppBundle\Security
  */
-class UserVoter extends Voter
+class InfoVoter extends Voter
 {
     /**
-     * @var string EDIT
+     * @var string SHOW
      */
-    const EDIT = 'edit';
-
-    /**
-     * @var string DELETE
-     */
-    const DELETE = 'delete';
-
-    /**
-     * @var string SHOW_ASSIGNMENTS
-     */
-    const SHOW_ASSIGNMENTS = 'show_assignments';
+    const SHOW = 'show';
 
     /**
      * @var AccessDecisionManagerInterface $decisionManager
@@ -49,7 +40,7 @@ class UserVoter extends Voter
      * {@inheritdoc}
      *
      * @param string $attribute
-     * @param User $subject
+     * @param HasStudentGroupInterface $subject
      *
      * @return bool
      */
@@ -59,16 +50,14 @@ class UserVoter extends Voter
         if (!in_array(
             $attribute,
             [
-                self::EDIT,
-                self::DELETE,
-                self::SHOW_ASSIGNMENTS,
+                self::SHOW,
             ]
         )) {
             return false;
         }
 
-        // only vote on HasOwnerInterface objects inside this voter
-        if (!$subject instanceof User) {
+        // only vote on HasStudentGroupInterface objects inside this voter
+        if (!$subject instanceof HasStudentGroupInterface) {
             return false;
         }
 
@@ -79,7 +68,7 @@ class UserVoter extends Voter
      * {@inheritdoc}
      *
      * @param string $attribute
-     * @param User $subject
+     * @param HasStudentGroupInterface $subject
      * @param TokenInterface $token
      *
      * @return bool
@@ -93,13 +82,11 @@ class UserVoter extends Voter
             return false;
         }
 
-        // you know $subject is a User object, thanks to supports
-        /** @var User $subject */
+        // you know $subject is a HasStudentGroupInterface object, thanks to supports
+        /** @var HasStudentGroupInterface $subject */
         switch ($attribute) {
-            case self::EDIT:
-            case self::DELETE:
-            case self::SHOW_ASSIGNMENTS:
-                return $this->canEditOrDelete($subject, $user, $token);
+            case self::SHOW:
+                return $this->canShow($subject, $user, $token);
                 break;
             default:
                 return false;
@@ -107,24 +94,20 @@ class UserVoter extends Voter
     }
 
     /**
-     * Grants access to administrators or profile owners
-     *
-     * @param User $subject
+     * @param HasStudentGroupInterface $subject
      * @param User $user
      * @param TokenInterface $token
-     *
      * @return bool
      */
-    private function canEditOrDelete(User $subject, User $user, TokenInterface $token)
+    private function canShow(HasStudentGroupInterface $subject, User $user, TokenInterface $token)
     {
-        return (
-            $user == $subject->getOwner() ||
-            (
-                $this->decisionManager->decide($token, ['ROLE_ADMIN']) &&
-                !in_array('ROLE_ADMIN', $subject->getRoles()) &&
-                !in_array('ROLE_SUPER_ADMIN', $subject->getRoles())
-            ) ||
-            $this->decisionManager->decide($token, ['ROLE_SUPER_ADMIN'])
-        );
+        /*
+         * Grants access to lectors, administrators, superadmin (role hierarchy) OR
+         * for student from the same group as entity
+         */
+        return $this->decisionManager->decide($token, ['ROLE_LECTOR']) ||
+            $subject->getStudentGroup() == null ||
+            ($user->getStudentgroup() !== null &&
+                $subject->getStudentGroup() == $user->getStudentgroup());
     }
 }

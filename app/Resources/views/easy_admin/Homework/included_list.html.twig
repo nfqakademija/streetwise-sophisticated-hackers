@@ -1,0 +1,56 @@
+<h4>{{ 'homework'|trans(_trans_parameters, 'EasyAdminBundle') }}</h4>
+<div class="table-responsive">
+    <table class="table custom-table">
+        <thead>
+        <tr>
+            <th class="string">
+                {{ 'title'|trans(_trans_parameters, 'EasyAdminBundle') }}
+            </th>
+            <th class="datetime">
+                {{ 'date'|trans(_trans_parameters, 'EasyAdminBundle') }}
+            </th>
+            <th class="string">
+                {{ 'lecturer'|trans(_trans_parameters, 'EasyAdminBundle') }}
+            </th>
+            <th>
+                <span>{{ 'actions'|trans(_trans_parameters, 'EasyAdminBundle') }}</span>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in items %}
+            <tr>
+                <td class="string">
+                    {% if is_granted('show', item) %}
+                        <a class="action-show" href="{{ path('easyadmin', {'action': 'show', 'entity': 'Homework', 'id': item.id}) }}">
+                            {{ item.title }}
+                        </a>
+                    {% else %}
+                        {{ item.title }}
+                    {% endif %}
+                </td>
+                <td class="sorted datetime ">
+                    {{ item.dueDate|date('Y-m-d H:i:s') }}
+                </td>
+                <td class="string">
+                    <a class="action-show" href="{{ path('easyadmin', {'action': 'show', 'entity': 'User', 'id': item.owner.id}) }}">
+                        {{ item.owner }}
+                    </a>
+                </td>
+                <td class="actions">
+                    {% if is_granted('edit', item) %}
+                        <a class="action-edit" href="{{ path('easyadmin', {'action': 'edit', 'entity': 'Homework', 'id': item.id}) }}">
+                            {{ 'edit.action'|trans(_trans_parameters, 'EasyAdminBundle') }}
+                        </a>
+                    {% endif %}
+                    {% if is_granted('delete', item) %}
+                        <a class="action-delete" href="{{ path('easyadmin', {'action': 'delete', 'entity': 'Homework', 'id': item.id}) }}">
+                            {{ 'delete_modal.action'|trans(_trans_parameters, 'EasyAdminBundle') }}
+                        </a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

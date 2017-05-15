@@ -37,18 +37,32 @@ class LectureController extends Controller
 
         $em = $this->get('doctrine.orm.default_entity_manager');
 
-        $lectures =
-            $em
-                ->getRepository('AppBundle:Lecture')
-                ->findBy(
-                    [],
-                    ['date' => 'ASC']
-                );
+        $user = $this->getUser();
+        $userGroup = $user->getStudentGroup();
+
+        if ($userGroup !== null) {
+            $groups =
+                $em
+                    ->getRepository('AppBundle:StudentGroup')
+                    ->findBy(
+                        ['id' => $userGroup]
+                    );
+        } elseif (!$user->isStudent()) {
+            $groups =
+                $em
+                    ->getRepository('AppBundle:StudentGroup')
+                    ->findBy(
+                        [],
+                        ['id' => 'DESC']
+                    );
+        } else {
+            $groups = [];
+        }
 
         return $this->render(
             'lecture/index.html.twig',
             [
-                'lectures' => $lectures,
+                'groups' => $groups,
                 'lecture' => $lecture,
             ]
         );

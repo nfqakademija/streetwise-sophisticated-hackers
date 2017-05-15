@@ -39,21 +39,32 @@ class HomeworkController extends Controller
 
         $em = $this->get('doctrine.orm.default_entity_manager');
 
-        $homeworks =
-            $em
-                ->getRepository('AppBundle:Homework')
-                ->findBy(
-                    [],
-                    ['dueDate' => 'ASC']
-                );
+        $user = $this->getUser();
+        $userGroup = $user->getStudentGroup();
 
-        // Empty Homework object for security check
-        $homework = new Homework();
+        if ($userGroup !== null) {
+            $groups =
+                $em
+                    ->getRepository('AppBundle:StudentGroup')
+                    ->findBy(
+                        ['id' => $userGroup]
+                    );
+        } elseif (!$user->isStudent()) {
+            $groups =
+                $em
+                    ->getRepository('AppBundle:StudentGroup')
+                    ->findBy(
+                        [],
+                        ['id' => 'DESC']
+                    );
+        } else {
+            $groups = [];
+        }
 
         return $this->render(
             'homework/index.html.twig',
             [
-                'homeworks' => $homeworks,
+                'groups' => $groups,
                 'homework' => $homework,
             ]
         );

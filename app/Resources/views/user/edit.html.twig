@@ -16,7 +16,7 @@
     <h1 class="content-title">{{ 'user.editProfile'|trans }}</h1>
     <div class="content-body border-top">
         {{ form_start(editForm, {'attr': {'novalidate': 'novalidate'}} ) }}
-        {{ form_rest(editForm) }}
+        {{ form_widget(editForm) }}
         <button type="submit" class="btn btn-default center-block"> {{ 'submit'|trans }} </button>
         {{ form_end(editForm) }}
     </div>

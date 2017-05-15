@@ -1,0 +1,25 @@
+{% extends '@AppBundle/views/easy_admin/show.html.twig' %}
+
+{% block main %}
+    {{ parent() }}
+
+    {{ include('@AppBundle/views/easy_admin/User/included_list.html.twig', {
+        items: students,
+        _trans_parameters: _trans_parameters
+    }, with_context = false) }}
+
+    {{ include('@AppBundle/views/easy_admin/News/included_list.html.twig', {
+        items: news,
+        _trans_parameters: _trans_parameters
+    }, with_context = false) }}
+
+    {{ include('@AppBundle/views/easy_admin/Lecture/included_list.html.twig', {
+        items: lectures,
+        _trans_parameters: _trans_parameters
+    }, with_context = false) }}
+
+    {{ include('@AppBundle/views/easy_admin/Homework/included_list.html.twig', {
+        items: homeworks,
+        _trans_parameters: _trans_parameters
+    }, with_context = false) }}
+{% endblock main %}

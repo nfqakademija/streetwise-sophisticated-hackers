@@ -9,6 +9,13 @@
     {% endspaceless %}
 {% endblock %}
 
+{% block item_actions %}
+    {{ parent() }}
+    {% if app.user == entity %}
+        <a class="btn btn-secondary action-list" href="{{ path('user_change') }}">{{ 'change.password'|trans(_trans_parameters, 'EasyAdminBundle') }}</a>
+    {% endif %}
+{% endblock item_actions %}
+
 {% block main %}
     {{ parent() }}
 

@@ -36,18 +36,35 @@ class NewsController extends Controller
     public function indexAction(Request $request)
     {
         $news = new News();
-        $this->denyAccessUnlessGranted('show', $news);
+        $this->denyAccessUnlessGranted('list', $news);
         $em = $this->get('doctrine.orm.default_entity_manager');
-        $query = $em
-            ->getRepository('AppBundle:News')
-            ->findBy(
-                [],
-                ['date' => 'DESC']
-            );
+
+        $user = $this->getUser();
+        $userGroup = $user->getStudentGroup();
+
+        if ($userGroup !== null) {
+            $groupNews =
+                $em
+                    ->getRepository('AppBundle:News')
+                    ->findGroupAndPublic($userGroup->getId());
+        } elseif (!$user->isStudent()) {
+            $groupNews =
+                $em
+                    ->getRepository('AppBundle:News')
+                    ->findBy(
+                        [],
+                        ['date' => 'DESC']
+                    );
+        } else {
+            $groupNews =
+                $em
+                    ->getRepository('AppBundle:News')
+                    ->findPublic();
+        }
 
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
-            $query,
+            $groupNews,
             $request->query->getInt('page', 1),
             5
         );

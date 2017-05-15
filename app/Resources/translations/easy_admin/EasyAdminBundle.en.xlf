@@ -19,6 +19,10 @@
                 <source>show.action</source>
                 <target>Show</target>
             </trans-unit>
+            <trans-unit id="edit.action">
+                <source>edit.action</source>
+                <target>Edit</target>
+            </trans-unit>
             <trans-unit id="student">
                 <source>student</source>
                 <target>Student</target>
@@ -91,7 +95,27 @@
                 <source>search.page_title</source>
                 <target><![CDATA[{0} No results found|{1} <strong>1</strong> result found|]1,Inf] <strong>%count%</strong> results found]]></target>
             </trans-unit>
+            <trans-unit id="author">
+                <source>author</source>
+                <target>Author</target>
+            </trans-unit>
+            <trans-unit id="lecturer">
+                <source>lecturer</source>
+                <target>Lecturer</target>
+            </trans-unit>
+            <trans-unit id="date">
+                <source>date</source>
+                <target>Date</target>
+            </trans-unit>
 
+            <trans-unit id="news">
+                <source>news</source>
+                <target>News</target>
+            </trans-unit>
+            <trans-unit id="change.password">
+                <source>change.password</source>
+                <target>Change password</target>
+            </trans-unit>
 
             <!-- comments list -->
             <trans-unit id="comment.author">

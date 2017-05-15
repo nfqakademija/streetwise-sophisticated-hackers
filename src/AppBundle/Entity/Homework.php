@@ -12,7 +12,9 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Table(name="homework")
  * @ORM\Entity
  */
-class Homework implements HasOwnerInterface
+class Homework implements
+    HasOwnerInterface,
+    HasStudentGroupInterface
 {
     /**
      * @var int
@@ -74,6 +76,16 @@ class Homework implements HasOwnerInterface
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\CommentThread", cascade={"all"})
      */
     private $thread;
+
+    /**
+     * @var
+     * @ORM\ManyToOne(
+     *     targetEntity="AppBundle\Entity\StudentGroup",
+     *     inversedBy="homeworks"
+     * )
+     * @Assert\NotBlank()
+     */
+    protected $studentgroup;
 
     /**
      * @return mixed
@@ -198,7 +210,7 @@ class Homework implements HasOwnerInterface
     /**
      * {@inheritdoc}
      */
-    public function getOwner(): User
+    public function getOwner()
     {
         return $this->lecturer;
     }
@@ -218,7 +230,7 @@ class Homework implements HasOwnerInterface
      *
      * @return Homework
      */
-    public function addAssignment(\AppBundle\Entity\Assignment $assignment)
+    public function addAssignment(Assignment $assignment)
     {
         $this->assignments[] = $assignment;
 
@@ -230,7 +242,7 @@ class Homework implements HasOwnerInterface
      *
      * @param \AppBundle\Entity\Assignment $assignment
      */
-    public function removeAssignment(\AppBundle\Entity\Assignment $assignment)
+    public function removeAssignment(Assignment $assignment)
     {
         $this->assignments->removeElement($assignment);
     }
@@ -254,5 +266,29 @@ class Homework implements HasOwnerInterface
         $this->thread = $thread;
 
         return $this;
+    }
+
+    /**
+     * Set studentgroup
+     *
+     * @param \AppBundle\Entity\StudentGroup $studentgroup
+     *
+     * @return Homework
+     */
+    public function setStudentgroup(StudentGroup $studentgroup = null)
+    {
+        $this->studentgroup = $studentgroup;
+
+        return $this;
+    }
+
+    /**
+     * Get studentgroup
+     *
+     * @return \AppBundle\Entity\StudentGroup
+     */
+    public function getStudentgroup()
+    {
+        return $this->studentgroup;
     }
 }

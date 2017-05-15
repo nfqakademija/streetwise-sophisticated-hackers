@@ -14,7 +14,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @Vich\Uploadable
  */
-class Lecture implements HasOwnerInterface
+class Lecture implements
+    HasOwnerInterface,
+    HasStudentGroupInterface
 {
     /**
      * @var int $id
@@ -102,6 +104,16 @@ class Lecture implements HasOwnerInterface
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\CommentThread", cascade={"all"})
      */
     private $thread;
+
+    /**
+     * @var
+     * @ORM\ManyToOne(
+     *     targetEntity="AppBundle\Entity\StudentGroup",
+     *     inversedBy="lectures"
+     * )
+     * @Assert\NotBlank()
+     */
+    protected $studentgroup;
 
     /**
      * @return \DateTime
@@ -267,7 +279,7 @@ class Lecture implements HasOwnerInterface
     /**
      * {@inheritdoc}
      */
-    public function getOwner(): User
+    public function getOwner()
     {
         return $this->lecturer;
     }
@@ -291,5 +303,29 @@ class Lecture implements HasOwnerInterface
         $this->thread = $thread;
 
         return $this;
+    }
+
+    /**
+     * Set studentgroup
+     *
+     * @param \AppBundle\Entity\StudentGroup $studentgroup
+     *
+     * @return Lecture
+     */
+    public function setStudentgroup(StudentGroup $studentgroup = null)
+    {
+        $this->studentgroup = $studentgroup;
+
+        return $this;
+    }
+
+    /**
+     * Get studentgroup
+     *
+     * @return \AppBundle\Entity\StudentGroup
+     */
+    public function getStudentgroup()
+    {
+        return $this->studentgroup;
     }
 }

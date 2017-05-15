@@ -133,7 +133,7 @@ class Comment implements HasOwnerInterface
      *
      * @return \AppBundle\Entity\User
      */
-    public function getAuthor()
+    public function getAuthor(): User
     {
         return $this->author;
     }
@@ -141,7 +141,7 @@ class Comment implements HasOwnerInterface
     /**
      * @inheritDoc
      */
-    public function getOwner(): User
+    public function getOwner()
     {
         return $this->author;
     }
