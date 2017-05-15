@@ -49,6 +49,7 @@ class StudentGroup
      *     mappedBy="studentgroup",
      *     cascade={"remove"}
      * )
+     * @ORM\OrderBy({"date" = "DESC"})
      */
     protected $news;
 
@@ -60,6 +61,7 @@ class StudentGroup
      *     mappedBy="studentgroup",
      *     cascade={"remove"}
      * )
+     * @ORM\OrderBy({"date" = "ASC"})
      */
     protected $lectures;
 
@@ -71,6 +73,7 @@ class StudentGroup
      *     mappedBy="studentgroup",
      *     cascade={"remove"}
      * )
+     * @ORM\OrderBy({"dueDate" = "ASC"})
      */
     protected $homeworks;
 
