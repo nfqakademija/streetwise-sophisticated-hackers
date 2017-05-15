@@ -91,22 +91,11 @@ class InfoVoter extends Voter
 
     private function canShow(HasStudentGroupInterface $subject, User $user, TokenInterface $token)
     {
-        // Grants access to administrators, lectors or owners
-        if ($user === $subject->getOwner() ||
-            $this->decisionManager->decide($token, ['ROLE_ADMIN']) ||
-            $this->decisionManager->decide($token, ['ROLE_LECTOR'])) {
-            return true;
-        }
-        // Grants access to 'public' entities
-        if ($subject->getStudentGroup() == null) {
-            return true;
-        }
-        // Grants access to users in the same StudentGroup
-        if ($user->getStudentgroup() != null) {
-            if ($subject->getStudentGroup() === $user->getStudentgroup()) {
-                return true;
-            }
-        }
-        return false;
+        /* Grants access to lectors, administrators, superadmin (role hierarchy) OR
+         * for student from the same group as entity
+         */
+        return $this->decisionManager->decide($token, ['ROLE_LECTOR']) ||
+            ($user->getStudentgroup() !== null &&
+                $subject->getStudentGroup() == $user->getStudentgroup());
     }
 }
