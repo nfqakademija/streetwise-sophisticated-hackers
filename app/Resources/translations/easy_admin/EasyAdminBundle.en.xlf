@@ -112,6 +112,10 @@
                 <source>news</source>
                 <target>News</target>
             </trans-unit>
+            <trans-unit id="change.password">
+                <source>change.password</source>
+                <target>Change password</target>
+            </trans-unit>
 
             <!-- comments list -->
             <trans-unit id="comment.author">
