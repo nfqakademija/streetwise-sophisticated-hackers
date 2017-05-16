@@ -54,20 +54,6 @@ class UserController extends BaseAdminController
 
         $id = $entity->getId();
 
-        //TODO: updateEntityProperty is private
-        /*if ($this->request->isXmlHttpRequest() && $property = $this->request->query->get('property')) {
-            $newValue = 'true' === mb_strtolower($this->request->query->get('newValue'));
-            $fieldsMetadata = $this->entity['list']['fields'];
-
-            if (!isset($fieldsMetadata[$property]) || 'toggle' !== $fieldsMetadata[$property]['dataType']) {
-                throw new \RuntimeException(sprintf('The type of the "%s" property is not "toggle".', $property));
-            }
-
-            $this->updateEntityProperty($entity, $property, $newValue);
-
-            return new Response((string) $newValue);
-        }*/
-
         $fields = $this->entity['edit']['fields'];
 
         if ($this->getUser()->getId() == $id) {
@@ -94,7 +80,6 @@ class UserController extends BaseAdminController
                 $encoder = $this->container->get('security.password_encoder');
                 $password = $encoder->encodePassword($entity, $entity->getPlainPassword());
                 $entity->setPassword($password);
-                //$entity->eraseCredentials();
             }
 
             $this->preUpdateEntity($entity);

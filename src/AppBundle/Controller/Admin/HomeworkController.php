@@ -2,8 +2,6 @@
 
 namespace AppBundle\Controller\Admin;
 
-use AppBundle\Entity\Assignment;
-use AppBundle\Form\AssignmentType;
 use JavierEguiluz\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
 use AppBundle\Entity\Homework;
 use JavierEguiluz\Bundle\EasyAdminBundle\Event\EasyAdminEvents;

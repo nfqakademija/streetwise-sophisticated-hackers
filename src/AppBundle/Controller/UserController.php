@@ -62,7 +62,6 @@ class UserController extends Controller
      * Finds and displays a user entity.
      *
      * @Route("/{id}", name="user_show", requirements={"id": "\d+"})
-     * @ParamConverter("user", class="AppBundle:User", options={"id" = "id"})
      * @Method("GET")
      *
      * @param User $user
@@ -109,8 +108,9 @@ class UserController extends Controller
      * @Route("/message/{id}", name="user_message")
      * @Method({"GET", "POST"})
      *
-     * @param User $user, Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param User $user
+     * @param Request $request
+     * @return RedirectResponse|Response
      */
     public function messageAction(User $user, Request $request)
     {

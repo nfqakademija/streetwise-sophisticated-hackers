@@ -54,10 +54,6 @@ class UserFullType extends UserBigType
                     'required'    => false,
                     'constraints' => [
                         new Length(array(
-                            // constraint 'min' is not required, because it doubles with
-                            // TODO: need to check:
-                            // entity->plainPassword constrain
-                            // as when constraint 'min' is added, form shows 2 same errors
                             'max' => 72
                         ))
                     ],
