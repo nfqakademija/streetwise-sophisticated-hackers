@@ -6,7 +6,7 @@
             <th class="string">
                 {{ 'title'|trans(_trans_parameters, 'EasyAdminBundle') }}
             </th>
-            <th class="datetime">
+            <th class="date">
                 {{ 'date'|trans(_trans_parameters, 'EasyAdminBundle') }}
             </th>
             <th class="string">
@@ -29,8 +29,8 @@
                         {{ item.title }}
                     {% endif %}
                 </td>
-                <td class="sorted datetime ">
-                    {{ item.date|date('Y-m-d H:i:s') }}
+                <td class="sorted date">
+                    {{ item.date|date('Y-m-d') }}
                 </td>
                 <td class="string">
                     <a class="action-show" href="{{ path('easyadmin', {'action': 'show', 'entity': 'User', 'id': item.owner.id}) }}">
