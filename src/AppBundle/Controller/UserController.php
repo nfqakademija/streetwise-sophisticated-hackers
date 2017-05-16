@@ -73,10 +73,21 @@ class UserController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
+        $loggedInUser = $this->getUser();
+        $loggedInUserGroup = $loggedInUser->getStudentGroup();
+
         $lectures = [];
         $assignments = [];
 
-        if ($user->isLector()) {
+        if ($user->isLector() && $loggedInUser->isStudent()) {
+            $lectures = $em->getRepository('AppBundle:Lecture')
+                ->findBy(
+                    [
+                        'lecturer' => $user->getId(),
+                        'studentgroup' => $loggedInUserGroup
+                    ]
+                );
+        } elseif ($user->isLector()) {
             $lectures = $em->getRepository('AppBundle:Lecture')
                 ->findBy(
                     [
