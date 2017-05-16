@@ -8,8 +8,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Form\NewsType;
 use JavierEguiluz\Bundle\EasyAdminBundle\Event\EasyAdminEvents;
-use AppBundle\Entity\Comment;
-use AppBundle\Form\CommentType;
 
 /**
  * Class NewsController

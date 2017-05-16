@@ -39,6 +39,31 @@ easy_admin:
             - CommentThread
             - Comment
     entities:
+        Comment:
+            controller: AppBundle\Controller\Admin\CommentController
+            class: AppBundle\Entity\Comment
+            access_role: ROLE_USER
+            form:
+                fields:
+                    - content
+                    - date
+                    - author
+            edit:
+                form_options: { validation_groups: ['Default'] }
+            new:
+                form_options: { validation_groups: ['registration'] }
+            list:
+                sort: [ 'date', 'ASC' ]
+                actions: ['show']
+                fields:
+                    - content
+                    - author
+                    - date
+            show:
+                fields:
+                    - content
+                    - author
+                    - date
         CommentThread:
             controller:
             class: AppBundle\Entity\CommentThread

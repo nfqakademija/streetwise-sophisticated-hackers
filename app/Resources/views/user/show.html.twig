@@ -97,12 +97,18 @@
                     <th class="string">
                         {{ 'title'|trans }}
                     </th>
+                    <th class="date">
+                        {{ 'date'|trans }}
+                    </th>
                 </tr>
                 </thead>
                     {% for lecture in lectures %}
                         <tr>
                             <td class="string">
                                 <a class="" href="{{ path('lecture_show', { 'id': lecture.id }) }}">{{ lecture.title }}</a>
+                            </td>
+                            <td class="sorted date">
+                                {{ lecture.date|date('Y-m-d') }}
                             </td>
                         </tr>
                     {% endfor %}

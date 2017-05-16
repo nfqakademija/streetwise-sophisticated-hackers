@@ -39,8 +39,6 @@ class UserBigType extends UserType
                     'constraints' => [
                         new NotBlank(),
                         new Length(array('max' => 180))
-                        // TODO: validate email as '<string>@<string>.<string>'
-                        // current form validation is different from entity validation
                     ]
                 ]
             )

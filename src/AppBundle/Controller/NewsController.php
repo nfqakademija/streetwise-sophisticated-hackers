@@ -136,7 +136,6 @@ class NewsController extends Controller
     }
 
     /**
-     * @Route("/create", name="news_create")
      * @Method({"GET", "POST"})
      *
      * @param Request $request

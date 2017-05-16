@@ -168,7 +168,6 @@ class HomeworkController extends Controller
     }
 
     /**
-     * @Route("/create", name="homework_create")
      * @Method({"GET", "POST"})
      *
      * @param Request $request

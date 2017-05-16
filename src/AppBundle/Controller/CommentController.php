@@ -18,8 +18,12 @@ class CommentController extends Controller
     /**
      * Deletes a comment entity.
      *
-     * @Route("/{id}", name="comment_delete")
+     * @Route("/{id}", name="comment_delete", requirements={"id": "\d+"})
      * @Method("DELETE")
+     *
+     * @param Request $request
+     * @param Comment $comment
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function deleteAction(Request $request, Comment $comment)
     {

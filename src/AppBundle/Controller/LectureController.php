@@ -125,7 +125,6 @@ class LectureController extends Controller
     }
 
     /**
-     * @Route("/create", name="lecture_create")
      * @Method({"GET", "POST"})
      *
      * @param Request $request

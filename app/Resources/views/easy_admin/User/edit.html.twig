@@ -6,7 +6,9 @@
 
     {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button type="submit" class="btn btn-default"> {{ 'submit'|trans(_trans_parameters, 'EasyAdminBundle') }} </button>
+    <button type="submit" class="btn btn-primary action-save"><i class="fa fa-save"></i> {{ 'submit'|trans(_trans_parameters, 'EasyAdminBundle') }} </button>
+    <a class="btn btn-default action-delete" href="{{ path('easyadmin', {'action': 'delete', 'entity': 'User'}) }}" target="_self"><i class="fa fa-trash-o"></i> Delete</a>
+    <a class="btn btn-secondary action-list" href="{{ path('easyadmin', {'action': 'list', 'entity': 'User'}) }}" target="_self">Back to listing</a>
     {{ form_end(form) }}
 
 {% endblock entity_form %}

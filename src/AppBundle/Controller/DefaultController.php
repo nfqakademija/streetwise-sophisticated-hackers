@@ -12,21 +12,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/default", name="default")
-     */
-    public function indexAction()
-    {
-        //TODO: add dashboard
-
-        return $this->render('default/index.html.twig', [
-            'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
-        ]);
-    }
-
-    /**
      * @Route("/", name="homepage")
      */
-    public function adminAction()
+    public function indexAction()
     {
         return $this->redirect('/news');
     }

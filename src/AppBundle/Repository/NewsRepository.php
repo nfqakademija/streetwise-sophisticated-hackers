@@ -16,15 +16,14 @@ class NewsRepository extends EntityRepository
      */
     public function findGroupAndPublic($group)
     {
-        return $this->getEntityManager()
-            ->createQuery(
-                'SELECT n 
-                FROM AppBundle:News n 
-                WHERE n.studentgroup = :group 
-                OR n.studentgroup IS NULL 
-                ORDER BY n.date DESC'
-            )
+        return $qb = $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('n')
+            ->from('AppBundle:News', 'n')
+            ->where('n.studentgroup = :group OR n.studentgroup IS NULL')
+            ->orderBy('n.date', 'DESC')
             ->setParameter('group', $group)
+            ->getQuery()
             ->getResult();
     }
 
@@ -33,13 +32,13 @@ class NewsRepository extends EntityRepository
      */
     public function findPublic()
     {
-        return $this->getEntityManager()
-            ->createQuery(
-                'SELECT n 
-                FROM AppBundle:News n 
-                WHERE n.studentgroup IS NULL 
-                ORDER BY n.date DESC'
-            )
+        return $qb = $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('n')
+            ->from('AppBundle:News', 'n')
+            ->where('n.studentgroup IS NULL')
+            ->orderBy('n.date', 'DESC')
+            ->getQuery()
             ->getResult();
     }
 }
