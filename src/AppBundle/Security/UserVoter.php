@@ -98,8 +98,10 @@ class UserVoter extends Voter
         switch ($attribute) {
             case self::EDIT:
             case self::DELETE:
-            case self::SHOW_ASSIGNMENTS:
                 return $this->canEditOrDelete($subject, $user, $token);
+                break;
+            case self::SHOW_ASSIGNMENTS:
+                return $this->canViewAssignments($subject, $user, $token);
                 break;
             default:
                 return false;
@@ -126,5 +128,17 @@ class UserVoter extends Voter
             ) ||
             $this->decisionManager->decide($token, ['ROLE_SUPER_ADMIN'])
         );
+    }
+
+    /**
+     * @param User $subject
+     * @param User $user
+     * @param TokenInterface $token
+     * @return bool
+     */
+    private function canViewAssignments(User $subject, User $user, TokenInterface $token)
+    {
+        return $user == $subject->getOwner() ||
+            $this->decisionManager->decide($token, ['ROLE_LECTOR']);
     }
 }
