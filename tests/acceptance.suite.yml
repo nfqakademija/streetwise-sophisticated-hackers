@@ -8,6 +8,6 @@ class_name: AcceptanceTester
 modules:
     enabled:
         - WebDriver:
-            url: http://localhost:8000
+            url: 'http://localhost:8000/'
             browser: chrome
         - \Helper\Acceptance
